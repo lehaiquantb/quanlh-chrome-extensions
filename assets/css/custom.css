@@ -1,0 +1,9 @@
+.super-center {
+	display: grid;
+	align-items: center;
+}
+
+.pop-up-container {
+	border-radius: 5px;
+	padding: 5px;
+}
