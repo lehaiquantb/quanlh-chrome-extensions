@@ -1,6 +1,6 @@
 {
-	"name": "Getting Started Example",
-	"description": "Build an Extension!",
+	"name": "Q-extension",
+	"description": "An extension with several functions",
 	"version": "1.0",
 	"manifest_version": 3,
 	"background": {
