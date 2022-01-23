@@ -5,7 +5,7 @@ module.exports = {
     devtool: 'cheap-module-source-map',
     entry: {
         popup: './src/popup.ts',
-        contentScript: './src/contentScript.ts',
+        content: './src/content.ts',
         background: './src/background.ts'
     },
     output: {

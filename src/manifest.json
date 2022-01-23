@@ -19,7 +19,7 @@
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["assets/js/jspdf.debug.js", "build/contentScript.bundle.js"]
+			"js": ["assets/js/jspdf.debug.js", "build/content.bundle.js"]
 		}
 	],
 	"icons": {
