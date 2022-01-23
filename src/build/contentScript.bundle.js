@@ -2182,6 +2182,18 @@ module.exports = {
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -2216,91 +2228,90 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 /*!******************************!*\
-  !*** ./src/contentScript.js ***!
+  !*** ./src/contentScript.ts ***!
   \******************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "downloadPdf": () => (/* binding */ downloadPdf),
 /* harmony export */   "downloadWord": () => (/* binding */ downloadWord)
 /* harmony export */ });
-var _document$URL$match$, _document$URL$match;
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
-var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-
-var documentIDPath = (_document$URL$match$ = (_document$URL$match = document.URL.match(/(document|file)\/d(.*)\//)) === null || _document$URL$match === void 0 ? void 0 : _document$URL$match[2]) !== null && _document$URL$match$ !== void 0 ? _document$URL$match$ : '';
-var parseDocument; // Make a request for a user with a given ID
-
-axios.get("https://docs.google.com/document/d".concat(documentIDPath, "/mobilebasic")).then(function (response) {
-  // handle success
-  console.log(response);
-  var text = response === null || response === void 0 ? void 0 : response.data;
-  var parser = new DOMParser();
-  parseDocument = parser.parseFromString(text, "text/html");
-}).catch(function (error) {
-  // handle error
-  console.log(error);
-}).then(function () {// always executed
+const documentIDPath = document.URL.match(/(document|file)\/d(.*)\//)?.[2] ?? '';
+let parseDocument;
+// Make a request for a user with a given ID
+axios__WEBPACK_IMPORTED_MODULE_0___default().get(`https://docs.google.com/document/d${documentIDPath}/mobilebasic`)
+    .then(function (response) {
+    // handle success
+    console.log(response);
+    const text = response?.data;
+    const parser = new DOMParser();
+    parseDocument = parser.parseFromString(text, 'text/html');
+})
+    .catch(function (error) {
+    // handle error
+    console.log(error);
+})
+    .then(function () {
+    // always executed
 });
 function downloadPdf() {
-  var _document$querySelect, _document$querySelect2;
-
-  var pdf = new jsPDF();
-  var elements = document.getElementsByTagName("img");
-  var fileName = (_document$querySelect = (_document$querySelect2 = document.querySelector('meta[property~="og:title"]')) === null || _document$querySelect2 === void 0 ? void 0 : _document$querySelect2.content) !== null && _document$querySelect !== void 0 ? _document$querySelect : 'Exported_file.pdf';
-
-  for (var i in elements) {
-    var img = elements[i];
-    console.log("add img ", img);
-
-    if (!/^blob:/.test(img.src)) {
-      console.log("invalid src");
-      continue;
+    // @ts-ignore:
+    let pdf = new jsPDF();
+    let elements = document.getElementsByTagName('img');
+    const fileName = document.querySelector('meta[property~="og:title"]')
+        ?.content ?? 'Exported_file.pdf';
+    for (let i in elements) {
+        let img = elements[i];
+        console.log('add img ', img);
+        if (!/^blob:/.test(img.src)) {
+            console.log('invalid src');
+            continue;
+        }
+        let can = document.createElement('canvas');
+        let con = can.getContext('2d');
+        can.width = img.width;
+        can.height = img.height;
+        con.drawImage(img, 0, 0, img.width, img.height);
+        let imgData = can.toDataURL('image/jpeg', 1.0);
+        pdf.addImage(imgData, 'JPEG', 0, 0);
+        pdf.addPage();
     }
-
-    var can = document.createElement('canvas');
-    var con = can.getContext("2d");
-    can.width = img.width;
-    can.height = img.height;
-    con.drawImage(img, 0, 0, img.width, img.height);
-    var imgData = can.toDataURL("image/jpeg", 1.0);
-    pdf.addImage(imgData, 'JPEG', 0, 0);
-    pdf.addPage();
-  }
-
-  pdf.save(fileName);
+    pdf.save(fileName);
 }
 function downloadWord() {
-  var _document$URL$match$2, _document$URL$match2;
-
-  var documentIDPath = (_document$URL$match$2 = (_document$URL$match2 = document.URL.match(/(document|file)\/d(.*)\//)) === null || _document$URL$match2 === void 0 ? void 0 : _document$URL$match2[2]) !== null && _document$URL$match$2 !== void 0 ? _document$URL$match$2 : '';
-  fetch("https://docs.google.com/document/d".concat(documentIDPath, "/mobilebasic")).then(response => response.text()).then(data => {
-    var _document$querySelect3, _document$querySelect4, _document$querySelect5;
-
-    var parser = new DOMParser();
-    parseDocument = parser.parseFromString(data !== null && data !== void 0 ? data : '', "text/html");
-    var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " + "xmlns:w='urn:schemas-microsoft-com:office:word' " + "xmlns='http://www.w3.org/TR/REC-html40'>" + "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
-    var footer = "</body></html>";
-    var sourceHTML = header + parseDocument.querySelector('.doc').outerHTML + footer;
-    var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
-    var blob = new Blob(['\ufeff', source], {
-      type: 'application/msword'
+    const documentIDPath = document.URL.match(/(document|file)\/d(.*)\//)?.[2] ?? '';
+    fetch(`https://docs.google.com/document/d${documentIDPath}/mobilebasic`)
+        .then((response) => response.text())
+        .then((data) => {
+        const parser = new DOMParser();
+        parseDocument = parser.parseFromString(data ?? '', 'text/html');
+        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+            "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+            "xmlns='http://www.w3.org/TR/REC-html40'>" +
+            "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
+        const footer = '</body></html>';
+        const sourceHTML = header + parseDocument.querySelector('.doc').outerHTML + footer;
+        const source = 'data:application/vnd.ms-word;charset=utf-8,' +
+            encodeURIComponent(sourceHTML);
+        let blob = new Blob(['\ufeff', source], {
+            type: 'application/msword',
+        });
+        const filename = `${document
+            .querySelector('title')
+            ?.text?.replace(/(.docx|.doc)$/g, '') ?? 'Document'}.doc`;
+        let fileDownload = document.createElement('a');
+        document.body.appendChild(fileDownload);
+        fileDownload.href = source;
+        fileDownload.download = filename;
+        fileDownload.click();
+        document.body.removeChild(fileDownload);
     });
-    var filename = "".concat((_document$querySelect3 = (_document$querySelect4 = document.querySelector('title')) === null || _document$querySelect4 === void 0 ? void 0 : (_document$querySelect5 = _document$querySelect4.text) === null || _document$querySelect5 === void 0 ? void 0 : _document$querySelect5.replace(/(.docx|.doc)$/g, "")) !== null && _document$querySelect3 !== void 0 ? _document$querySelect3 : 'Document', ".doc");
-
-    if (navigator.msSaveOrOpenBlob) {
-      navigator.msSaveOrOpenBlob(blob, filename);
-    } else {
-      var fileDownload = document.createElement("a");
-      document.body.appendChild(fileDownload);
-      fileDownload.href = source;
-      fileDownload.download = filename;
-      fileDownload.click();
-      document.body.removeChild(fileDownload);
-    }
-  });
 }
+
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=contentScript.js.map
+//# sourceMappingURL=contentScript.bundle.js.map

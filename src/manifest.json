@@ -4,7 +4,7 @@
 	"version": "1.0",
 	"manifest_version": 3,
 	"background": {
-		"service_worker": "background.js"
+		"service_worker": "build/background.bundle.js"
 	},
 	"permissions": ["storage", "activeTab", "scripting"],
 	"action": {
@@ -19,7 +19,7 @@
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["build/contentScript.js", "assets/js/jspdf.debug.js"]
+			"js": ["assets/js/jspdf.debug.js", "build/contentScript.bundle.js"]
 		}
 	],
 	"icons": {

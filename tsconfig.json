@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "outDir": "./build/",
+        "noImplicitAny": true,
+        "module": "ESNext",
+        "target": "ESNext",
+        "allowJs": true,
+        "moduleResolution": "node",
+        "types": [
+            "chrome"
+        ],
+        "lib": [
+            "ESNext",
+            "DOM",
+        ],
+    },
+    "include": [
+        "src/**/*.ts",
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

@@ -7219,97 +7219,6 @@ var len=0;var i=0;var codes=numLitCodes+numDistCodes;var codeLengths=new Array(c
 
 /***/ }),
 
-/***/ "./src/contentScript.js":
-/*!******************************!*\
-  !*** ./src/contentScript.js ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "downloadPdf": () => (/* binding */ downloadPdf),
-/* harmony export */   "downloadWord": () => (/* binding */ downloadWord)
-/* harmony export */ });
-var _document$URL$match$, _document$URL$match;
-
-var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-
-var documentIDPath = (_document$URL$match$ = (_document$URL$match = document.URL.match(/(document|file)\/d(.*)\//)) === null || _document$URL$match === void 0 ? void 0 : _document$URL$match[2]) !== null && _document$URL$match$ !== void 0 ? _document$URL$match$ : '';
-var parseDocument; // Make a request for a user with a given ID
-
-axios.get("https://docs.google.com/document/d".concat(documentIDPath, "/mobilebasic")).then(function (response) {
-  // handle success
-  console.log(response);
-  var text = response === null || response === void 0 ? void 0 : response.data;
-  var parser = new DOMParser();
-  parseDocument = parser.parseFromString(text, "text/html");
-}).catch(function (error) {
-  // handle error
-  console.log(error);
-}).then(function () {// always executed
-});
-function downloadPdf() {
-  var _document$querySelect, _document$querySelect2;
-
-  var pdf = new jsPDF();
-  var elements = document.getElementsByTagName("img");
-  var fileName = (_document$querySelect = (_document$querySelect2 = document.querySelector('meta[property~="og:title"]')) === null || _document$querySelect2 === void 0 ? void 0 : _document$querySelect2.content) !== null && _document$querySelect !== void 0 ? _document$querySelect : 'Exported_file.pdf';
-
-  for (var i in elements) {
-    var img = elements[i];
-    console.log("add img ", img);
-
-    if (!/^blob:/.test(img.src)) {
-      console.log("invalid src");
-      continue;
-    }
-
-    var can = document.createElement('canvas');
-    var con = can.getContext("2d");
-    can.width = img.width;
-    can.height = img.height;
-    con.drawImage(img, 0, 0, img.width, img.height);
-    var imgData = can.toDataURL("image/jpeg", 1.0);
-    pdf.addImage(imgData, 'JPEG', 0, 0);
-    pdf.addPage();
-  }
-
-  pdf.save(fileName);
-}
-function downloadWord() {
-  var _document$URL$match$2, _document$URL$match2;
-
-  var documentIDPath = (_document$URL$match$2 = (_document$URL$match2 = document.URL.match(/(document|file)\/d(.*)\//)) === null || _document$URL$match2 === void 0 ? void 0 : _document$URL$match2[2]) !== null && _document$URL$match$2 !== void 0 ? _document$URL$match$2 : '';
-  fetch("https://docs.google.com/document/d".concat(documentIDPath, "/mobilebasic")).then(response => response.text()).then(data => {
-    var _document$querySelect3, _document$querySelect4, _document$querySelect5;
-
-    var parser = new DOMParser();
-    parseDocument = parser.parseFromString(data !== null && data !== void 0 ? data : '', "text/html");
-    var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " + "xmlns:w='urn:schemas-microsoft-com:office:word' " + "xmlns='http://www.w3.org/TR/REC-html40'>" + "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
-    var footer = "</body></html>";
-    var sourceHTML = header + parseDocument.querySelector('.doc').outerHTML + footer;
-    var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
-    var blob = new Blob(['\ufeff', source], {
-      type: 'application/msword'
-    });
-    var filename = "".concat((_document$querySelect3 = (_document$querySelect4 = document.querySelector('title')) === null || _document$querySelect4 === void 0 ? void 0 : (_document$querySelect5 = _document$querySelect4.text) === null || _document$querySelect5 === void 0 ? void 0 : _document$querySelect5.replace(/(.docx|.doc)$/g, "")) !== null && _document$querySelect3 !== void 0 ? _document$querySelect3 : 'Document', ".doc");
-
-    if (navigator.msSaveOrOpenBlob) {
-      navigator.msSaveOrOpenBlob(blob, filename);
-    } else {
-      var fileDownload = document.createElement("a");
-      document.body.appendChild(fileDownload);
-      fileDownload.href = source;
-      fileDownload.download = filename;
-      fileDownload.click();
-      document.body.removeChild(fileDownload);
-    }
-  });
-}
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/assets/scss/app.scss":
 /*!***************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/assets/scss/app.scss ***!
@@ -7846,6 +7755,96 @@ function styleTagTransform(css, styleElement) {
 
 module.exports = styleTagTransform;
 
+/***/ }),
+
+/***/ "./src/contentScript.ts":
+/*!******************************!*\
+  !*** ./src/contentScript.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "downloadPdf": () => (/* binding */ downloadPdf),
+/* harmony export */   "downloadWord": () => (/* binding */ downloadWord)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+const documentIDPath = document.URL.match(/(document|file)\/d(.*)\//)?.[2] ?? '';
+let parseDocument;
+// Make a request for a user with a given ID
+axios__WEBPACK_IMPORTED_MODULE_0___default().get(`https://docs.google.com/document/d${documentIDPath}/mobilebasic`)
+    .then(function (response) {
+    // handle success
+    console.log(response);
+    const text = response?.data;
+    const parser = new DOMParser();
+    parseDocument = parser.parseFromString(text, 'text/html');
+})
+    .catch(function (error) {
+    // handle error
+    console.log(error);
+})
+    .then(function () {
+    // always executed
+});
+function downloadPdf() {
+    // @ts-ignore:
+    let pdf = new jsPDF();
+    let elements = document.getElementsByTagName('img');
+    const fileName = document.querySelector('meta[property~="og:title"]')
+        ?.content ?? 'Exported_file.pdf';
+    for (let i in elements) {
+        let img = elements[i];
+        console.log('add img ', img);
+        if (!/^blob:/.test(img.src)) {
+            console.log('invalid src');
+            continue;
+        }
+        let can = document.createElement('canvas');
+        let con = can.getContext('2d');
+        can.width = img.width;
+        can.height = img.height;
+        con.drawImage(img, 0, 0, img.width, img.height);
+        let imgData = can.toDataURL('image/jpeg', 1.0);
+        pdf.addImage(imgData, 'JPEG', 0, 0);
+        pdf.addPage();
+    }
+    pdf.save(fileName);
+}
+function downloadWord() {
+    const documentIDPath = document.URL.match(/(document|file)\/d(.*)\//)?.[2] ?? '';
+    fetch(`https://docs.google.com/document/d${documentIDPath}/mobilebasic`)
+        .then((response) => response.text())
+        .then((data) => {
+        const parser = new DOMParser();
+        parseDocument = parser.parseFromString(data ?? '', 'text/html');
+        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+            "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+            "xmlns='http://www.w3.org/TR/REC-html40'>" +
+            "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
+        const footer = '</body></html>';
+        const sourceHTML = header + parseDocument.querySelector('.doc').outerHTML + footer;
+        const source = 'data:application/vnd.ms-word;charset=utf-8,' +
+            encodeURIComponent(sourceHTML);
+        let blob = new Blob(['\ufeff', source], {
+            type: 'application/msword',
+        });
+        const filename = `${document
+            .querySelector('title')
+            ?.text?.replace(/(.docx|.doc)$/g, '') ?? 'Document'}.doc`;
+        let fileDownload = document.createElement('a');
+        document.body.appendChild(fileDownload);
+        fileDownload.href = source;
+        fileDownload.download = filename;
+        fileDownload.click();
+        document.body.removeChild(fileDownload);
+    });
+}
+
+
 /***/ })
 
 /******/ 	});
@@ -7933,91 +7932,60 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 /*!**********************!*\
-  !*** ./src/popup.js ***!
+  !*** ./src/popup.ts ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assets_scss_app_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./assets/scss/app.scss */ "./src/assets/scss/app.scss");
 /* harmony import */ var _assets_js_jspdf_debug__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/js/jspdf.debug */ "./src/assets/js/jspdf.debug.js");
 /* harmony import */ var _assets_js_jspdf_debug__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_assets_js_jspdf_debug__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _contentScript__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./contentScript */ "./src/contentScript.js");
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+/* harmony import */ var _contentScript__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./contentScript */ "./src/contentScript.ts");
 
 
 
- // Initialize butotn with users's prefered color
-
-var downloadButtonPdf = document.getElementById("download-file-pdf");
-var downloadButtonDocx = document.getElementById("download-file-docx");
-
-function getCurrentTab() {
-  return _getCurrentTab.apply(this, arguments);
-}
-
-function _getCurrentTab() {
-  _getCurrentTab = _asyncToGenerator(function* () {
-    var [tab] = yield chrome.tabs.query({
-      active: true,
-      currentWindow: true
+// Initialize butotn with users's prefered color
+let downloadButtonPdf = document.getElementById('download-file-pdf');
+let downloadButtonDocx = document.getElementById('download-file-docx');
+async function getCurrentTab() {
+    const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
     });
     return tab;
-  });
-  return _getCurrentTab.apply(this, arguments);
 }
-
-chrome.storage.sync.get("color", _ref => {
-  var {
-    color
-  } = _ref;
-});
-
-function injectScript() {
-  return _injectScript.apply(this, arguments);
-} // When the button is clicked, inject setPageBackgroundColor into current page
-
-
-function _injectScript() {
-  _injectScript = _asyncToGenerator(function* () {
-    var tab = yield getCurrentTab(); // chrome.scripting.executeScript({
+chrome.storage.sync.get('color', ({ color }) => { });
+async function injectScript() {
+    const tab = await getCurrentTab();
+    // chrome.scripting.executeScript({
     //   target: { tabId: tab.id },
     //   function: setPageBackgroundColor,
     // });
-
     chrome.scripting.executeScript({
-      target: {
-        tabId: tab.id
-      },
-      files: ['assets/js/jspdf.debug.js']
+        target: { tabId: tab.id },
+        files: ['assets/js/jspdf.debug.js'],
     });
-  });
-  return _injectScript.apply(this, arguments);
 }
+// When the button is clicked, inject setPageBackgroundColor into current page
+downloadButtonPdf.addEventListener('click', async () => {
+    const tab = await getCurrentTab();
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: _contentScript__WEBPACK_IMPORTED_MODULE_2__.downloadPdf,
+    });
+});
+downloadButtonDocx.addEventListener('click', async () => {
+    const tab = await getCurrentTab();
+    // chrome.scripting.executeScript({
+    //   target: { tabId: tab.id },
+    //   function: setPageBackgroundColor,
+    // });
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: _contentScript__WEBPACK_IMPORTED_MODULE_2__.downloadWord,
+    });
+});
 
-downloadButtonPdf.addEventListener("click", /*#__PURE__*/_asyncToGenerator(function* () {
-  var tab = yield getCurrentTab();
-  chrome.scripting.executeScript({
-    target: {
-      tabId: tab.id
-    },
-    function: _contentScript__WEBPACK_IMPORTED_MODULE_2__.downloadPdf
-  });
-}));
-downloadButtonDocx.addEventListener("click", /*#__PURE__*/_asyncToGenerator(function* () {
-  var tab = yield getCurrentTab(); // chrome.scripting.executeScript({
-  //   target: { tabId: tab.id },
-  //   function: setPageBackgroundColor,
-  // });
-
-  chrome.scripting.executeScript({
-    target: {
-      tabId: tab.id
-    },
-    function: _contentScript__WEBPACK_IMPORTED_MODULE_2__.downloadWord
-  });
-}));
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=popup.js.map
+//# sourceMappingURL=popup.bundle.js.map
