@@ -3,10 +3,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     devtool: 'cheap-module-source-map',
-    entry: "./src/index.js", // Dẫn tới file index.js ta đã tạo
+    entry: {
+        popup: './src/popup.js',
+        contentScript: './src/contentScript.js'
+    },
     output: {
         path: path.join(__dirname, "./src/build"), // Thư mục chứa file được build ra
-        filename: "bundle.js" // Tên file được build ra
+        filename: "[name].js" // Tên file được build ra
     },
     module: {
         rules: [
@@ -28,6 +31,17 @@ module.exports = {
                         ],
                     }
                 }
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    // Creates `style` nodes from JS strings
+                    "style-loader",
+                    // Translates CSS into CommonJS
+                    "css-loader",
+                    // Compiles Sass to CSS
+                    "sass-loader",
+                ],
             },
             {
                 test: /\.css$/, // Sử dụng style-loader, css-loader cho file .css

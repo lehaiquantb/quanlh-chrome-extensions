@@ -16,10 +16,20 @@
 			"128": "assets/icons/favicon128x128.png"
 		}
 	},
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["build/contentScript.js", "assets/js/jspdf.debug.js"]
+		}
+	],
 	"icons": {
 		"16": "assets/icons/favicon16x16.png",
 		"32": "assets/icons/favicon32x32.png",
 		"48": "assets/icons/favicon48x48.png",
 		"128": "assets/icons/favicon128x128.png"
+	},
+	"content_security_policy": {
+		"script-src": "'self' 'unsafe-eval'",
+		"object-src": "self"
 	}
 }
