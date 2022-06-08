@@ -1,6 +1,6 @@
 .quanlh-copy-button {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
 	background-color: white;
 	border-radius: 3px;
 	position: absolute;
@@ -22,11 +22,11 @@
 	}
 }
 
-.d-none {
+.quanlh-d-none {
 	display: none !important;
 }
 
-.super-center {
+.quanlh-super-center {
     display: grid;
     place-items: center;
 }
