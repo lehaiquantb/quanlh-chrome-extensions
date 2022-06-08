@@ -1,6 +1,6 @@
 import {
 	enableHostClipboardFeature,
-	excludeHostClipboardFeature,
+	disableHostClipboardFeature,
 } from './constants';
 import { copyToClipboard, createElementByText, isEmptyString } from './util';
 import { ScriptId, ScriptType } from './type';
@@ -116,8 +116,8 @@ function handleDownloadWord(text: string) {
 
 function handleCopyCodeToClipboard() {
 	const buttonCopy = `
-	<div class="quanlh-copy-button super-center d-none">
-		<span class="quanlh-copy-success d-none">
+	<div class="quanlh-copy-button quanlh-super-center quanlh-d-none">
+		<span class="quanlh-copy-success quanlh-d-none">
 			<svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check color-fg-success">
     			<path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path>
 			</svg>
@@ -162,30 +162,43 @@ function handleCopyCodeToClipboard() {
 				stringInCode === '' ? preElement.outerText : stringInCode;
 			const success = copyToClipboard(text);
 			if (success) {
-				iconSuccess.classList.remove('d-none');
-				iconCopy.classList.add('d-none');
+				iconSuccess.classList.remove('quanlh-d-none');
+				iconCopy.classList.add('quanlh-d-none');
 				setTimeout(() => {
-					iconSuccess.classList.add('d-none');
-					iconCopy.classList.remove('d-none');
+					iconSuccess.classList.add('quanlh-d-none');
+					iconCopy.classList.remove('quanlh-d-none');
 				}, 1000);
 			}
 		});
 
 		preElement.addEventListener('mouseenter', (event) => {
-			copyButton.classList.remove('d-none');
+			copyButton.classList.remove('quanlh-d-none');
 		});
 
 		preElement.addEventListener('mouseleave', (event) => {
-			copyButton.classList.add('d-none');
+			copyButton.classList.add('quanlh-d-none');
 		});
 	});
 }
 
 const host = window.location.host;
 
-if (
-	enableHostClipboardFeature.includes(host) &&
-	!excludeHostClipboardFeature.includes(host)
-) {
+function checkHost(host: string): boolean {
+	for (const enableHost of enableHostClipboardFeature) {
+		if (!enableHost.test(host)) {
+			return false;
+		}
+	}
+
+	for (const disableHost of disableHostClipboardFeature) {
+		if (disableHost.test(host)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+if (checkHost(host)) {
 	handleCopyCodeToClipboard();
 }
