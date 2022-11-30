@@ -9,7 +9,7 @@ module.exports = {
         background: './src/background.ts'
     },
     output: {
-        path: path.join(__dirname, "./src/build"), // Thư mục chứa file được build ra
+        path: path.join(__dirname, "./extension/build"), // Thư mục chứa file được build ra
         filename: "[name].bundle.js" // Tên file được build ra
     },
     module: {
@@ -61,7 +61,7 @@ module.exports = {
     // Chứa các plugins sẽ cài đặt trong tương lai
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./src/popup.html"
+            template: "./extension/popup.html"
         })
     ]
 };

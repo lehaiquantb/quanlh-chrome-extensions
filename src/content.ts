@@ -1,121 +1,112 @@
-import {
-	enableHostClipboardFeature,
-	disableHostClipboardFeature,
-} from './constants';
-import { copyToClipboard, createElementByText, isEmptyString } from './util';
-import { ScriptId, ScriptType } from './type';
-import axios from 'axios';
-import './assets/scss/content.scss';
+import { enableHostClipboardFeature, disableHostClipboardFeature } from "./constants"
+import { copyToClipboard, createElementByText, isEmptyString } from "./util"
+import { ScriptId, ScriptType } from "./type"
+import axios from "axios"
+import "./assets/scss/content.scss"
 
-chrome.runtime.onMessage.addListener(function (
-	message: ScriptType,
-	sender,
-	sendResponse
-) {
-	switch (message.id) {
-		case ScriptId.DOWNLOAD_PDF:
-			downloadPdf();
-			break;
-		case ScriptId.DOWNLOAD_WORD:
-			downloadWord();
-		default:
-			break;
-	}
-});
+chrome.runtime.onMessage.addListener(function (message: ScriptType, sender, sendResponse) {
+  switch (message.id) {
+    case ScriptId.DOWNLOAD_PDF:
+      downloadPdf()
+      break
+    case ScriptId.DOWNLOAD_WORD:
+      downloadWord()
+    // eslint-disable-next-line no-fallthrough
+    default:
+      break
+  }
+})
 
 export function downloadPdf() {
-	// @ts-ignore:
-	let pdf = new jsPDF();
-	let elements = document.getElementsByTagName('img');
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore:
+  // eslint-disable-next-line new-cap
+  const pdf = new jsPDF()
+  const elements = document.getElementsByTagName("img")
 
-	const fileName =
-		(document.querySelector('meta[property~="og:title"]') as any)
-			?.content ?? 'Exported_file.pdf';
+  const fileName =
+    (document.querySelector('meta[property~="og:title"]') as any)?.content ?? "Exported_file.pdf"
 
-	for (let i in elements) {
-		let img = elements[i];
-		console.log('add img ', img);
-		if (!/^blob:/.test(img.src)) {
-			console.log('invalid src');
-			continue;
-		}
-		let can = document.createElement('canvas');
-		let con = can.getContext('2d');
-		can.width = img.width;
-		can.height = img.height;
-		con.drawImage(img, 0, 0, img.width, img.height);
-		let imgData = can.toDataURL('image/jpeg', 1.0);
-		pdf.addImage(imgData, 'JPEG', 0, 0);
-		pdf.addPage();
-	}
+  for (const i in elements) {
+    const img = elements[i]
+    console.log("add img ", img)
+    if (!/^blob:/.test(img.src)) {
+      console.log("invalid src")
+      continue
+    }
+    const can = document.createElement("canvas")
+    const con = can.getContext("2d")
+    can.width = img.width
+    can.height = img.height
+    con.drawImage(img, 0, 0, img.width, img.height)
+    const imgData = can.toDataURL("image/jpeg", 1.0)
+    pdf.addImage(imgData, "JPEG", 0, 0)
+    pdf.addPage()
+  }
 
-	pdf.save(fileName);
+  pdf.save(fileName)
 }
 
 export function downloadWord() {
-	const documentIDPath =
-		document.URL.match(/(document|file)\/d(.*)\//)?.[2] ?? '';
+  const documentIDPath = document.URL.match(/(document|file)\/d(.*)\//)?.[2] ?? ""
 
-	let parseDocument;
+  let parseDocument
 
-	// Make a request for a user with a given ID
-	axios
-		.get(`https://docs.google.com/document/d${documentIDPath}/mobilebasic`)
-		.then(function (response) {
-			// handle success
-			console.log(response);
-			const text = response?.data;
-			const parser = new DOMParser();
-			parseDocument = parser.parseFromString(text, 'text/html');
-			handleDownloadWord(parseDocument.querySelector('.doc').outerHTML);
-		})
-		.catch(function (error) {
-			// handle error
-			console.log(error);
-		})
-		.then(function () {
-			// always executed
-		});
+  // Make a request for a user with a given ID
+  axios
+    .get(`https://docs.google.com/document/d${documentIDPath}/mobilebasic`)
+    .then(function (response) {
+      // handle success
+      console.log(response)
+      const text = response?.data
+      const parser = new DOMParser()
+      parseDocument = parser.parseFromString(text, "text/html")
+      handleDownloadWord(parseDocument.querySelector(".doc").outerHTML)
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error)
+    })
+    .then(function () {
+      // always executed
+    })
 
-	// fetch(`https://docs.google.com/document/d${documentIDPath}/mobilebasic`)
-	// 	.then((response) => response.text())
-	// 	.then((data) => {
-	// 		const parser = new DOMParser();
-	// 		let parseDocument: Document;
-	// 		parseDocument = parser.parseFromString(data ?? '', 'text/html');
-	// 		handleDownloadWord(parseDocument.querySelector('.doc').outerHTML);
-	// 	});
+  // fetch(`https://docs.google.com/document/d${documentIDPath}/mobilebasic`)
+  // 	.then((response) => response.text())
+  // 	.then((data) => {
+  // 		const parser = new DOMParser();
+  // 		let parseDocument: Document;
+  // 		parseDocument = parser.parseFromString(data ?? '', 'text/html');
+  // 		handleDownloadWord(parseDocument.querySelector('.doc').outerHTML);
+  // 	});
 }
 
 function handleDownloadWord(text: string) {
-	const header =
-		"<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
-		"xmlns:w='urn:schemas-microsoft-com:office:word' " +
-		"xmlns='http://www.w3.org/TR/REC-html40'>" +
-		"<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
-	const footer = '</body></html>';
+  const header =
+    "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+    "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+    "xmlns='http://www.w3.org/TR/REC-html40'>" +
+    "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>"
+  const footer = "</body></html>"
 
-	const sourceHTML = header + text + footer;
+  const sourceHTML = header + text + footer
 
-	const source =
-		'data:application/vnd.ms-word;charset=utf-8,' +
-		encodeURIComponent(sourceHTML);
+  const source = "data:application/vnd.ms-word;charset=utf-8," + encodeURIComponent(sourceHTML)
 
-	const filename = `${
-		document.querySelector('title')?.text?.replace(/(.docx|.doc)$/g, '') ??
-		'Document'
-	}.doc`;
+  const filename = `${
+    document.querySelector("title")?.text?.replace(/(.docx|.doc)$/g, "") ?? "Document"
+  }.doc`
 
-	let fileDownload = document.createElement('a');
-	document.body.appendChild(fileDownload);
-	fileDownload.href = source;
-	fileDownload.download = filename;
-	fileDownload.click();
-	document.body.removeChild(fileDownload);
+  const fileDownload = document.createElement("a")
+  document.body.appendChild(fileDownload)
+  fileDownload.href = source
+  fileDownload.download = filename
+  fileDownload.click()
+  document.body.removeChild(fileDownload)
 }
 
 function handleCopyCodeToClipboard() {
-	const buttonCopy = `
+  const buttonCopy = `
 	<div class="quanlh-copy-button quanlh-super-center quanlh-d-none">
 		<span class="quanlh-copy-success quanlh-d-none">
 			<svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check color-fg-success">
@@ -128,77 +119,71 @@ function handleCopyCodeToClipboard() {
 			</svg>
 		</span>
 	</div>
-`;
+`
 
-	const snippets = document.querySelectorAll('pre');
-	let listElement: { copyButton: HTMLElement; preElement: HTMLElement }[] =
-		[];
+  const snippets = document.querySelectorAll("pre")
+  const listElement: { copyButton: HTMLElement; preElement: HTMLElement }[] = []
 
-	snippets.forEach((snippet) => {
-		const parent = snippet.parentNode;
-		const wrapper = document.createElement('div');
+  snippets.forEach((snippet) => {
+    const parent = snippet.parentNode
+    const wrapper = document.createElement("div")
 
-		parent.replaceChild(wrapper, snippet);
-		wrapper.appendChild(snippet);
+    parent.replaceChild(wrapper, snippet)
+    wrapper.appendChild(snippet)
 
-		const buttonCopyElement = createElementByText(buttonCopy);
-		listElement.push({
-			copyButton: buttonCopyElement,
-			preElement: snippet,
-		});
-		wrapper.firstChild.appendChild(buttonCopyElement);
-	});
+    const buttonCopyElement = createElementByText(buttonCopy)
+    listElement.push({
+      copyButton: buttonCopyElement,
+      preElement: snippet,
+    })
+    wrapper.firstChild.appendChild(buttonCopyElement)
+  })
 
-	listElement.forEach(({ copyButton, preElement }) => {
-		const iconSuccess: HTMLElement = copyButton.querySelector(
-			'.quanlh-copy-success'
-		);
-		const iconCopy: HTMLElement =
-			copyButton.querySelector('.quanlh-copy-cp');
-		copyButton.addEventListener('click', (event) => {
-			const stringInCode =
-				preElement.querySelector('code')?.textContent ?? '';
-			const text =
-				stringInCode === '' ? preElement.outerText : stringInCode;
-			const success = copyToClipboard(text);
-			if (success) {
-				iconSuccess.classList.remove('quanlh-d-none');
-				iconCopy.classList.add('quanlh-d-none');
-				setTimeout(() => {
-					iconSuccess.classList.add('quanlh-d-none');
-					iconCopy.classList.remove('quanlh-d-none');
-				}, 1000);
-			}
-		});
+  listElement.forEach(({ copyButton, preElement }) => {
+    const iconSuccess: HTMLElement = copyButton.querySelector(".quanlh-copy-success")
+    const iconCopy: HTMLElement = copyButton.querySelector(".quanlh-copy-cp")
+    copyButton.addEventListener("click", (event) => {
+      const stringInCode = preElement.querySelector("code")?.textContent ?? ""
+      const text = stringInCode === "" ? preElement.outerText : stringInCode
+      const success = copyToClipboard(text)
+      if (success) {
+        iconSuccess.classList.remove("quanlh-d-none")
+        iconCopy.classList.add("quanlh-d-none")
+        setTimeout(() => {
+          iconSuccess.classList.add("quanlh-d-none")
+          iconCopy.classList.remove("quanlh-d-none")
+        }, 1000)
+      }
+    })
 
-		preElement.addEventListener('mouseenter', (event) => {
-			copyButton.classList.remove('quanlh-d-none');
-		});
+    preElement.addEventListener("mouseenter", (event) => {
+      copyButton.classList.remove("quanlh-d-none")
+    })
 
-		preElement.addEventListener('mouseleave', (event) => {
-			copyButton.classList.add('quanlh-d-none');
-		});
-	});
+    preElement.addEventListener("mouseleave", (event) => {
+      copyButton.classList.add("quanlh-d-none")
+    })
+  })
 }
 
-const host = window.location.host;
+const host = window.location.host
 
 function checkHost(host: string): boolean {
-	for (const enableHost of enableHostClipboardFeature) {
-		if (!enableHost.test(host)) {
-			return false;
-		}
-	}
+  for (const enableHost of enableHostClipboardFeature) {
+    if (!enableHost.test(host)) {
+      return false
+    }
+  }
 
-	for (const disableHost of disableHostClipboardFeature) {
-		if (disableHost.test(host)) {
-			return false;
-		}
-	}
+  for (const disableHost of disableHostClipboardFeature) {
+    if (disableHost.test(host)) {
+      return false
+    }
+  }
 
-	return true;
+  return true
 }
 
 if (checkHost(host)) {
-	handleCopyCodeToClipboard();
+  handleCopyCodeToClipboard()
 }
