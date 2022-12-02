@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/option/static/css/main.f51d5156.css",
+    "main.js": "/option/static/js/main.92031383.js",
+    "static/js/936.a9162738.chunk.js": "/option/static/js/936.a9162738.chunk.js",
+    "static/js/230.e78bbec5.chunk.js": "/option/static/js/230.e78bbec5.chunk.js",
+    "static/js/27.9feaa639.chunk.js": "/option/static/js/27.9feaa639.chunk.js",
+    "static/js/788.be70580a.chunk.js": "/option/static/js/788.be70580a.chunk.js",
+    "static/media/cra-logo.svg": "/option/static/media/cra-logo.9d1c1f3967021526053c137ae4a2713b.svg",
+    "static/media/rp-logo.svg": "/option/static/media/rp-logo.d311896ee13e1f562dfdd64e0c3cf074.svg",
+    "static/media/state.svg": "/option/static/media/state.025952b0b47d4d050d19e1b12aa65083.svg",
+    "static/media/css.svg": "/option/static/media/css.a5d1ce5da105bd3fd6a4327169e9c11d.svg",
+    "static/media/ts.svg": "/option/static/media/ts.523ed1bd337f686f4fb8ab952118ca1e.svg",
+    "static/media/github-icon.svg": "/option/static/media/github-icon.cc72f0952f8f5179b4c3406bed5fb8cc.svg",
+    "index.html": "/option/index.html",
+    "static/media/scaffolding.svg": "/option/static/media/scaffolding.51006e81ca946eb836ab3d72edac2339.svg",
+    "static/media/route.svg": "/option/static/media/route.16ae459b4417f05b3fbe244fa4f9675c.svg",
+    "static/media/intl.svg": "/option/static/media/intl.81fc9a5793b3f8fac8cff67f3fedc67d.svg",
+    "static/media/instant-feedback.svg": "/option/static/media/instant-feedback.ab3649974a5883d128594ed12a212c57.svg",
+    "static/media/code-analysis.svg": "/option/static/media/code-analysis.141f76832d719a1068a31bd61596f8f4.svg",
+    "static/media/seo.svg": "/option/static/media/seo.6cdb81ccd2cfe540bd39982349ccc5de.svg",
+    "static/media/new-window.svg": "/option/static/media/new-window.4ade1485bf2a60667769adc13280255e.svg",
+    "static/media/star.svg": "/option/static/media/star.f5d524e30ea71a5eccd3d6695ca92682.svg",
+    "static/media/documentation-icon.svg": "/option/static/media/documentation-icon.29cd96c7190f88435b9e45406422a083.svg",
+    "static/media/plus-sign.svg": "/option/static/media/plus-sign.aab61681e133f42f82dfc014dd9a36f5.svg"
+  },
+  "entrypoints": [
+    "static/css/main.f51d5156.css",
+    "static/js/main.92031383.js"
+  ]
+}
