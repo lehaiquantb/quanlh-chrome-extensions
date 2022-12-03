@@ -1,6 +1,5 @@
 import { ScriptId, ScriptType } from "./type"
-import "../extension/assets/scss/app.scss"
-import "../extension/assets/js/jspdf.debug"
+import "./assets/scss/app.scss"
 
 const downloadButtonPdf = document.getElementById("download-file-pdf")
 const downloadButtonDocx = document.getElementById("download-file-docx")

@@ -37,6 +37,7 @@ export function App() {
           path={process.env.PUBLIC_URL + '/hello'}
           element={<div>hello</div>}
         />
+        <Route path={'/abc'} element={<div>abc</div>} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <GlobalStyle />
