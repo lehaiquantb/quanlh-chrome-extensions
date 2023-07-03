@@ -16,7 +16,18 @@
     </button>
   </div>
   <script src="build/popup.bundle.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.min.js">
+    const $buttonOpenPaypay = document?.querySelector("cashier-open-native-app");
+    // const ReactNativeWebView = window?.ReactNativeWebView ?? {}
+    // $buttonOpenPaypay?.addEventListener("click", (event) => {
+    //   event?.stopImmediatePropagation()
+    //   event?.stopPropagation()
+    //   event?.preventDefault()
+    //   ReactNativeWebView?.postMessage("open-paypay-app")
+    // })
+    const _$buttonOpenPaypay = $buttonOpenPaypay.cloneNode(true)
+    $buttonOpenPaypay.replaceWith(_$buttonOpenPaypay)
+  </script>
 </body>
 
 </html>

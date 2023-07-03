@@ -1,2 +1,14 @@
-chrome.runtime.onInstalled.addListener((()=>{chrome.storage.sync.set({color:"#3aa757"}),console.log("Default background color set to %cgreen","color: #3aa757")}));
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!***************************!*\
+  !*** ./src/background.ts ***!
+  \***************************/
+const color = "#3aa757";
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.sync.set({ color });
+    console.log("Default background color set to %cgreen", `color: ${color}`);
+});
+
+/******/ })()
+;
 //# sourceMappingURL=background.bundle.js.map
