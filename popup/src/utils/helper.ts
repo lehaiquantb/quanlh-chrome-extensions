@@ -26,7 +26,9 @@ export const isEmptyString = (str: string) => {
 
 export function globalVarIsExist(varName: string) {
   try {
-    return eval(`typeof ${varName}`) !== "undefined";
+    return (
+      !!(window as any)?.[varName] ?? eval(`typeof ${varName}`) !== "undefined"
+    );
   } catch (error) {
     // console.log('varIsExist', error);
     return false;
@@ -34,7 +36,13 @@ export function globalVarIsExist(varName: string) {
 }
 
 export function getGlobalVar<T = any>(varName: string): T | undefined {
-  return globalVarIsExist(varName) ? eval(varName) : undefined;
+  try {
+    return globalVarIsExist(varName)
+      ? (window as any)?.[varName] ?? eval(varName)
+      : undefined;
+  } catch (error) {
+    return undefined;
+  }
 }
 
 type Recursive<T> = {

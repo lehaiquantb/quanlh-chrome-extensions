@@ -6,8 +6,7 @@ import { downloadPdf } from "./tools/downloadPdf";
 import { handleCopyCodeToClipboard } from "./tools/copyCodeToClipboard";
 import { downloadWord } from "./tools/downloadWord";
 import { getChrome, getCurrentTab } from "./utils/helper";
-console.log(getChrome()?.devtools?.inspectedWindow?.eval("chrome"));
-console.log("eval", eval("chrome"));
+// console.log(getChrome()?.devtools?.inspectedWindow?.eval("chrome"));
 
 getChrome()?.action?.onClicked.addListener((tab) => {
   console.log(tab);
@@ -31,13 +30,15 @@ function App() {
       const currentTab = await getCurrentTab();
       console.log("currentTab", currentTab);
 
-      // currentTab?.id &&
-      //   getChrome()?.scripting?.executeScript({
-      //     func: function () {
-      //       console.log("Executing");
-      //     },
-      //     target: { tabId: currentTab?.id },
-      //   });
+      currentTab?.id &&
+        getChrome()?.scripting?.executeScript({
+          func: function () {
+            // console.log("Executing", downloadPdf);
+            // downloadPdf?.();
+            eval("console.log('eval')")
+          },
+          target: { tabId: currentTab?.id },
+        });
     })();
 
     handleCopyCodeToClipboard();
