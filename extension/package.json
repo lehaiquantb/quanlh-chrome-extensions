@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "webpack --mode development --watch",
     "start": "webpack --mode development --watch",
     "build": "webpack --mode production",
     "compile": "tsc --noEmit -p . --pretty",

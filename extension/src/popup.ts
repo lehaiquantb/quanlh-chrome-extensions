@@ -1,4 +1,3 @@
-import { ScriptId, ScriptType } from "./type"
 // import "./assets/scss/app.scss"
 
 const downloadButtonPdf = document.getElementById("download-file-pdf")
@@ -23,10 +22,10 @@ chrome.storage.sync.get("color", ({ color }) => {})
 
 // downloadButtonPdf.addEventListener("click", async () => {
 //   await injectScript({ id: ScriptId.DOWNLOAD_PDF })
-  // chrome.scripting.executeScript({
-  // 	target: { tabId: tab.id },
-  // 	func: downloadPdf,
-  // });
+// chrome.scripting.executeScript({
+// 	target: { tabId: tab.id },
+// 	func: downloadPdf,
+// });
 // })
 
 // downloadButtonDocx.addEventListener("click", async () => {
