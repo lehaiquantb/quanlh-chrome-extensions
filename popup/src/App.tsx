@@ -1,23 +1,22 @@
-import React, { useEffect } from "react";
-import logo from "./logo.svg";
 import "font-awesome/css/font-awesome.min.css";
+import React, { useEffect } from "react";
 import "./assets/scss/app.scss";
-import { downloadPdf } from "./tools/downloadPdf";
-import { handleCopyCodeToClipboard } from "./tools/copyCodeToClipboard";
-import { downloadWord } from "./tools/downloadWord";
+import logo from "./logo.svg";
 import { getChrome, getCurrentTab } from "./utils/helper";
+import { Extension } from "./utils/Extension";
+import { ECommandId } from "./shared";
 // console.log(getChrome()?.devtools?.inspectedWindow?.eval("chrome"));
 
-getChrome()?.action?.onClicked.addListener((tab) => {
-  console.log(tab);
-  tab?.id &&
-    getChrome()?.scripting?.executeScript({
-      func: function () {
-        console.log("Executing");
-      },
-      target: { tabId: tab.id },
-    });
-});
+// getChrome()?.action?.onClicked.addListener((tab) => {
+//   console.log(tab);
+//   tab?.id &&
+//     getChrome()?.scripting?.executeScript({
+//       func: function () {
+//         console.log("Executing");
+//       },
+//       target: { tabId: tab.id },
+//     });
+// });
 
 const $app: React.CSSProperties = {
   minWidth: "20rem",
@@ -26,22 +25,9 @@ const $app: React.CSSProperties = {
 function App() {
   useEffect(() => {
     console.log("popup mounted");
-    (async () => {
-      const currentTab = await getCurrentTab();
-      console.log("currentTab", currentTab);
 
-      currentTab?.id &&
-        getChrome()?.scripting?.executeScript({
-          func: function () {
-            // console.log("Executing", downloadPdf);
-            // downloadPdf?.();
-            eval("console.log('eval')")
-          },
-          target: { tabId: currentTab?.id },
-        });
-    })();
+    Extension.executeCommand({ commandId: ECommandId.TEST_COMMAND });
 
-    handleCopyCodeToClipboard();
     // debugger;
     // // @ts-ignore
     // chrome.runtime.sendMessage({ popupMounted: true });
@@ -69,9 +55,7 @@ function App() {
         <button
           className="btn btn-warning super-center"
           id="download-file-pdf"
-          onClick={() => {
-            downloadPdf();
-          }}
+          onClick={() => {}}
         >
           pdf
           <i className="fas fa-file-pdf"></i>
@@ -79,9 +63,7 @@ function App() {
         <button
           className="btn btn-primary super-center mt-2"
           id="download-file-docx"
-          onClick={() => {
-            downloadWord();
-          }}
+          onClick={() => {}}
         >
           docx
           <i className="fas fa-file-word"></i>

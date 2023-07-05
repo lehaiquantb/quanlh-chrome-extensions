@@ -1,4 +1,4 @@
-import { copyToClipboard, createElementByText } from "../utils/helper";
+import { copyToClipboard, createElementByText } from "../utils/helper"
 
 export const enableHostClipboardFeature: RegExp[] = [
   /^[\S]+$/gm,
@@ -14,9 +14,9 @@ export const enableHostClipboardFeature: RegExp[] = [
   // /stackapps.com/,
   // /viblo.asia/,
   // /www.npmjs.com/,
-];
+]
 
-export const disableHostClipboardFeature: RegExp[] = [/w3schools.com/];
+export const disableHostClipboardFeature: RegExp[] = [/w3schools.com/]
 
 export function handleCopyCodeToClipboard() {
   const buttonCopy = `
@@ -32,73 +32,69 @@ export function handleCopyCodeToClipboard() {
               </svg>
           </span>
       </div>
-  `;
+  `
 
-  const snippets = document.querySelectorAll("pre");
-  const listElement: { copyButton: HTMLElement; preElement: HTMLElement }[] =
-    [];
+  const snippets = document.querySelectorAll("pre")
+  const listElement: { copyButton: HTMLElement; preElement: HTMLElement }[] = []
 
   snippets.forEach((snippet) => {
-    const parent = snippet.parentNode;
-    const wrapper = document.createElement("div");
+    const parent = snippet.parentNode
+    const wrapper = document.createElement("div")
 
-    parent?.replaceChild(wrapper, snippet);
-    wrapper.appendChild(snippet);
+    parent?.replaceChild(wrapper, snippet)
+    wrapper.appendChild(snippet)
 
-    const buttonCopyElement = createElementByText(buttonCopy);
+    const buttonCopyElement = createElementByText(buttonCopy)
     listElement.push({
       copyButton: buttonCopyElement,
       preElement: snippet,
-    });
-    wrapper?.firstChild?.appendChild(buttonCopyElement);
-  });
+    })
+    wrapper?.firstChild?.appendChild(buttonCopyElement)
+  })
 
   listElement.forEach(({ copyButton, preElement }) => {
-    const iconSuccess: HTMLElement | null = copyButton.querySelector(
-      ".quanlh-copy-success"
-    );
-    const iconCopy: HTMLElement | null =
-      copyButton.querySelector(".quanlh-copy-cp");
+    const iconSuccess: HTMLElement | null = copyButton.querySelector(".quanlh-copy-success")
+    const iconCopy: HTMLElement | null = copyButton.querySelector(".quanlh-copy-cp")
     copyButton.addEventListener("click", (event) => {
-      const stringInCode = preElement.querySelector("code")?.textContent ?? "";
-      const text = stringInCode === "" ? preElement.outerText : stringInCode;
-      const success = copyToClipboard(text);
+      const stringInCode = preElement.querySelector("code")?.textContent ?? ""
+      const text = stringInCode === "" ? preElement.outerText : stringInCode
+      const success = copyToClipboard(text)
       if (success) {
-        iconSuccess?.classList.remove("quanlh-d-none");
-        iconCopy?.classList.add("quanlh-d-none");
+        iconSuccess?.classList.remove("quanlh-d-none")
+        iconCopy?.classList.add("quanlh-d-none")
         setTimeout(() => {
-          iconSuccess?.classList.add("quanlh-d-none");
-          iconCopy?.classList.remove("quanlh-d-none");
-        }, 1000);
+          iconSuccess?.classList.add("quanlh-d-none")
+          iconCopy?.classList.remove("quanlh-d-none")
+        }, 1000)
       }
-    });
+    })
 
     preElement.addEventListener("mouseenter", (event) => {
-      copyButton.classList.remove("quanlh-d-none");
-    });
+      copyButton.classList.remove("quanlh-d-none")
+    })
 
     preElement.addEventListener("mouseleave", (event) => {
-      copyButton.classList.add("quanlh-d-none");
-    });
-  });
+      copyButton.classList.add("quanlh-d-none")
+    })
+  })
 }
 
-const host = window.location.host;
+const host = window.location.host
 
 function checkHost(host: string): boolean {
   for (const enableHost of enableHostClipboardFeature) {
     if (!enableHost.test(host)) {
-      return false;
+      return false
     }
   }
 
   for (const disableHost of disableHostClipboardFeature) {
     if (disableHost.test(host)) {
-      return false;
+      return false
     }
   }
 
-  return true;
+  return true
 }
 
 if (checkHost(host)) {

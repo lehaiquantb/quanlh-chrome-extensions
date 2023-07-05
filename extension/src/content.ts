@@ -1,19 +1,13 @@
-import { enableHostClipboardFeature, disableHostClipboardFeature } from "./constants"
-import { copyToClipboard, createElementByText, isEmptyString } from "./util"
-import { ScriptId, ScriptType } from "./type"
-import axios from "axios"
+import { Command, ECommandId, IMessage } from "./shared"
+import { downloadPdf } from "./tools/downloadPdf"
+import { downloadWord } from "./tools/downloadWord"
 // import "./assets/scss/content.scss"
 
-chrome.runtime.onMessage.addListener(function (message: ScriptType, sender, sendResponse) {
-  switch (message.id) {
-    case ScriptId.DOWNLOAD_PDF:
-      // downloadPdf()
-      break
-    case ScriptId.DOWNLOAD_WORD:
-      // downloadWord()
-    // eslint-disable-next-line no-fallthrough
-    default:
-      break
+chrome.runtime.onMessage.addListener(function (message: IMessage, sender, sendResponse) {
+  console.log("sender", sender)
+  console.log("message", message)
+  if (message?.commandId) {
+    contentScript.executeCommand(message)
   }
 })
 
@@ -187,3 +181,31 @@ chrome.runtime.onMessage.addListener(function (message: ScriptType, sender, send
 // if (checkHost(host)) {
 //   handleCopyCodeToClipboard()
 // }
+class ContentScript {
+  commands: Command[] = [
+    {
+      id: ECommandId.DOWNLOAD_PDF,
+      func: downloadPdf,
+    },
+    {
+      id: ECommandId.DOWNLOAD_WORD,
+      func: downloadWord,
+    },
+    {
+      id: ECommandId.TEST_COMMAND,
+      func: () => {
+        console.log("test command")
+      },
+    },
+  ]
+
+  executeCommand(message: IMessage) {
+    const { commandId, params } = message
+    const command = this.commands.find((command) => command.id === commandId)
+    if (command) {
+      command?.func?.(params)
+    }
+  }
+}
+
+export const contentScript = new ContentScript()
