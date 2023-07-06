@@ -54081,10 +54081,10 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./src/shared/components/App.tsx":
-/*!***************************************!*\
-  !*** ./src/shared/components/App.tsx ***!
-  \***************************************/
+/***/ "./src/shared/components/UI.tsx":
+/*!**************************************!*\
+  !*** ./src/shared/components/UI.tsx ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -54099,8 +54099,8 @@ __webpack_require__.r(__webpack_exports__);
 
 class UI {
     static render(opts) {
-        const { id, Component } = opts;
-        const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot(document.getElementById(id));
+        const { id, Component, htmlElement } = opts;
+        const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot(htmlElement ?? document.getElementById(id));
         root.render(react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().StrictMode), null, Component));
     }
 }
@@ -54125,28 +54125,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../App */ "./src/shared/components/App.tsx");
+/* harmony import */ var _UI__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../UI */ "./src/shared/components/UI.tsx");
+/* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
+
 
 
 
 
 const TailwindClassField = (props) => {
-    const { rehydrated } = (0,_shared_models__WEBPACK_IMPORTED_MODULE_0__.useInitialRootStore)(() => {
-        // This runs after the root store has been initialized and rehydrated.
-        // If your initialization scripts run very fast, it's good to show the splash screen for just a bit longer to prevent flicker.
-        // Slightly delaying splash screen hiding for better UX; can be customized or removed as needed,
-        // Note: (vanilla Android) The splash-screen will not appear if you launch your app via the terminal or Android Studio. Kill the app and launch it normally by tapping on the launcher icon. https://stackoverflow.com/a/69831106
-        // Note: (vanilla iOS) You might notice the splash-screen logo change size. This happens in debug/development mode. Try building the app for release.
-    });
     const [t, setT] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)("TailwindClassField");
     (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
         setInterval(() => {
             setT((t) => t + "1");
         }, 1000);
     }, []);
-    if (!rehydrated) {
-        return null;
-    }
     return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null,
         t,
         react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null,
@@ -54158,8 +54150,9 @@ const M = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(() => {
 });
 TailwindClassField.defaultProps = {};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TailwindClassField);
+const X = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_4__["default"])(TailwindClassField);
 const render = () => {
-    _App__WEBPACK_IMPORTED_MODULE_3__.UI.render({ Component: react__WEBPACK_IMPORTED_MODULE_2___default().createElement(TailwindClassField, null), id: "readme" });
+    _UI__WEBPACK_IMPORTED_MODULE_3__.UI.render({ Component: react__WEBPACK_IMPORTED_MODULE_2___default().createElement(X, null), id: "readme" });
 };
 
 
@@ -54712,6 +54705,40 @@ class Storage {
     }
 }
 const storage = new Storage();
+
+
+/***/ }),
+
+/***/ "./src/shared/withStorage.tsx":
+/*!************************************!*\
+  !*** ./src/shared/withStorage.tsx ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./models */ "./src/shared/models/index.ts");
+
+
+// HOC that adds a "name" prop to the wrapped component
+const withStorage = (WrappedComponent) => {
+    const WithStorage = (props) => {
+        const { rehydrated } = (0,_models__WEBPACK_IMPORTED_MODULE_1__.useInitialRootStore)(() => {
+            // console.log("rehydrated")
+        });
+        if (!rehydrated) {
+            return null;
+        }
+        return react__WEBPACK_IMPORTED_MODULE_0___default().createElement(WrappedComponent, { ...props });
+    };
+    return WithStorage;
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (withStorage);
 
 
 /***/ }),

@@ -13,6 +13,7 @@
     "@types/react-dom": "^18.0.0",
     "antd": "^5.6.4",
     "axios": "^1.4.0",
+    "css-to-tailwindcss": "^1.0.4",
     "font-awesome": "^4.7.0",
     "jspdf": "^2.5.1",
     "mobx": "^6.9.0",
