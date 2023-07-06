@@ -1,5 +1,3 @@
-// import "./assets/scss/app.scss"
-
 const downloadButtonPdf = document.getElementById("download-file-pdf")
 const downloadButtonDocx = document.getElementById("download-file-docx")
 
@@ -31,3 +29,5 @@ chrome.storage.sync.get("color", ({ color }) => {})
 // downloadButtonDocx.addEventListener("click", async () => {
 //   await injectScript({ id: ScriptId.DOWNLOAD_WORD })
 // })
+
+export {}

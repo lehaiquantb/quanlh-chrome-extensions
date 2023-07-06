@@ -5,6 +5,8 @@ import logo from "./logo.svg";
 import { getChrome, getCurrentTab } from "./utils/helper";
 import { Extension } from "./utils/Extension";
 import { ECommandId } from "./shared";
+import { useInitialRootStore } from "@/models";
+import ConvertCssToTailwind from "./components/ConvertCssToTailwind/ConvertCssToTailwind";
 // console.log(getChrome()?.devtools?.inspectedWindow?.eval("chrome"));
 
 // getChrome()?.action?.onClicked.addListener((tab) => {
@@ -23,6 +25,13 @@ const $app: React.CSSProperties = {
 };
 
 function App() {
+  const { rehydrated } = useInitialRootStore(() => {
+    // This runs after the root store has been initialized and rehydrated.
+    // If your initialization scripts run very fast, it's good to show the splash screen for just a bit longer to prevent flicker.
+    // Slightly delaying splash screen hiding for better UX; can be customized or removed as needed,
+    // Note: (vanilla Android) The splash-screen will not appear if you launch your app via the terminal or Android Studio. Kill the app and launch it normally by tapping on the launcher icon. https://stackoverflow.com/a/69831106
+    // Note: (vanilla iOS) You might notice the splash-screen logo change size. This happens in debug/development mode. Try building the app for release.
+  });
   useEffect(() => {
     console.log("popup mounted");
 
@@ -35,16 +44,13 @@ function App() {
     // console.log(chrome);
   }, []);
 
+  if (!rehydrated) {
+    return null;
+  }
+
   return (
     <div className="App" style={$app}>
-      <iframe
-        width="748"
-        height="422"
-        src="https://www.youtube.com/embed/HPZ6djSF_CI"
-        title="KIA CARENS chiếc xe SUV có đối thủ toàn MPV | Xế Cưng Walkaround"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      ></iframe>
-      <iframe src="https://www.youtube.com" width="748" height="422"></iframe>
+      <ConvertCssToTailwind />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>

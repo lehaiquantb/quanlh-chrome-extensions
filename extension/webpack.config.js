@@ -1,6 +1,7 @@
 const path = require("path")
 const CopyPlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin")
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -13,13 +14,16 @@ module.exports = {
   output: {
     path: path.join(__dirname, "../extension-pack/build"), // Thư mục chứa file được build ra
     filename: "[name].bundle.js", // Tên file được build ra
+    publicPath: "",
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: "ts-loader",
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
+        use: {
+          loader: "ts-loader", // Sử dụng ts-loader để biên dịch TypeScript và TSX
+        },
       },
       {
         test: /\.m?js$/,
@@ -58,7 +62,12 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [".ts", ".js", ".tsx", ".jsx"],
+    plugins: [
+      new TsconfigPathsPlugin({
+        /* options: see below */
+      }),
+    ],
   },
   // Chứa các plugins sẽ cài đặt trong tương lai
   plugins: [

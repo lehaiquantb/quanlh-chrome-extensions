@@ -11,20 +11,26 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "antd": "^5.6.4",
     "axios": "^1.4.0",
     "font-awesome": "^4.7.0",
     "jspdf": "^2.5.1",
+    "mobx": "^6.9.0",
+    "mobx-devtools-mst": "^0.9.30",
+    "mobx-react-lite": "^3.4.3",
+    "mobx-state-tree": "^5.1.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "react-object-view": "^0.3.4",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "craco start",
+    "eject": "craco eject",
+    "start": "vite",
+    "build": "vite build",
+    "test": "vite test"
   },
   "eslintConfig": {
     "extends": [
@@ -46,8 +52,9 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.239",
-    "add": "^2.0.6",
+    "@vitejs/plugin-react": "^4.0.1",
     "node-sass": "^9.0.0",
-    "yarn": "^1.22.19"
+    "sass": "^1.63.6",
+    "vite": "^4.4.0"
   }
 }

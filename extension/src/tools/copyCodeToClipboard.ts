@@ -1,4 +1,4 @@
-import { copyToClipboard, createElementByText } from "../utils/helper"
+import { copyToClipboard, createElementByText } from "@/shared"
 
 export const enableHostClipboardFeature: RegExp[] = [
   /^[\S]+$/gm,

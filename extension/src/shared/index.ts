@@ -1,3 +1,5 @@
+import { getChrome } from "./helper.common"
+
 export enum ECommandId {
   DOWNLOAD_WORD = "download-word",
   DOWNLOAD_PDF = "download-pdf",
@@ -13,3 +15,7 @@ export type IMessage = {
   commandId: ECommandId
   params?: any
 }
+
+export * from "./helper.common"
+export * from "./services/storage"
+export const chrome = getChrome()
