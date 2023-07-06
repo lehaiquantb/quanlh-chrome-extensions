@@ -5,7 +5,7 @@ import logo from "./logo.svg";
 import { getChrome, getCurrentTab } from "./utils/helper";
 import { Extension } from "./utils/Extension";
 import { ECommandId } from "./shared";
-import { useInitialRootStore } from "@/models";
+import { useInitialRootStore } from "@/shared/models";
 import ConvertCssToTailwind from "./components/ConvertCssToTailwind/ConvertCssToTailwind";
 // console.log(getChrome()?.devtools?.inspectedWindow?.eval("chrome"));
 

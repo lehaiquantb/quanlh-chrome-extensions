@@ -54570,7 +54570,9 @@ const useInitialRootStore = (callback) => {
             }
         })();
         const envs = (0,_shared__WEBPACK_IMPORTED_MODULE_4__.getRuntimeEnvironment)();
-        const needTrackingStorage = envs?.includes("content_script") && !envs?.includes("popup");
+        // const needTrackingStorage =
+        //   (envs?.includes("content_script") || envs?.includes("background")) && !envs?.includes("popup")
+        const needTrackingStorage = true;
         let listener;
         if (needTrackingStorage) {
             listener = (changes, namespace) => {

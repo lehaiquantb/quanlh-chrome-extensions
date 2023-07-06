@@ -1,5 +1,5 @@
-import { useStores } from "@/models";
 import { getRuntimeEnvironment } from "@/shared";
+import { useStores } from "@/shared/models";
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect } from "react";
 

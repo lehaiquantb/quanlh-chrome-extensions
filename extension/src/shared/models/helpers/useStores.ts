@@ -75,7 +75,9 @@ export const useInitialRootStore = (callback: () => void | Promise<void>) => {
     })()
 
     const envs = getRuntimeEnvironment()
-    const needTrackingStorage = envs?.includes("content_script") && !envs?.includes("popup")
+    // const needTrackingStorage =
+    //   (envs?.includes("content_script") || envs?.includes("background")) && !envs?.includes("popup")
+    const needTrackingStorage = true
     let listener: any
     if (needTrackingStorage) {
       listener = (changes: any, namespace: any) => {
