@@ -22,9 +22,7 @@ import { editor } from "monaco-editor";
 //     });
 // });
 
-const $app: React.CSSProperties = {
-  minWidth: "20rem",
-};
+const $app: React.CSSProperties = {};
 
 function App() {
   const { rehydrated } = useInitialRootStore(() => {
@@ -56,8 +54,8 @@ function App() {
   return (
     <div className="App" style={$app}>
       <ConvertCssToTailwind />
-      <CodeEditor language="css" ref={editor1Ref} />
-      <CodeEditor language="css" />
+      <CodeEditor language="css" editorRef={editor1Ref} />
+      {/* <CodeEditor language="css" /> */}
 
       <div className="container-fluid pop-up-container">
         <button

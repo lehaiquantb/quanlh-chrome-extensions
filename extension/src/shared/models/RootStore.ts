@@ -1,6 +1,7 @@
-import { Instance, SnapshotOut, types } from "mobx-state-tree";
-import { withSetPropAction } from "./helpers/withSetPropAction";
-import { SETTING_STORE_DEFAULT, SettingStoreModel } from "./SettingStore";
+import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { withSetPropAction } from "./helpers/withSetPropAction"
+import { SETTING_STORE_DEFAULT, SettingStoreModel } from "./SettingStore"
+import { WebsiteStoreModel } from "./WebsiteStore"
 
 /**
  * A RootStore model.
@@ -11,13 +12,14 @@ export const RootStoreModel = types
     settingStore: types.optional(SettingStoreModel, SETTING_STORE_DEFAULT),
     syncUserAt: types.maybe(types.string),
     startAt: types.optional(types.string, new Date().toISOString()),
+    website: types.optional(WebsiteStoreModel, {}),
   })
   .actions(withSetPropAction)
   .actions((self) => ({
     setStartAt: (startAt: string) => {
-      self.startAt = startAt;
+      self.startAt = startAt
     },
-  }));
+  }))
 
 /**
  * The RootStore instance.

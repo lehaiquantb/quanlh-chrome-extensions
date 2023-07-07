@@ -1,7 +1,11 @@
+import { ToolModel } from './shared/models/ToolModel';
 import { Command, ECommandId, IMessage, storage } from "@/shared"
 import { downloadPdf } from "./tools/downloadPdf"
 import { downloadWord } from "./tools/downloadWord"
 import { render } from "./shared/components/css-to-tailwind/TailwindClassField"
+import { _rootStore } from "./shared/models"
+import { forEach } from "lodash"
+import { ToolSnapshot } from "@/shared/models"
 // import "./assets/scss/content.scss"
 
 chrome.runtime.onMessage.addListener(function (message: IMessage, sender, sendResponse) {
@@ -47,7 +51,7 @@ class ContentScript {
       id: ECommandId.TEST_COMMAND,
       func: () => {
         console.log("test command")
-        render()
+        // render()
       },
     },
   ]
@@ -66,3 +70,28 @@ export const contentScript = new ContentScript()
 chrome.storage.onChanged.addListener((changes, namespace) => {
   console.log("on change", changes, namespace)
 })
+
+chrome.runtime.onConnect.addListener(() => {
+  console.log("on connect")
+})
+console.log(_rootStore?.startAt)
+
+// const autoExecute = () => {
+//   const { website } = _rootStore
+//   forEach(website, (tool: , key) => {
+    
+//     if (tool.) {
+      
+//     }
+//     console.log("value", value, key)
+
+//     // if (value?.autoExecute) {
+//     //   contentScript.executeCommand({
+//     //     commandId: key,
+//     //     params: value?.params,
+//     //   })
+//     // }
+//   })
+// }
+
+// autoExecute()

@@ -10,7 +10,7 @@ type Props = {}
 
 const TailwindClassField: FC<Props> = (props: Props) => {
   const [t, setT] = useState("TailwindClassField")
-
+  const { website } = useStores()
   useEffect(() => {
     setInterval(() => {
       setT((t) => t + "1")
