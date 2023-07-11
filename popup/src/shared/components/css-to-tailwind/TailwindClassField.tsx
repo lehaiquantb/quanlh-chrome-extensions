@@ -10,8 +10,17 @@ type Props = {}
 
 const TailwindClassField: FC<Props> = (props: Props) => {
   const [t, setT] = useState("TailwindClassField")
-  const { website } = useStores()
+  const {
+    website: {
+      figmaTool: { autoExecute },
+    },
+  } = useStores()
+  // const {
+  //   setting: {},
+  // } = figmaTool
+
   useEffect(() => {
+    autoExecute()
     setInterval(() => {
       setT((t) => t + "1")
     }, 1000)

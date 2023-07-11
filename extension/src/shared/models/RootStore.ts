@@ -10,7 +10,7 @@ export const RootStoreModel = types
   .model("RootStore")
   .props({
     settingStore: types.optional(SettingStoreModel, SETTING_STORE_DEFAULT),
-    syncUserAt: types.maybe(types.string),
+    timeNow: types.maybe(types.string),
     startAt: types.optional(types.string, new Date().toISOString()),
     website: types.optional(WebsiteStoreModel, {}),
   })

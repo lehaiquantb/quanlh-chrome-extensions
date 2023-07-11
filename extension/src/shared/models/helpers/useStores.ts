@@ -56,14 +56,19 @@ export const useInitialRootStore = (callback: () => void | Promise<void>) => {
   // Kick off initial async loading actions, like loading fonts and rehydrating RootStore
   useEffect(() => {
     let _unsubscribe: () => void
+    let timeout: any
     ;(async () => {
       // set up the RootStore (returns the state restored from AsyncStorage)
       const { restoredState, unsubscribe } = await setupRootStore(rootStore)
       _unsubscribe = unsubscribe
 
-      // reactotron integration with the MST root store (DEV only)
-      // await setReactotronRootStore(rootStore, restoredState)
+      // For DEBUG: reactotron integration with the MST root store (DEV only)
       makeInspectable(rootStore)
+
+      // For DEBUG: make some changes to show the root store in mst dev mode
+      timeout = setTimeout(() => {
+        rootStore.setProp("timeNow", `${new Date().getTime()}`)
+      }, 1000)
 
       // let the app know we've finished rehydrating
       setRehydrated(true)
@@ -97,6 +102,9 @@ export const useInitialRootStore = (callback: () => void | Promise<void>) => {
       }
       if (needTrackingStorage && listener) {
         chrome?.storage?.onChanged?.removeListener(listener)
+      }
+      if (timeout) {
+        clearTimeout(timeout)
       }
     }
   }, [])

@@ -1,4 +1,4 @@
-import { ToolModel } from './shared/models/ToolModel';
+import { ToolModel } from "./shared/models/website/ToolModel"
 import { Command, ECommandId, IMessage, storage } from "@/shared"
 import { downloadPdf } from "./tools/downloadPdf"
 import { downloadWord } from "./tools/downloadWord"
@@ -79,9 +79,9 @@ console.log(_rootStore?.startAt)
 // const autoExecute = () => {
 //   const { website } = _rootStore
 //   forEach(website, (tool: , key) => {
-    
+
 //     if (tool.) {
-      
+
 //     }
 //     console.log("value", value, key)
 

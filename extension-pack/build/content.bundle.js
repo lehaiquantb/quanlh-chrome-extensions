@@ -22718,6 +22718,29 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./src/shared/constants.ts":
+/*!*********************************!*\
+  !*** ./src/shared/constants.ts ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AUTHOR": () => (/* binding */ AUTHOR),
+/* harmony export */   "ERegexUrl": () => (/* binding */ ERegexUrl)
+/* harmony export */ });
+const AUTHOR = "Quan Le";
+var ERegexUrl;
+(function (ERegexUrl) {
+    ERegexUrl["MATCH_ALL"] = ".*";
+    ERegexUrl["FIGMA"] = "https://www.figma.com/*";
+    ERegexUrl["STACKOVERFLOW"] = "https://stackoverflow.com/*";
+})(ERegexUrl || (ERegexUrl = {}));
+
+
+/***/ }),
+
 /***/ "./src/shared/helper.common.ts":
 /*!*************************************!*\
   !*** ./src/shared/helper.common.ts ***!
@@ -22905,7 +22928,7 @@ __webpack_require__.r(__webpack_exports__);
 const RootStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model("RootStore")
     .props({
     settingStore: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(_SettingStore__WEBPACK_IMPORTED_MODULE_1__.SettingStoreModel, _SettingStore__WEBPACK_IMPORTED_MODULE_1__.SETTING_STORE_DEFAULT),
-    syncUserAt: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.maybe(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string),
+    timeNow: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.maybe(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string),
     startAt: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, new Date().toISOString()),
     website: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(_WebsiteStore__WEBPACK_IMPORTED_MODULE_2__.WebsiteStoreModel, {}),
 })
@@ -22948,52 +22971,6 @@ const SETTING_STORE_DEFAULT = {
 
 /***/ }),
 
-/***/ "./src/shared/models/ToolModel.ts":
-/*!****************************************!*\
-  !*** ./src/shared/models/ToolModel.ts ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TOOL_MODEL_DEFAULT": () => (/* binding */ TOOL_MODEL_DEFAULT),
-/* harmony export */   "ToolModel": () => (/* binding */ ToolModel)
-/* harmony export */ });
-/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
-/* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
-
-
-const ToolModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_1__.types.model("ToolStoreModel")
-    .props({
-    matchRegexUrls: mobx_state_tree__WEBPACK_IMPORTED_MODULE_1__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_1__.types.array(mobx_state_tree__WEBPACK_IMPORTED_MODULE_1__.types.string), ["*"]),
-})
-    .views((self) => ({
-    get isSupported() {
-        try {
-            return self.matchRegexUrls?.some((url) => new RegExp(url).test(window.location.href));
-        }
-        catch (error) {
-            return false;
-        }
-    },
-    // get util() {},
-}))
-    .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
-    .actions((self) => ({
-    autoExecute: () => {
-        if (self.isSupported) {
-            // const toolInstance = self.execute()
-        }
-    },
-}));
-const TOOL_MODEL_DEFAULT = {
-    matchRegexUrls: ["*"],
-};
-
-
-/***/ }),
-
 /***/ "./src/shared/models/WebsiteStore.ts":
 /*!*******************************************!*\
   !*** ./src/shared/models/WebsiteStore.ts ***!
@@ -23006,16 +22983,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "WEBSITE_STORE_DEFAULT": () => (/* binding */ WEBSITE_STORE_DEFAULT),
 /* harmony export */   "WebsiteStoreModel": () => (/* binding */ WebsiteStoreModel)
 /* harmony export */ });
-/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
+/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
 /* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
-/* harmony import */ var _ToolModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ToolModel */ "./src/shared/models/ToolModel.ts");
+/* harmony import */ var _website_FigmaModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./website/FigmaModel */ "./src/shared/models/website/FigmaModel.ts");
+/* harmony import */ var _website_StackoverflowModel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./website/StackoverflowModel */ "./src/shared/models/website/StackoverflowModel.ts");
 
 
 
-const WebsiteStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_2__.types.model("WebsiteStoreModel")
+
+const WebsiteStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model("WebsiteStoreModel")
     .props({
-    figmaTool: mobx_state_tree__WEBPACK_IMPORTED_MODULE_2__.types.optional(_ToolModel__WEBPACK_IMPORTED_MODULE_1__.ToolModel, _ToolModel__WEBPACK_IMPORTED_MODULE_1__.TOOL_MODEL_DEFAULT),
-    stackoverflowTool: mobx_state_tree__WEBPACK_IMPORTED_MODULE_2__.types.optional(_ToolModel__WEBPACK_IMPORTED_MODULE_1__.ToolModel, _ToolModel__WEBPACK_IMPORTED_MODULE_1__.TOOL_MODEL_DEFAULT),
+    figmaTool: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(_website_FigmaModel__WEBPACK_IMPORTED_MODULE_1__.FigmaModel, _website_FigmaModel__WEBPACK_IMPORTED_MODULE_1__.FIGMA_MODEL_DEFAULT),
+    stackoverflowTool: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(_website_StackoverflowModel__WEBPACK_IMPORTED_MODULE_2__.StackoverflowModel, _website_StackoverflowModel__WEBPACK_IMPORTED_MODULE_2__.STACKOVERFLOW_MODEL_DEFAULT),
 })
     .views((self) => ({
     get ll() {
@@ -23025,8 +23004,8 @@ const WebsiteStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_2__.types.mod
     .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
     .actions((self) => ({}));
 const WEBSITE_STORE_DEFAULT = {
-    figmaTool: _ToolModel__WEBPACK_IMPORTED_MODULE_1__.TOOL_MODEL_DEFAULT,
-    stackoverflowTool: _ToolModel__WEBPACK_IMPORTED_MODULE_1__.TOOL_MODEL_DEFAULT,
+    figmaTool: _website_FigmaModel__WEBPACK_IMPORTED_MODULE_1__.FIGMA_MODEL_DEFAULT,
+    stackoverflowTool: _website_StackoverflowModel__WEBPACK_IMPORTED_MODULE_2__.STACKOVERFLOW_MODEL_DEFAULT,
 };
 
 
@@ -23195,13 +23174,17 @@ const useInitialRootStore = (callback) => {
     // Kick off initial async loading actions, like loading fonts and rehydrating RootStore
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
         let _unsubscribe;
+        let timeout;
         (async () => {
             // set up the RootStore (returns the state restored from AsyncStorage)
             const { restoredState, unsubscribe } = await (0,_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.setupRootStore)(rootStore);
             _unsubscribe = unsubscribe;
-            // reactotron integration with the MST root store (DEV only)
-            // await setReactotronRootStore(rootStore, restoredState)
+            // For DEBUG: reactotron integration with the MST root store (DEV only)
             mobx_devtools_mst__WEBPACK_IMPORTED_MODULE_3___default()(rootStore);
+            // For DEBUG: make some changes to show the root store in mst dev mode
+            timeout = setTimeout(() => {
+                rootStore.setProp("timeNow", `${new Date().getTime()}`);
+            }, 1000);
             // let the app know we've finished rehydrating
             setRehydrated(true);
             // invoke the callback, if provided
@@ -23230,6 +23213,9 @@ const useInitialRootStore = (callback) => {
             }
             if (needTrackingStorage && listener) {
                 _shared__WEBPACK_IMPORTED_MODULE_4__.chrome?.storage?.onChanged?.removeListener(listener);
+            }
+            if (timeout) {
+                clearTimeout(timeout);
             }
         };
     }, []);
@@ -23294,8 +23280,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ROOT_STATE_STORAGE_KEY": () => (/* reexport safe */ _helpers_setupRootStore__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY),
 /* harmony export */   "RootStoreModel": () => (/* reexport safe */ _RootStore__WEBPACK_IMPORTED_MODULE_0__.RootStoreModel),
 /* harmony export */   "RootStoreProvider": () => (/* reexport safe */ _helpers_useStores__WEBPACK_IMPORTED_MODULE_2__.RootStoreProvider),
-/* harmony export */   "TOOL_MODEL_DEFAULT": () => (/* reexport safe */ _ToolModel__WEBPACK_IMPORTED_MODULE_6__.TOOL_MODEL_DEFAULT),
-/* harmony export */   "ToolModel": () => (/* reexport safe */ _ToolModel__WEBPACK_IMPORTED_MODULE_6__.ToolModel),
+/* harmony export */   "TOOL_MODEL_DEFAULT": () => (/* reexport safe */ _website_ToolModel__WEBPACK_IMPORTED_MODULE_6__.TOOL_MODEL_DEFAULT),
+/* harmony export */   "ToolModel": () => (/* reexport safe */ _website_ToolModel__WEBPACK_IMPORTED_MODULE_6__.ToolModel),
 /* harmony export */   "WEBSITE_STORE_DEFAULT": () => (/* reexport safe */ _WebsiteStore__WEBPACK_IMPORTED_MODULE_5__.WEBSITE_STORE_DEFAULT),
 /* harmony export */   "WebsiteStoreModel": () => (/* reexport safe */ _WebsiteStore__WEBPACK_IMPORTED_MODULE_5__.WebsiteStoreModel),
 /* harmony export */   "_rootStore": () => (/* reexport safe */ _helpers_useStores__WEBPACK_IMPORTED_MODULE_2__._rootStore),
@@ -23311,7 +23297,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_setupRootStore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./helpers/setupRootStore */ "./src/shared/models/helpers/setupRootStore.ts");
 /* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
 /* harmony import */ var _WebsiteStore__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./WebsiteStore */ "./src/shared/models/WebsiteStore.ts");
-/* harmony import */ var _ToolModel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ToolModel */ "./src/shared/models/ToolModel.ts");
+/* harmony import */ var _website_ToolModel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./website/ToolModel */ "./src/shared/models/website/ToolModel.ts");
 
 
 
@@ -23319,6 +23305,129 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+/***/ }),
+
+/***/ "./src/shared/models/website/FigmaModel.ts":
+/*!*************************************************!*\
+  !*** ./src/shared/models/website/FigmaModel.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "FIGMA_MODEL_DEFAULT": () => (/* binding */ FIGMA_MODEL_DEFAULT),
+/* harmony export */   "FigmaModel": () => (/* binding */ FigmaModel)
+/* harmony export */ });
+/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
+/* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
+/* harmony import */ var _ToolModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ToolModel */ "./src/shared/models/website/ToolModel.ts");
+/* harmony import */ var _shared_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/constants */ "./src/shared/constants.ts");
+
+
+
+
+const FigmaModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.compose(_ToolModel__WEBPACK_IMPORTED_MODULE_1__.ToolModel, mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model({
+    isHighlightTag: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.boolean, true),
+}))
+    .named("FigmaModel")
+    .views((self) => ({}))
+    .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
+    .actions((self) => ({
+// autoExecute: () => {
+//   console.log("FigmaModel autoExecute")
+// },
+}));
+const FIGMA_MODEL_DEFAULT = {
+    isHighlightTag: true,
+    matchRegexUrls: [_shared_constants__WEBPACK_IMPORTED_MODULE_2__.ERegexUrl.FIGMA],
+};
+
+
+/***/ }),
+
+/***/ "./src/shared/models/website/StackoverflowModel.ts":
+/*!*********************************************************!*\
+  !*** ./src/shared/models/website/StackoverflowModel.ts ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "STACKOVERFLOW_MODEL_DEFAULT": () => (/* binding */ STACKOVERFLOW_MODEL_DEFAULT),
+/* harmony export */   "StackoverflowModel": () => (/* binding */ StackoverflowModel)
+/* harmony export */ });
+/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
+/* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
+/* harmony import */ var _ToolModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ToolModel */ "./src/shared/models/website/ToolModel.ts");
+/* harmony import */ var _shared_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/constants */ "./src/shared/constants.ts");
+
+
+
+
+const StackoverflowModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.compose(_ToolModel__WEBPACK_IMPORTED_MODULE_1__.ToolModel, mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model({})
+    .views((self) => ({}))
+    .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
+    .actions((self) => ({})))
+    .named("StackoverflowStoreModel")
+    .views((self) => ({}))
+    .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
+    .actions((self) => ({}));
+const STACKOVERFLOW_MODEL_DEFAULT = {
+    matchRegexUrls: [_shared_constants__WEBPACK_IMPORTED_MODULE_2__.ERegexUrl.STACKOVERFLOW],
+};
+
+
+/***/ }),
+
+/***/ "./src/shared/models/website/ToolModel.ts":
+/*!************************************************!*\
+  !*** ./src/shared/models/website/ToolModel.ts ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TOOL_MODEL_DEFAULT": () => (/* binding */ TOOL_MODEL_DEFAULT),
+/* harmony export */   "ToolModel": () => (/* binding */ ToolModel)
+/* harmony export */ });
+/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
+/* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
+/* harmony import */ var _shared_constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/constants */ "./src/shared/constants.ts");
+
+
+
+const ToolModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_2__.types.model("ToolStoreModel")
+    .props({
+    matchRegexUrls: mobx_state_tree__WEBPACK_IMPORTED_MODULE_2__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_2__.types.array(mobx_state_tree__WEBPACK_IMPORTED_MODULE_2__.types.string), [_shared_constants__WEBPACK_IMPORTED_MODULE_1__.ERegexUrl.MATCH_ALL]),
+})
+    .views((self) => ({
+    get isSupported() {
+        try {
+            return self.matchRegexUrls?.some((url) => new RegExp(url).test(window.location.href));
+        }
+        catch (error) {
+            return false;
+        }
+    },
+    // get util() {},
+}))
+    .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
+    .actions((self) => ({
+    autoExecute: () => {
+        // console.log("ToolModel autoExecute")
+        if (self.isSupported) {
+            // const toolInstance = self.execute()
+        }
+    },
+}));
+const TOOL_MODEL_DEFAULT = {
+    matchRegexUrls: [_shared_constants__WEBPACK_IMPORTED_MODULE_1__.ERegexUrl.MATCH_ALL],
+};
 
 
 /***/ }),

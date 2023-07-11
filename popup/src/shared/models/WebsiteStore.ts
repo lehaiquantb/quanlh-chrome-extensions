@@ -1,11 +1,13 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { TOOL_MODEL_DEFAULT, ToolModel } from "./ToolModel"
+import { FIGMA_MODEL_DEFAULT, FigmaModel } from "./website/FigmaModel"
+import { STACKOVERFLOW_MODEL_DEFAULT, StackoverflowModel } from "./website/StackoverflowModel"
+
 export const WebsiteStoreModel = types
   .model("WebsiteStoreModel")
   .props({
-    figmaTool: types.optional(ToolModel, TOOL_MODEL_DEFAULT),
-    stackoverflowTool: types.optional(ToolModel, TOOL_MODEL_DEFAULT),
+    figmaTool: types.optional(FigmaModel, FIGMA_MODEL_DEFAULT),
+    stackoverflowTool: types.optional(StackoverflowModel, STACKOVERFLOW_MODEL_DEFAULT),
   })
   .views((self) => ({
     get ll() {
@@ -20,6 +22,6 @@ export type WebsiteSnapshotOut = SnapshotOut<typeof WebsiteStoreModel>
 export type WebsiteSnapshotIn = SnapshotIn<typeof WebsiteStoreModel>
 export type WebsiteSnapshot = SnapshotOut<typeof WebsiteStoreModel>
 export const WEBSITE_STORE_DEFAULT: WebsiteSnapshotOut = {
-  figmaTool: TOOL_MODEL_DEFAULT,
-  stackoverflowTool: TOOL_MODEL_DEFAULT,
+  figmaTool: FIGMA_MODEL_DEFAULT,
+  stackoverflowTool: STACKOVERFLOW_MODEL_DEFAULT,
 }

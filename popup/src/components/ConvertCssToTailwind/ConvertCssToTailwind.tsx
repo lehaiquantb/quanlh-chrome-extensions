@@ -6,9 +6,15 @@ import React, { FC, useEffect } from "react";
 type Props = {};
 
 const ConvertCssToTailwind: FC<Props> = observer((props: Props) => {
-  const { startAt, setStartAt } = useStores();
+  const {
+    startAt,
+    setStartAt,
+    setProp,
+    website: { figmaTool },
+  } = useStores();
 
   useEffect(() => {
+    figmaTool.autoExecute();
     console.log(getRuntimeEnvironment());
   }, []);
   return (
