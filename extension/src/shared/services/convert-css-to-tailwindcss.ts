@@ -98,8 +98,8 @@ export class TailwindCssConverter {
 
   converter: TailwindConverter
 
-  convertCss() {
-    this.converter.convertCSS(inputCSS).then(({ convertedRoot, nodes }) => {
+  convertCss(cssText: string) {
+    this.converter.convertCSS(cssText).then(({ convertedRoot, nodes }) => {
       console.log(convertedRoot.toString())
       console.log(nodes)
     })
