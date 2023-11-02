@@ -7,7 +7,7 @@ type RenderOption = {
   Component: ReactNode
 }
 
-export class UI {
+export class UIManager {
   static render(opts: RenderOption) {
     const { id, Component, htmlElement } = opts
     const root = ReactDOM.createRoot(htmlElement ?? (document.getElementById(id) as HTMLElement))

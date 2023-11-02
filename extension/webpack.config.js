@@ -9,11 +9,21 @@ module.exports = {
   entry: {
     popup: "./src/popup.ts",
     content: "./src/content.ts",
+    contentWorld: "./src/content.world.ts",
     background: "./src/background.ts",
+    swaggerUI: "./src/shared/website/swagger/swagger-ui.tsx",
   },
+
   output: {
-    path: path.join(__dirname, "../extension-pack/build"), // Thư mục chứa file được build ra
-    filename: "[name].bundle.js", // Tên file được build ra
+    path: path.join(__dirname, ".."), // Thư mục chứa file được build ra
+    filename: ({ chunk: { name } }) => {
+      switch (name) {
+        case "swaggerUI":
+          return "extension/src/shared/website/swagger/[name].bundle.js"
+        default:
+          return "extension-pack/build/[name].bundle.js"
+      }
+    }, // Tên file được build ra
     publicPath: "",
   },
   module: {

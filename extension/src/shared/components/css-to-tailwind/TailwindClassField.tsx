@@ -2,7 +2,7 @@ import { useInitialRootStore, useStores } from "@/shared/models"
 import { observer } from "mobx-react-lite"
 import React, { FC, useEffect, useState } from "react"
 import ReactDOM from "react-dom/client"
-import { UI } from "../UI"
+import { UIManager } from "../UIManager"
 import withStorage from "@/shared/withStorage"
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -46,5 +46,5 @@ TailwindClassField.defaultProps = {}
 export default TailwindClassField
 const X = withStorage(TailwindClassField)
 export const render = () => {
-  UI.render({ Component: <X />, id: "readme" })
+  UIManager.render({ Component: <X />, id: "readme" })
 }

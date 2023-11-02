@@ -22884,7 +22884,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getRuntimeEnvironment": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.globalVarIsExist),
 /* harmony export */   "isEmptyString": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.isEmptyString),
-/* harmony export */   "storage": () => (/* reexport safe */ _services_storage__WEBPACK_IMPORTED_MODULE_1__.storage),
+/* harmony export */   "storageChrome": () => (/* reexport safe */ _services_storage__WEBPACK_IMPORTED_MODULE_1__.storageChrome),
+/* harmony export */   "storageLocal": () => (/* reexport safe */ _services_storage__WEBPACK_IMPORTED_MODULE_1__.storageLocal),
 /* harmony export */   "tryEval": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.tryEval)
 /* harmony export */ });
 /* harmony import */ var _helper_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helper.common */ "./src/shared/helper.common.ts");
@@ -23070,11 +23071,13 @@ const ROOT_STATE_STORAGE_KEY = "root-v1";
  * Setup the root state.
  */
 let _disposer;
-async function setupRootStore(rootStore) {
+async function setupRootStore(rootStore, opts) {
     let restoredState;
+    const storageType = opts?.storageType ?? "chromeStorage";
+    const storage = storageType === "localStorage" ? _shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal : _shared__WEBPACK_IMPORTED_MODULE_0__.storageChrome;
     try {
         // load the last known state from AsyncStorage
-        restoredState = (await _shared__WEBPACK_IMPORTED_MODULE_0__.storage.get(ROOT_STATE_STORAGE_KEY)) || {};
+        restoredState = JSON.parse(await storage.get(ROOT_STATE_STORAGE_KEY)) || {};
         (0,mobx_state_tree__WEBPACK_IMPORTED_MODULE_1__.applySnapshot)(rootStore, restoredState);
     }
     catch (e) {
@@ -23087,7 +23090,7 @@ async function setupRootStore(rootStore) {
     // track changes & save to AsyncStorage
     _disposer = (0,mobx_state_tree__WEBPACK_IMPORTED_MODULE_1__.onSnapshot)(rootStore, (snapshot) => {
         // console.log("snapshot", snapshot)
-        _shared__WEBPACK_IMPORTED_MODULE_0__.storage.set(ROOT_STATE_STORAGE_KEY, snapshot);
+        storage.set(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot));
     });
     const unsubscribe = () => {
         _disposer?.();
@@ -23168,7 +23171,7 @@ const useStores = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(RootSt
  * and then rehydrates it. It connects everything with Reactotron
  * and then lets the app know that everything is ready to go.
  */
-const useInitialRootStore = (callback) => {
+const useInitialRootStore = (callback, opts) => {
     const rootStore = useStores();
     const [rehydrated, setRehydrated] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
     // Kick off initial async loading actions, like loading fonts and rehydrating RootStore
@@ -23177,7 +23180,7 @@ const useInitialRootStore = (callback) => {
         let timeout;
         (async () => {
             // set up the RootStore (returns the state restored from AsyncStorage)
-            const { restoredState, unsubscribe } = await (0,_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.setupRootStore)(rootStore);
+            const { restoredState, unsubscribe } = await (0,_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.setupRootStore)(rootStore, opts);
             _unsubscribe = unsubscribe;
             // For DEBUG: reactotron integration with the MST root store (DEV only)
             mobx_devtools_mst__WEBPACK_IMPORTED_MODULE_3___default()(rootStore);
@@ -23442,14 +23445,26 @@ const TOOL_MODEL_DEFAULT = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Storage": () => (/* binding */ Storage),
-/* harmony export */   "storage": () => (/* binding */ storage)
+/* harmony export */   "storageChrome": () => (/* binding */ storageChrome),
+/* harmony export */   "storageLocal": () => (/* binding */ storageLocal)
 /* harmony export */ });
 /* harmony import */ var _shared__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared */ "./src/shared/index.ts");
 
 class Storage {
+    type = "chromeStorage";
+    constructor(type = "chromeStorage") {
+        this.type = type;
+    }
     async set(key, value) {
         try {
-            return _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.local?.set?.({ [key]: value });
+            switch (this.type) {
+                case "localStorage":
+                    localStorage.setItem(key, value);
+                    break;
+                case "chromeStorage":
+                    _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.local?.set?.({ [key]: value });
+                    break;
+            }
         }
         catch (error) {
             console.log("error set", error);
@@ -23457,8 +23472,12 @@ class Storage {
     }
     async get(key) {
         try {
-            const res = await _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.local?.get?.(key);
-            return res?.[key];
+            switch (this.type) {
+                case "localStorage":
+                    return localStorage.getItem(key);
+                case "chromeStorage":
+                    return (await _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.local?.get?.(key))?.[key];
+            }
         }
         catch (error) {
             console.log("error get", error);
@@ -23471,7 +23490,8 @@ class Storage {
         });
     }
 }
-const storage = new Storage();
+const storageChrome = new Storage("chromeStorage");
+const storageLocal = new Storage('localStorage');
 
 
 /***/ }),
@@ -23712,7 +23732,7 @@ function _typeof(obj) {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "" + chunkId + ".bundle.js";
+/******/ 			return "" + chunkId + ".js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -23915,6 +23935,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // import "./assets/scss/content.scss"
+console.log("Content script running...");
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     console.log("sender", sender);
     console.log("message", message);

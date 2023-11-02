@@ -21,6 +21,12 @@
     {
       "matches": ["<all_urls>"],
       "js": ["build/content.bundle.js"]
+    },
+    {
+      "world": "MAIN",
+      "matches": ["<all_urls>"],
+      "js": ["build/contentWorld.bundle.js"],
+      "run_at": "document_end"
     }
   ],
   "icons": {

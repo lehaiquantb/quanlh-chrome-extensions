@@ -1,12 +1,15 @@
 import { ToolModel } from "./shared/models/website/ToolModel"
-import { Command, ECommandId, IMessage, storage } from "@/shared"
+import { Command, ECommandId, IMessage, storageChrome } from "@/shared"
 import { downloadPdf } from "./tools/downloadPdf"
 import { downloadWord } from "./tools/downloadWord"
 import { render } from "./shared/components/css-to-tailwind/TailwindClassField"
 import { _rootStore } from "./shared/models"
 import { forEach } from "lodash"
 import { ToolSnapshot } from "@/shared/models"
+import { SwaggerUIX } from "./shared/website/swagger/swagger-ui"
 // import "./assets/scss/content.scss"
+
+console.log("Content script running...")
 
 chrome.runtime.onMessage.addListener(function (message: IMessage, sender, sendResponse) {
   console.log("sender", sender)
