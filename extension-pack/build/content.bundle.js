@@ -22758,6 +22758,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getRuntimeEnvironment": () => (/* binding */ getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* binding */ globalVarIsExist),
 /* harmony export */   "isEmptyString": () => (/* binding */ isEmptyString),
+/* harmony export */   "parseJson": () => (/* binding */ parseJson),
 /* harmony export */   "tryEval": () => (/* binding */ tryEval)
 /* harmony export */ });
 /* eslint-disable no-eval */
@@ -22860,6 +22861,15 @@ function getRuntimeEnvironment() {
         return envs;
     }
 }
+const parseJson = (value) => {
+    try {
+        return JSON.parse(JSON.stringify(value));
+    }
+    catch (error) {
+        console.log("Error in parseJson", error);
+        return undefined;
+    }
+};
 
 
 /***/ }),
@@ -22884,6 +22894,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getRuntimeEnvironment": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.globalVarIsExist),
 /* harmony export */   "isEmptyString": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.isEmptyString),
+/* harmony export */   "parseJson": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.parseJson),
 /* harmony export */   "storageChrome": () => (/* reexport safe */ _services_storage__WEBPACK_IMPORTED_MODULE_1__.storageChrome),
 /* harmony export */   "storageLocal": () => (/* reexport safe */ _services_storage__WEBPACK_IMPORTED_MODULE_1__.storageLocal),
 /* harmony export */   "tryEval": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.tryEval)
@@ -22984,18 +22995,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "WEBSITE_STORE_DEFAULT": () => (/* binding */ WEBSITE_STORE_DEFAULT),
 /* harmony export */   "WebsiteStoreModel": () => (/* binding */ WebsiteStoreModel)
 /* harmony export */ });
-/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
+/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
 /* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
 /* harmony import */ var _website_FigmaModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./website/FigmaModel */ "./src/shared/models/website/FigmaModel.ts");
 /* harmony import */ var _website_StackoverflowModel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./website/StackoverflowModel */ "./src/shared/models/website/StackoverflowModel.ts");
+/* harmony import */ var _website_SwaggerModel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./website/SwaggerModel */ "./src/shared/models/website/SwaggerModel.ts");
 
 
 
 
-const WebsiteStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model("WebsiteStoreModel")
+
+const WebsiteStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.model("WebsiteStoreModel")
     .props({
-    figmaTool: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(_website_FigmaModel__WEBPACK_IMPORTED_MODULE_1__.FigmaModel, _website_FigmaModel__WEBPACK_IMPORTED_MODULE_1__.FIGMA_MODEL_DEFAULT),
-    stackoverflowTool: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(_website_StackoverflowModel__WEBPACK_IMPORTED_MODULE_2__.StackoverflowModel, _website_StackoverflowModel__WEBPACK_IMPORTED_MODULE_2__.STACKOVERFLOW_MODEL_DEFAULT),
+    figmaTool: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_website_FigmaModel__WEBPACK_IMPORTED_MODULE_1__.FigmaModel, _website_FigmaModel__WEBPACK_IMPORTED_MODULE_1__.FIGMA_MODEL_DEFAULT),
+    stackoverflowTool: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_website_StackoverflowModel__WEBPACK_IMPORTED_MODULE_2__.StackoverflowModel, _website_StackoverflowModel__WEBPACK_IMPORTED_MODULE_2__.STACKOVERFLOW_MODEL_DEFAULT),
+    swaggerTool: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_website_SwaggerModel__WEBPACK_IMPORTED_MODULE_3__.SwaggerModel, _website_SwaggerModel__WEBPACK_IMPORTED_MODULE_3__.SWAGGER_MODEL_DEFAULT),
 })
     .views((self) => ({
     get ll() {
@@ -23007,6 +23021,7 @@ const WebsiteStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.mod
 const WEBSITE_STORE_DEFAULT = {
     figmaTool: _website_FigmaModel__WEBPACK_IMPORTED_MODULE_1__.FIGMA_MODEL_DEFAULT,
     stackoverflowTool: _website_StackoverflowModel__WEBPACK_IMPORTED_MODULE_2__.STACKOVERFLOW_MODEL_DEFAULT,
+    swaggerTool: _website_SwaggerModel__WEBPACK_IMPORTED_MODULE_3__.SWAGGER_MODEL_DEFAULT,
 };
 
 
@@ -23176,6 +23191,8 @@ const useInitialRootStore = (callback, opts) => {
     const [rehydrated, setRehydrated] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
     // Kick off initial async loading actions, like loading fonts and rehydrating RootStore
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        const needTrackingStorage = false;
+        let listener;
         let _unsubscribe;
         let timeout;
         (async () => {
@@ -23194,21 +23211,20 @@ const useInitialRootStore = (callback, opts) => {
             if (callback) {
                 callback();
             }
+            if (needTrackingStorage) {
+                listener = (changes, namespace) => {
+                    if (changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue && namespace === "local") {
+                        const newRootStore = changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue;
+                        console.log("CHANGE Y", JSON.parse(newRootStore));
+                        (0,mobx_state_tree__WEBPACK_IMPORTED_MODULE_5__.applySnapshot)(_rootStore, newRootStore);
+                    }
+                };
+                _shared__WEBPACK_IMPORTED_MODULE_4__.chrome?.storage?.onChanged?.addListener(listener);
+            }
         })();
         // const envs = getRuntimeEnvironment()
         // const needTrackingStorage =
         //   (envs?.includes("content_script") || envs?.includes("background")) && !envs?.includes("popup")
-        const needTrackingStorage = true;
-        let listener;
-        if (needTrackingStorage) {
-            listener = (changes, namespace) => {
-                if (changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue && namespace === "local") {
-                    const newRootStore = changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue;
-                    (0,mobx_state_tree__WEBPACK_IMPORTED_MODULE_5__.applySnapshot)(_rootStore, newRootStore);
-                }
-            };
-            _shared__WEBPACK_IMPORTED_MODULE_4__.chrome?.storage?.onChanged?.addListener(listener);
-        }
         return () => {
             // cleanup
             if (_unsubscribe) {
@@ -23381,6 +23397,48 @@ const StackoverflowModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.co
     .actions((self) => ({}));
 const STACKOVERFLOW_MODEL_DEFAULT = {
     matchRegexUrls: [_shared_constants__WEBPACK_IMPORTED_MODULE_2__.ERegexUrl.STACKOVERFLOW],
+};
+
+
+/***/ }),
+
+/***/ "./src/shared/models/website/SwaggerModel.ts":
+/*!***************************************************!*\
+  !*** ./src/shared/models/website/SwaggerModel.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SWAGGER_MODEL_DEFAULT": () => (/* binding */ SWAGGER_MODEL_DEFAULT),
+/* harmony export */   "SwaggerModel": () => (/* binding */ SwaggerModel)
+/* harmony export */ });
+/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
+/* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
+/* harmony import */ var _ToolModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ToolModel */ "./src/shared/models/website/ToolModel.ts");
+/* harmony import */ var _shared_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/constants */ "./src/shared/constants.ts");
+
+
+
+
+const SwaggerModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.compose(_ToolModel__WEBPACK_IMPORTED_MODULE_1__.ToolModel, mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model({
+    autoInitUI: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.boolean, true),
+}))
+    .named("SwaggerModel")
+    .views((self) => ({}))
+    .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
+    .actions((self) => ({
+    setAutoInitUI: (value) => {
+        self.autoInitUI = value;
+    },
+    autoExecute: () => {
+        console.log("SwaggerModel autoExecute");
+    },
+}));
+const SWAGGER_MODEL_DEFAULT = {
+    autoInitUI: false,
+    matchRegexUrls: [_shared_constants__WEBPACK_IMPORTED_MODULE_2__.ERegexUrl.FIGMA],
 };
 
 
@@ -23930,6 +23988,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tools_downloadPdf__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools/downloadPdf */ "./src/tools/downloadPdf.ts");
 /* harmony import */ var _tools_downloadWord__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tools/downloadWord */ "./src/tools/downloadWord.ts");
 /* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./shared/models */ "./src/shared/models/index.ts");
+/* harmony import */ var _shared_models_helpers_setupRootStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./shared/models/helpers/setupRootStore */ "./src/shared/models/helpers/setupRootStore.ts");
+
 
 
 
@@ -23988,27 +24048,29 @@ class ContentScript {
 }
 const contentScript = new ContentScript();
 chrome.storage.onChanged.addListener((changes, namespace) => {
-    console.log("on change", changes, namespace);
+    // console.log(
+    //   `[${namespace}] on change`,
+    //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.oldValue),
+    //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
+    // )
 });
 chrome.runtime.onConnect.addListener(() => {
     console.log("on connect");
 });
-console.log(_shared_models__WEBPACK_IMPORTED_MODULE_3__._rootStore?.startAt);
-// const autoExecute = () => {
-//   const { website } = _rootStore
-//   forEach(website, (tool: , key) => {
-//     if (tool.) {
-//     }
-//     console.log("value", value, key)
-//     // if (value?.autoExecute) {
-//     //   contentScript.executeCommand({
-//     //     commandId: key,
-//     //     params: value?.params,
-//     //   })
-//     // }
-//   })
-// }
-// autoExecute()
+(async () => {
+    // set up the RootStore (returns the state restored from AsyncStorage)
+    const { restoredState, unsubscribe } = await (0,_shared_models_helpers_setupRootStore__WEBPACK_IMPORTED_MODULE_4__.setupRootStore)(_shared_models__WEBPACK_IMPORTED_MODULE_3__._rootStore, {
+        storageType: "chromeStorage",
+    });
+    // console.log(parseJson(_rootStore), restoredState)
+    // // console.log("rehydrated")
+    // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
+    // ;(window as any).swaggerUI = swaggerUI
+    // For DEBUG: reactotron integration with the MST root store (DEV only)
+    // let the app know we've finished rehydrating
+    console.log("hello", (0,_shared__WEBPACK_IMPORTED_MODULE_0__.parseJson)(_shared_models__WEBPACK_IMPORTED_MODULE_3__._rootStore), restoredState);
+    // invoke the callback, if provided
+})();
 
 })();
 

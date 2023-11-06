@@ -12,6 +12,7 @@ module.exports = {
     contentWorld: "./src/content.world.ts",
     background: "./src/background.ts",
     swaggerUI: "./src/shared/website/swagger/swagger-ui.tsx",
+    swaggerTest: "./src/shared/website/swagger/swagger-test.tsx",
   },
 
   output: {
@@ -19,6 +20,8 @@ module.exports = {
     filename: ({ chunk: { name } }) => {
       switch (name) {
         case "swaggerUI":
+          return "extension/src/shared/website/swagger/[name].bundle.js"
+        case "swaggerTest":
           return "extension/src/shared/website/swagger/[name].bundle.js"
         default:
           return "extension-pack/build/[name].bundle.js"
@@ -85,7 +88,12 @@ module.exports = {
       template: "../extension-pack/popup.html",
     }),
     new CopyPlugin({
-      patterns: [{ from: "./src/shared", to: "../../popup/src/shared" }],
+      patterns: [
+        {
+          from: path.resolve(__dirname, "./src/shared"),
+          to: path.resolve(__dirname, "../popup/src/shared"),
+        },
+      ],
     }),
   ],
 }

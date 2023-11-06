@@ -113,3 +113,12 @@ export function getRuntimeEnvironment() {
     return envs
   }
 }
+
+export const parseJson = (value: any) => {
+  try {
+    return JSON.parse(JSON.stringify(value))
+  } catch (error) {
+    console.log("Error in parseJson", error)
+    return undefined
+  }
+}
