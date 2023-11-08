@@ -118,3 +118,6 @@ chrome.runtime.onConnect.addListener(() => {
 
   // invoke the callback, if provided
 })()
+;(window as any).a = "a"
+
+localStorage?.setItem("chromeStorage", "hello")

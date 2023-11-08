@@ -16,7 +16,7 @@ import { storageChrome, storageLocal, StorageType } from "@/shared"
 /**
  * The key we'll be saving our state as within async storage.
  */
-export const ROOT_STATE_STORAGE_KEY = "root-v1"
+export const ROOT_STATE_STORAGE_KEY = "QUANLH_STORAGE"
 
 /**
  * Setup the root state.

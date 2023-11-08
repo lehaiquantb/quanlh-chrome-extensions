@@ -59609,7 +59609,7 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * The key we'll be saving our state as within async storage.
  */
-const ROOT_STATE_STORAGE_KEY = "root-v1";
+const ROOT_STATE_STORAGE_KEY = "QUANLH_STORAGE";
 /**
  * Setup the root state.
  */
