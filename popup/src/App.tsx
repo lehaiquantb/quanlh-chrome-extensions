@@ -5,11 +5,12 @@ import logo from "./logo.svg";
 import { getChrome, getCurrentTab } from "./utils/helper";
 import { Extension } from "./utils/Extension";
 import { ECommandId } from "./shared";
-import { useInitialRootStore } from "@/shared/models";
+import { useInitialRootStore, useStores } from "@/shared/models";
 import ConvertCssToTailwind from "./components/ConvertCssToTailwind/ConvertCssToTailwind";
 import CodeEditor from "./components/Editor/CodeEditor";
 import { editor } from "monaco-editor";
-import { Tabs, TabsProps } from "antd";
+import { Switch, Tabs, TabsProps } from "antd";
+import { observer } from "mobx-react-lite";
 // console.log(getChrome()?.devtools?.inspectedWindow?.eval("chrome"));
 
 // getChrome()?.action?.onClicked.addListener((tab) => {
@@ -25,15 +26,38 @@ import { Tabs, TabsProps } from "antd";
 
 const $app: React.CSSProperties = {};
 
-const Tab1 = () => {
+const SwaggerSetting = observer(() => {
+  const {
+    website: { swaggerTool },
+  } = useStores();
+  const { autoInitUI } = swaggerTool;
+  console.log("autoInitUI", autoInitUI);
+
+  const onChangeAutoUI = (checked: boolean) => {
+    console.log(`switch to ${checked}`);
+    swaggerTool.setAutoInitUI(checked);
+  };
+
+  return (
+    <div>
+      <Switch
+        defaultChecked={autoInitUI}
+        // checked={autoInitUI}
+        onChange={onChangeAutoUI}
+        checkedChildren="Automatic UI"
+      />
+    </div>
+  );
+});
+
+const Tab2 = () => {
   const editor1Ref = useRef<editor.IStandaloneCodeEditor>();
 
   return (
     <div>
-      {" "}
+      Tab2
       <ConvertCssToTailwind />
       <CodeEditor language="css" editorRef={editor1Ref} />
-      {/* <CodeEditor language="css" /> */}
       <div className="container-fluid pop-up-container">
         <button
           className="btn btn-warning super-center"
@@ -58,10 +82,6 @@ const Tab1 = () => {
   );
 };
 
-const Tab2 = () => {
-  return <div>Tab2</div>;
-};
-
 const Tab3 = () => {
   return <div>Tab3</div>;
 };
@@ -69,8 +89,8 @@ const Tab3 = () => {
 const items: TabsProps["items"] = [
   {
     key: "1",
-    label: `Tab 1`,
-    children: <Tab1 />,
+    label: `Swagger Setting`,
+    children: <SwaggerSetting />,
   },
   {
     key: "2",

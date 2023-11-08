@@ -1,9 +1,22 @@
 import { chrome } from "@/shared"
 
+export type StorageType = "localStorage" | "chromeStorage"
 export class Storage {
+  type: StorageType = "chromeStorage"
+  constructor(type: StorageType = "chromeStorage") {
+    this.type = type
+  }
+
   async set(key: string, value: any) {
     try {
-      return chrome?.storage?.local?.set?.({ [key]: value })
+      switch (this.type) {
+        case "localStorage":
+          localStorage.setItem(key, value)
+          break
+        case "chromeStorage":
+          chrome?.storage?.local?.set?.({ [key]: value })
+          break
+      }
     } catch (error) {
       console.log("error set", error)
     }
@@ -11,8 +24,12 @@ export class Storage {
 
   async get(key: string) {
     try {
-      const res = await chrome?.storage?.local?.get?.(key)
-      return res?.[key]
+      switch (this.type) {
+        case "localStorage":
+          return localStorage.getItem(key)
+        case "chromeStorage":
+          return (await chrome?.storage?.local?.get?.(key))?.[key]
+      }
     } catch (error) {
       console.log("error get", error)
       return undefined
@@ -26,4 +43,6 @@ export class Storage {
   }
 }
 
-export const storage = new Storage()
+export const storageChrome = new Storage("chromeStorage")
+export const storageLocal = new Storage('localStorage')
+

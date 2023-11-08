@@ -1,12 +1,13 @@
 import { ToolModel } from "./shared/models/website/ToolModel"
-import { Command, ECommandId, IMessage, storageChrome } from "@/shared"
+import { Command, ECommandId, IMessage, parseJson, storageChrome } from "@/shared"
 import { downloadPdf } from "./tools/downloadPdf"
 import { downloadWord } from "./tools/downloadWord"
 import { render } from "./shared/components/css-to-tailwind/TailwindClassField"
-import { _rootStore } from "./shared/models"
+import { ROOT_STATE_STORAGE_KEY, _rootStore } from "./shared/models"
 import { forEach } from "lodash"
 import { ToolSnapshot } from "@/shared/models"
 import { SwaggerUIX } from "./shared/website/swagger/swagger-ui"
+import { setupRootStore } from "./shared/models/helpers/setupRootStore"
 // import "./assets/scss/content.scss"
 
 console.log("Content script running...")
@@ -71,13 +72,16 @@ class ContentScript {
 export const contentScript = new ContentScript()
 
 chrome.storage.onChanged.addListener((changes, namespace) => {
-  console.log("on change", changes, namespace)
+  // console.log(
+  //   `[${namespace}] on change`,
+  //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.oldValue),
+  //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
+  // )
 })
 
 chrome.runtime.onConnect.addListener(() => {
   console.log("on connect")
 })
-console.log(_rootStore?.startAt)
 
 // const autoExecute = () => {
 //   const { website } = _rootStore
@@ -98,3 +102,19 @@ console.log(_rootStore?.startAt)
 // }
 
 // autoExecute()
+;(async () => {
+  // set up the RootStore (returns the state restored from AsyncStorage)
+  const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
+    storageType: "chromeStorage",
+  })
+  // console.log(parseJson(_rootStore), restoredState)
+  // // console.log("rehydrated")
+  // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
+  // ;(window as any).swaggerUI = swaggerUI
+  // For DEBUG: reactotron integration with the MST root store (DEV only)
+
+  // let the app know we've finished rehydrating
+  console.log("hello", parseJson(_rootStore), restoredState)
+
+  // invoke the callback, if provided
+})()

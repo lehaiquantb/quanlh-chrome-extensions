@@ -3,7 +3,7 @@ import { RootStore, RootStoreModel } from "../RootStore"
 import { ROOT_STATE_STORAGE_KEY, setupRootStore } from "./setupRootStore"
 import makeInspectable from "mobx-devtools-mst"
 import { applySnapshot } from "mobx-state-tree"
-import { chrome, getRuntimeEnvironment } from "@/shared"
+import { StorageType, chrome, getRuntimeEnvironment } from "@/shared"
 /**
  * Create the initial (empty) global RootStore instance here.
  *
@@ -49,17 +49,22 @@ export const useStores = () => useContext(RootStoreContext)
  * and then rehydrates it. It connects everything with Reactotron
  * and then lets the app know that everything is ready to go.
  */
-export const useInitialRootStore = (callback: () => void | Promise<void>) => {
+export const useInitialRootStore = (
+  callback: () => void | Promise<void>,
+  opts?: { storageType: StorageType },
+) => {
   const rootStore = useStores()
   const [rehydrated, setRehydrated] = useState(false)
 
   // Kick off initial async loading actions, like loading fonts and rehydrating RootStore
   useEffect(() => {
+    const needTrackingStorage = false
+    let listener: any
     let _unsubscribe: () => void
     let timeout: any
     ;(async () => {
       // set up the RootStore (returns the state restored from AsyncStorage)
-      const { restoredState, unsubscribe } = await setupRootStore(rootStore)
+      const { restoredState, unsubscribe } = await setupRootStore(rootStore, opts)
       _unsubscribe = unsubscribe
 
       // For DEBUG: reactotron integration with the MST root store (DEV only)
@@ -77,23 +82,24 @@ export const useInitialRootStore = (callback: () => void | Promise<void>) => {
       if (callback) {
         callback()
       }
+   
+      if (needTrackingStorage) {
+        listener = (changes: any, namespace: any) => {
+          if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue && namespace === "local") {
+            const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
+            console.log("CHANGE Y", JSON.parse(newRootStore))
+            applySnapshot(_rootStore, newRootStore)
+          }
+        }
+  
+        chrome?.storage?.onChanged?.addListener(listener)
+      }
     })()
 
     // const envs = getRuntimeEnvironment()
     // const needTrackingStorage =
     //   (envs?.includes("content_script") || envs?.includes("background")) && !envs?.includes("popup")
-    const needTrackingStorage = true
-    let listener: any
-    if (needTrackingStorage) {
-      listener = (changes: any, namespace: any) => {
-        if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue && namespace === "local") {
-          const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
-          applySnapshot(_rootStore, newRootStore)
-        }
-      }
 
-      chrome?.storage?.onChanged?.addListener(listener)
-    }
 
     return () => {
       // cleanup

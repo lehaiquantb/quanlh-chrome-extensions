@@ -60082,6 +60082,222 @@ const storageLocal = new Storage('localStorage');
 
 /***/ }),
 
+/***/ "./src/shared/website/swagger/swagger-ui.tsx":
+/*!***************************************************!*\
+  !*** ./src/shared/website/swagger/swagger-ui.tsx ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Api": () => (/* binding */ Api),
+/* harmony export */   "GroupApi": () => (/* binding */ GroupApi),
+/* harmony export */   "SwaggerUIX": () => (/* binding */ SwaggerUIX),
+/* harmony export */   "createElementFromHTML": () => (/* binding */ createElementFromHTML),
+/* harmony export */   "polling": () => (/* binding */ polling),
+/* harmony export */   "querySelectorIncludesText": () => (/* binding */ querySelectorIncludesText)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/components/UIManager */ "./src/shared/components/UIManager.tsx");
+/* harmony import */ var _shared_components_swagger_SwaggerSideBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/components/swagger/SwaggerSideBar */ "./src/shared/components/swagger/SwaggerSideBar.tsx");
+/* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
+
+
+
+
+// function whenAvailable(name: any, callback: any) {
+//     const interval = 10; // ms
+//     window.setTimeout(function () {
+//         if (window[name]) {
+//             callback(window[name]);
+//         } else {
+//             whenAvailable(name, callback);
+//         }
+//     }, interval);
+// }
+const ID_SIDE_BAR = "side-bar";
+function querySelectorIncludesText(selector, text, parent = document) {
+    return Array.from(parent?.querySelectorAll?.(selector))?.find((el) => el?.textContent?.includes(text));
+}
+function createElementFromHTML(htmlString) {
+    const div = document.createElement("div");
+    div.innerHTML = htmlString.trim();
+    return div.firstChild;
+}
+function polling(callback, execute) {
+    const interval = 100; // ms
+    const id = setTimeout(function () {
+        if (callback()) {
+            execute();
+            id && clearTimeout(id);
+        }
+        else {
+            polling(callback, execute);
+            id && clearTimeout(id);
+        }
+    }, interval);
+}
+class GroupApi {
+    name;
+    $el;
+    apiList = [];
+    href;
+    get $inner() {
+        return this.$el.querySelector("div.opblock");
+    }
+    constructor(opts) {
+        this.$el = opts.$el;
+        this.name = this.$el?.querySelector("h3")?.getAttribute("data-tag") ?? "";
+        this.apiList = Array.from(this.$el.querySelector("div.operation-tag-content")?.childNodes)?.map(($el) => new Api({ $el, parent: this }));
+        this.href = this.$el.querySelector("h3 a")?.getAttribute("href") ?? "";
+    }
+}
+class Api {
+    description;
+    path;
+    method;
+    href;
+    $el;
+    parent;
+    $btnExpand;
+    get $responsesInner() {
+        return this.$el.querySelector("div.responses-inner");
+    }
+    get $responsesTable() {
+        return this.$el.querySelector("table.responses-table");
+    }
+    get $responseHeaders() {
+        return querySelectorIncludesText("h5", "Response headers", this.$el)
+            ?.parentElement;
+    }
+    get isExpanded() {
+        return this.$btnExpand.getAttribute("aria-expanded") === "true";
+    }
+    constructor(opts) {
+        this.$el = opts.$el;
+        this.parent = opts.parent;
+        this.method = this.$el?.querySelector(".opblock-summary-method")?.textContent ?? "";
+        this.path = this.$el?.querySelector(".opblock-summary-path")?.getAttribute("data-path") ?? "";
+        this.description = this.$el?.querySelector(".opblock-summary-description")?.textContent ?? "";
+        this.href = this.$el?.querySelector(".opblock-summary-path a")?.getAttribute("href") ?? "";
+        this.$btnExpand = this.$el.querySelector("button.opblock-control-arrow");
+        if (this.parent?.$inner) {
+            new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === "childList") {
+                        polling(() => !!this.$responsesInner, () => {
+                            this.handleChangeChildList();
+                        });
+                    }
+                });
+            }).observe(this.parent.$inner, {
+                childList: true,
+            });
+        }
+        this.handleHiddenResponseExample();
+    }
+    handleHiddenResponseExample() {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === "attributes") {
+                    if (this.isExpanded) {
+                        polling(() => !!this.$responsesTable?.style, () => {
+                            this.$responsesTable.style.display = "none";
+                        });
+                    }
+                }
+            });
+        });
+        observer.observe(this.$btnExpand, {
+            attributes: true,
+        });
+    }
+    handleChangeChildList() {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === "childList") {
+                    if (this.isExpanded) {
+                        polling(() => !!this.$responseHeaders?.style, () => {
+                            this.$responseHeaders.style.display = "none";
+                        });
+                    }
+                }
+            });
+        });
+        if (this.$responsesInner) {
+            observer.observe(this.$responsesInner, {
+                childList: true,
+            });
+        }
+    }
+}
+class SwaggerUIX {
+    groupApiList = [];
+    $sideBar = createElementFromHTML(`<div id="${ID_SIDE_BAR}" class="side-bar"></div>`);
+    get $schemaContainer() {
+        return document.querySelector("div.scheme-container");
+    }
+    get $topBar() {
+        return document.querySelector("div.topbar");
+    }
+    get $informationContainerWrapper() {
+        return document.querySelector(".information-container.wrapper");
+    }
+    get $wrapper() {
+        return this.$sectionWrapper.parentElement;
+    }
+    get $sectionWrapper() {
+        return document.querySelector("div.wrapper > section.block.block-desktop");
+    }
+    storageType = "chromeStorage";
+    // eslint-disable-next-line @typescript-eslint/no-empty-function, no-useless-constructor
+    constructor(opts) {
+        const { initOnPageLoaded = false, storageType = "chromeStorage" } = opts ?? {};
+        this.storageType = storageType;
+        if (initOnPageLoaded) {
+            document.addEventListener("DOMContentLoaded", () => {
+                this.initUI();
+            });
+        }
+    }
+    initUI() {
+        setTimeout(() => {
+            this.onPageLoaded();
+        }, 500);
+    }
+    onPageLoaded() {
+        console.log("onPageLoaded");
+        this.hideUINotNeeded();
+        const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes);
+        els?.forEach(($el) => {
+            this.groupApiList.push(new GroupApi({ $el }));
+        });
+        this.changeLayout();
+    }
+    changeLayout() {
+        this.$wrapper.prepend(this.$sideBar);
+        this.$wrapper.style.display = "flex";
+        this.$wrapper.style.flexDirection = "row";
+        this.$sideBar.style.width = `70rem`;
+        this.$sectionWrapper.style.width = `100rem`;
+        this.$sectionWrapper.style.overflow = `auto`;
+        this.$sectionWrapper.style.maxHeight = `60rem`;
+        const SwaggerSideBarComponent = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_3__["default"])(_shared_components_swagger_SwaggerSideBar__WEBPACK_IMPORTED_MODULE_2__.SwaggerSideBar, { storageType: this.storageType });
+        _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SwaggerSideBarComponent, { swaggerUI: this }), id: ID_SIDE_BAR });
+    }
+    hideUINotNeeded() {
+        // hide top bar
+        this.$topBar.style.display = "none";
+        this.$informationContainerWrapper.style.display = "none";
+        this.$schemaContainer.style.padding = `10px 0`;
+    }
+}
+
+
+/***/ }),
+
 /***/ "./src/shared/withStorage.tsx":
 /*!************************************!*\
   !*** ./src/shared/withStorage.tsx ***!
@@ -61700,217 +61916,18 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!***************************************************!*\
-  !*** ./src/shared/website/swagger/swagger-ui.tsx ***!
-  \***************************************************/
+/*!*****************************************************!*\
+  !*** ./src/shared/website/swagger/swagger-test.tsx ***!
+  \*****************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Api": () => (/* binding */ Api),
-/* harmony export */   "GroupApi": () => (/* binding */ GroupApi),
-/* harmony export */   "SwaggerUIX": () => (/* binding */ SwaggerUIX),
-/* harmony export */   "createElementFromHTML": () => (/* binding */ createElementFromHTML),
-/* harmony export */   "polling": () => (/* binding */ polling),
-/* harmony export */   "querySelectorIncludesText": () => (/* binding */ querySelectorIncludesText)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/components/UIManager */ "./src/shared/components/UIManager.tsx");
-/* harmony import */ var _shared_components_swagger_SwaggerSideBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/components/swagger/SwaggerSideBar */ "./src/shared/components/swagger/SwaggerSideBar.tsx");
-/* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
+/* harmony import */ var _swagger_ui__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./swagger-ui */ "./src/shared/website/swagger/swagger-ui.tsx");
 
-
-
-
-// function whenAvailable(name: any, callback: any) {
-//     const interval = 10; // ms
-//     window.setTimeout(function () {
-//         if (window[name]) {
-//             callback(window[name]);
-//         } else {
-//             whenAvailable(name, callback);
-//         }
-//     }, interval);
-// }
-const ID_SIDE_BAR = "side-bar";
-function querySelectorIncludesText(selector, text, parent = document) {
-    return Array.from(parent?.querySelectorAll?.(selector))?.find((el) => el?.textContent?.includes(text));
-}
-function createElementFromHTML(htmlString) {
-    const div = document.createElement("div");
-    div.innerHTML = htmlString.trim();
-    return div.firstChild;
-}
-function polling(callback, execute) {
-    const interval = 100; // ms
-    const id = setTimeout(function () {
-        if (callback()) {
-            execute();
-            id && clearTimeout(id);
-        }
-        else {
-            polling(callback, execute);
-            id && clearTimeout(id);
-        }
-    }, interval);
-}
-class GroupApi {
-    name;
-    $el;
-    apiList = [];
-    href;
-    get $inner() {
-        return this.$el.querySelector("div.opblock");
-    }
-    constructor(opts) {
-        this.$el = opts.$el;
-        this.name = this.$el?.querySelector("h3")?.getAttribute("data-tag") ?? "";
-        this.apiList = Array.from(this.$el.querySelector("div.operation-tag-content")?.childNodes)?.map(($el) => new Api({ $el, parent: this }));
-        this.href = this.$el.querySelector("h3 a")?.getAttribute("href") ?? "";
-    }
-}
-class Api {
-    description;
-    path;
-    method;
-    href;
-    $el;
-    parent;
-    $btnExpand;
-    get $responsesInner() {
-        return this.$el.querySelector("div.responses-inner");
-    }
-    get $responsesTable() {
-        return this.$el.querySelector("table.responses-table");
-    }
-    get $responseHeaders() {
-        return querySelectorIncludesText("h5", "Response headers", this.$el)
-            ?.parentElement;
-    }
-    get isExpanded() {
-        return this.$btnExpand.getAttribute("aria-expanded") === "true";
-    }
-    constructor(opts) {
-        this.$el = opts.$el;
-        this.parent = opts.parent;
-        this.method = this.$el?.querySelector(".opblock-summary-method")?.textContent ?? "";
-        this.path = this.$el?.querySelector(".opblock-summary-path")?.getAttribute("data-path") ?? "";
-        this.description = this.$el?.querySelector(".opblock-summary-description")?.textContent ?? "";
-        this.href = this.$el?.querySelector(".opblock-summary-path a")?.getAttribute("href") ?? "";
-        this.$btnExpand = this.$el.querySelector("button.opblock-control-arrow");
-        if (this.parent?.$inner) {
-            new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.type === "childList") {
-                        polling(() => !!this.$responsesInner, () => {
-                            this.handleChangeChildList();
-                        });
-                    }
-                });
-            }).observe(this.parent.$inner, {
-                childList: true,
-            });
-        }
-        this.handleHiddenResponseExample();
-    }
-    handleHiddenResponseExample() {
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.type === "attributes") {
-                    if (this.isExpanded) {
-                        polling(() => !!this.$responsesTable?.style, () => {
-                            this.$responsesTable.style.display = "none";
-                        });
-                    }
-                }
-            });
-        });
-        observer.observe(this.$btnExpand, {
-            attributes: true,
-        });
-    }
-    handleChangeChildList() {
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.type === "childList") {
-                    if (this.isExpanded) {
-                        polling(() => !!this.$responseHeaders?.style, () => {
-                            this.$responseHeaders.style.display = "none";
-                        });
-                    }
-                }
-            });
-        });
-        if (this.$responsesInner) {
-            observer.observe(this.$responsesInner, {
-                childList: true,
-            });
-        }
-    }
-}
-class SwaggerUIX {
-    groupApiList = [];
-    $sideBar = createElementFromHTML(`<div id="${ID_SIDE_BAR}" class="side-bar"></div>`);
-    get $schemaContainer() {
-        return document.querySelector("div.scheme-container");
-    }
-    get $topBar() {
-        return document.querySelector("div.topbar");
-    }
-    get $informationContainerWrapper() {
-        return document.querySelector(".information-container.wrapper");
-    }
-    get $wrapper() {
-        return this.$sectionWrapper.parentElement;
-    }
-    get $sectionWrapper() {
-        return document.querySelector("div.wrapper > section.block.block-desktop");
-    }
-    storageType = "chromeStorage";
-    // eslint-disable-next-line @typescript-eslint/no-empty-function, no-useless-constructor
-    constructor(opts) {
-        const { initOnPageLoaded = false, storageType = "chromeStorage" } = opts ?? {};
-        this.storageType = storageType;
-        if (initOnPageLoaded) {
-            document.addEventListener("DOMContentLoaded", () => {
-                this.initUI();
-            });
-        }
-    }
-    initUI() {
-        setTimeout(() => {
-            this.onPageLoaded();
-        }, 500);
-    }
-    onPageLoaded() {
-        console.log("onPageLoaded");
-        this.hideUINotNeeded();
-        const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes);
-        els?.forEach(($el) => {
-            this.groupApiList.push(new GroupApi({ $el }));
-        });
-        this.changeLayout();
-    }
-    changeLayout() {
-        this.$wrapper.prepend(this.$sideBar);
-        this.$wrapper.style.display = "flex";
-        this.$wrapper.style.flexDirection = "row";
-        this.$sideBar.style.width = `70rem`;
-        this.$sectionWrapper.style.width = `100rem`;
-        this.$sectionWrapper.style.overflow = `auto`;
-        this.$sectionWrapper.style.maxHeight = `60rem`;
-        const SwaggerSideBarComponent = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_3__["default"])(_shared_components_swagger_SwaggerSideBar__WEBPACK_IMPORTED_MODULE_2__.SwaggerSideBar, { storageType: this.storageType });
-        _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SwaggerSideBarComponent, { swaggerUI: this }), id: ID_SIDE_BAR });
-    }
-    hideUINotNeeded() {
-        // hide top bar
-        this.$topBar.style.display = "none";
-        this.$informationContainerWrapper.style.display = "none";
-        this.$schemaContainer.style.padding = `10px 0`;
-    }
-}
+// test
+const swaggerUI = new _swagger_ui__WEBPACK_IMPORTED_MODULE_0__.SwaggerUIX({ initOnPageLoaded: true, storageType: "localStorage" });
+swaggerUI.initUI();
 
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=swaggerUI.bundle.js.map
+//# sourceMappingURL=swaggerTest.bundle.js.map
