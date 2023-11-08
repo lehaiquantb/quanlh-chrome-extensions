@@ -23104,7 +23104,6 @@ async function setupRootStore(rootStore, opts) {
     }
     // track changes & save to AsyncStorage
     _disposer = (0,mobx_state_tree__WEBPACK_IMPORTED_MODULE_1__.onSnapshot)(rootStore, (snapshot) => {
-        // console.log("snapshot", snapshot)
         storage.set(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot));
     });
     const unsubscribe = () => {
@@ -23191,7 +23190,8 @@ const useInitialRootStore = (callback, opts) => {
     const [rehydrated, setRehydrated] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
     // Kick off initial async loading actions, like loading fonts and rehydrating RootStore
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-        const needTrackingStorage = false;
+        const needTrackingStorageLocal = opts?.needTrackingStorageLocal ?? true;
+        const needTrackingStorageChrome = opts?.needTrackingStorageChrome ?? true;
         let listener;
         let _unsubscribe;
         let timeout;
@@ -23201,22 +23201,30 @@ const useInitialRootStore = (callback, opts) => {
             _unsubscribe = unsubscribe;
             // For DEBUG: reactotron integration with the MST root store (DEV only)
             mobx_devtools_mst__WEBPACK_IMPORTED_MODULE_3___default()(rootStore);
-            // For DEBUG: make some changes to show the root store in mst dev mode
-            timeout = setTimeout(() => {
-                rootStore.setProp("timeNow", `${new Date().getTime()}`);
-            }, 1000);
+            // For DEBUG: make some changes to show the root store in mst dev mode but it make storage being updated continuously => make logic wrong
+            // timeout = setTimeout(() => {
+            //   rootStore.setProp("timeNow", `${new Date().getTime()}`)
+            // }, 1000)
+            // rootStore.setProp("timeNow", `${new Date().getTime()}`)
             // let the app know we've finished rehydrating
             setRehydrated(true);
             // invoke the callback, if provided
             if (callback) {
                 callback();
             }
-            if (needTrackingStorage) {
+            if (needTrackingStorageLocal) {
+                _shared__WEBPACK_IMPORTED_MODULE_4__.storageLocal.onChange((changes) => {
+                    if (changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue) {
+                        const newRootStore = changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue;
+                        (0,mobx_state_tree__WEBPACK_IMPORTED_MODULE_5__.applySnapshot)(rootStore, JSON.parse(newRootStore));
+                    }
+                });
+            }
+            if (needTrackingStorageChrome) {
                 listener = (changes, namespace) => {
                     if (changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue && namespace === "local") {
                         const newRootStore = changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue;
-                        console.log("CHANGE Y", JSON.parse(newRootStore));
-                        (0,mobx_state_tree__WEBPACK_IMPORTED_MODULE_5__.applySnapshot)(_rootStore, newRootStore);
+                        (0,mobx_state_tree__WEBPACK_IMPORTED_MODULE_5__.applySnapshot)(rootStore, JSON.parse(newRootStore));
                     }
                 };
                 _shared__WEBPACK_IMPORTED_MODULE_4__.chrome?.storage?.onChanged?.addListener(listener);
@@ -23230,7 +23238,7 @@ const useInitialRootStore = (callback, opts) => {
             if (_unsubscribe) {
                 _unsubscribe();
             }
-            if (needTrackingStorage && listener) {
+            if (needTrackingStorageChrome && listener) {
                 _shared__WEBPACK_IMPORTED_MODULE_4__.chrome?.storage?.onChanged?.removeListener(listener);
             }
             if (timeout) {
@@ -23423,7 +23431,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const SwaggerModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.compose(_ToolModel__WEBPACK_IMPORTED_MODULE_1__.ToolModel, mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model({
-    autoInitUI: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.boolean, true),
+    autoInitUI: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.boolean, false),
+    email: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, "admin@cybereason.com"),
+    password: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, "Ab@12345678"),
 }))
     .named("SwaggerModel")
     .views((self) => ({}))
@@ -23439,6 +23449,8 @@ const SwaggerModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.compose(
 const SWAGGER_MODEL_DEFAULT = {
     autoInitUI: false,
     matchRegexUrls: [_shared_constants__WEBPACK_IMPORTED_MODULE_2__.ERegexUrl.FIGMA],
+    email: "",
+    password: "",
 };
 
 
@@ -23512,15 +23524,33 @@ class Storage {
     type = "chromeStorage";
     constructor(type = "chromeStorage") {
         this.type = type;
+        // switch (this.type) {
+        //   case "localStorage":
+        //     break
+        //   case "chromeStorage":
+        //     this.onChange()
+        //     break
+        // }
     }
     async set(key, value) {
         try {
             switch (this.type) {
                 case "localStorage":
+                    // eslint-disable-next-line no-case-declarations
+                    const oldValue = (0,_shared__WEBPACK_IMPORTED_MODULE_0__.parseJson)(localStorage)?.[key];
                     localStorage.setItem(key, value);
+                    // eslint-disable-next-line no-case-declarations
+                    const event = new CustomEvent("itemInserted", {
+                        detail: {
+                            oldValue,
+                            newValue: value,
+                            key,
+                        },
+                    });
+                    document.dispatchEvent(event);
                     break;
                 case "chromeStorage":
-                    _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.local?.set?.({ [key]: value });
+                    await _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.local?.set?.({ [key]: value });
                     break;
             }
         }
@@ -23542,14 +23572,30 @@ class Storage {
             return undefined;
         }
     }
-    onChange() {
-        _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.onChanged?.addListener?.((changes, namespace) => {
-            console.log("changes", changes, namespace);
-        });
+    onChange(cb) {
+        switch (this.type) {
+            case "localStorage":
+                document.addEventListener("itemInserted", (event) => {
+                    const { key, oldValue, newValue } = event?.detail ?? {};
+                    // eslint-disable-next-line node/no-callback-literal
+                    cb?.({
+                        [key]: {
+                            oldValue,
+                            newValue,
+                        },
+                    });
+                }, false);
+                break;
+            case "chromeStorage":
+                _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.onChanged?.addListener?.((changes, namespace) => {
+                    // console.log("changes", changes, namespace)
+                    cb?.(changes);
+                });
+        }
     }
 }
 const storageChrome = new Storage("chromeStorage");
-const storageLocal = new Storage('localStorage');
+const storageLocal = new Storage("localStorage");
 
 
 /***/ }),
@@ -23988,8 +24034,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tools_downloadPdf__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools/downloadPdf */ "./src/tools/downloadPdf.ts");
 /* harmony import */ var _tools_downloadWord__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tools/downloadWord */ "./src/tools/downloadWord.ts");
 /* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./shared/models */ "./src/shared/models/index.ts");
-/* harmony import */ var _shared_models_helpers_setupRootStore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./shared/models/helpers/setupRootStore */ "./src/shared/models/helpers/setupRootStore.ts");
-
 
 
 
@@ -24053,26 +24097,51 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.oldValue),
     //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
     // )
+    _shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.set(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY, changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue);
+});
+_shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.onChange((changes) => {
+    if (changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue) {
+        const newRootStore = changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue;
+        _shared__WEBPACK_IMPORTED_MODULE_0__.storageChrome.set(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY, newRootStore);
+    }
 });
 chrome.runtime.onConnect.addListener(() => {
     console.log("on connect");
 });
-(async () => {
-    // set up the RootStore (returns the state restored from AsyncStorage)
-    const { restoredState, unsubscribe } = await (0,_shared_models_helpers_setupRootStore__WEBPACK_IMPORTED_MODULE_4__.setupRootStore)(_shared_models__WEBPACK_IMPORTED_MODULE_3__._rootStore, {
-        storageType: "chromeStorage",
-    });
-    // console.log(parseJson(_rootStore), restoredState)
-    // // console.log("rehydrated")
-    // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
-    // ;(window as any).swaggerUI = swaggerUI
-    // For DEBUG: reactotron integration with the MST root store (DEV only)
-    // let the app know we've finished rehydrating
-    console.log("hello", (0,_shared__WEBPACK_IMPORTED_MODULE_0__.parseJson)(_shared_models__WEBPACK_IMPORTED_MODULE_3__._rootStore), restoredState);
-    // invoke the callback, if provided
-})();
-window.a = "a";
-localStorage?.setItem("chromeStorage", "hello");
+// storageLocal.onChange((value) => {
+//   console.log("value", value)
+// })
+// const swaggerUI = new SwaggerUIX({ initOnPageLoaded: true })
+// swaggerUI.initUI()
+// const autoExecute = () => {
+//   const { website } = _rootStore
+//   forEach(website, (tool: , key) => {
+//     if (tool.) {
+//     }
+//     console.log("value", value, key)
+//     // if (value?.autoExecute) {
+//     //   contentScript.executeCommand({
+//     //     commandId: key,
+//     //     params: value?.params,
+//     //   })
+//     // }
+//   })
+// }
+// autoExecute()
+// ;(async () => {
+//   // set up the RootStore (returns the state restored from AsyncStorage)
+//   const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
+//     storageType: "chromeStorage",
+//   })
+//   // console.log(parseJson(_rootStore), restoredState)
+//   // // console.log("rehydrated")
+//   // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
+//   // ;(window as any).swaggerUI = swaggerUI
+//   // For DEBUG: reactotron integration with the MST root store (DEV only)
+//   // let the app know we've finished rehydrating
+//   console.log("hello", parseJson(_rootStore), restoredState)
+//   // invoke the callback, if provided
+// })()
 
 })();
 

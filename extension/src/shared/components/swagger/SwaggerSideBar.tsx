@@ -11,12 +11,11 @@ type Props = {
   swaggerUI: SwaggerUIX
 }
 
-export const SwaggerSideBar: FC<Props> = (props: Props) => {
+export const SwaggerSideBarComponent: FC<Props> = observer((props: Props) => {
   const { swaggerUI } = props
-  const [t, setT] = useState("TailwindClassField")
   const {
     website: {
-      figmaTool: { autoExecute },
+      swaggerTool: { autoExecute, autoInitUI },
     },
   } = useStores()
   // const {
@@ -25,10 +24,8 @@ export const SwaggerSideBar: FC<Props> = (props: Props) => {
 
   useEffect(() => {
     autoExecute()
-    setInterval(() => {
-      setT((t) => t + "1")
-    }, 1000)
-  }, [])
+    console.log("autoInitUI", autoInitUI)
+  }, [autoInitUI])
 
   const items = useMemo(() => {
     return swaggerUI.groupApiList.map((groupApi) => ({
@@ -49,10 +46,11 @@ export const SwaggerSideBar: FC<Props> = (props: Props) => {
 
   return (
     <div>
+      <h1>Hello - {autoInitUI ? "true" : "false"}</h1>
       <Collapse items={items} bordered={false} defaultActiveKey={["1"]} />
     </div>
   )
-}
+})
 
 export const ApiComponent = observer((props: { api: Api }) => {
   const { api } = props
@@ -79,6 +77,6 @@ export const GroupApiComponent = observer((props: { groupApi: GroupApi }) => {
   )
 })
 
-SwaggerSideBar.defaultProps = {}
+SwaggerSideBarComponent.defaultProps = {}
 
-export default withStorage(SwaggerSideBar)
+export default withStorage(SwaggerSideBarComponent)

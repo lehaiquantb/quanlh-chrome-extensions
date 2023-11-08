@@ -7,7 +7,9 @@ export const SwaggerModel = types
   .compose(
     ToolModel,
     types.model({
-      autoInitUI: types.optional(types.boolean, true),
+      autoInitUI: types.optional(types.boolean, false),
+      email: types.optional(types.string, "admin@cybereason.com"),
+      password: types.optional(types.string, "Ab@12345678"),
     }),
   )
   .named("SwaggerModel")
@@ -30,4 +32,6 @@ export type SwaggerSnapshot = SnapshotOut<typeof SwaggerModel>
 export const SWAGGER_MODEL_DEFAULT: SwaggerSnapshot = {
   autoInitUI: false,
   matchRegexUrls: [ERegexUrl.FIGMA],
+  email: "",
+  password: "",
 }

@@ -1,9 +1,10 @@
 import React from "react"
 import { UIManager } from "@/shared/components/UIManager"
-import { SwaggerSideBar } from "@/shared/components/swagger/SwaggerSideBar"
+import { SwaggerSideBarComponent } from "@/shared/components/swagger/SwaggerSideBar"
 import { getGlobalVar } from "@/shared/helper.common"
 import { StorageType } from "@/shared/services/storage"
 import withStorage from "@/shared/withStorage"
+import { SwaggerHeaderComponent } from "@/shared/components/swagger/SwaggerHeader"
 
 // function whenAvailable(name: any, callback: any) {
 //     const interval = 10; // ms
@@ -17,6 +18,7 @@ import withStorage from "@/shared/withStorage"
 // }
 
 const ID_SIDE_BAR = "side-bar"
+const ID_HEADER = "ql-sw-header"
 
 export function querySelectorIncludesText(selector: string, text: string, parent = document) {
   return Array.from(parent?.querySelectorAll?.(selector))?.find((el) =>
@@ -166,6 +168,10 @@ export class SwaggerUIX {
     `<div id="${ID_SIDE_BAR}" class="side-bar"></div>`,
   ) as HTMLDivElement
 
+  $headerWrapper: HTMLDivElement = createElementFromHTML(
+    `<div id="${ID_HEADER}"></div>`,
+  ) as HTMLDivElement
+
   get $schemaContainer(): HTMLDivElement {
     return document.querySelector("div.scheme-container") as HTMLDivElement
   }
@@ -182,8 +188,16 @@ export class SwaggerUIX {
     return this.$sectionWrapper.parentElement as HTMLDivElement
   }
 
+  get $schemesWrapper() {
+    return document.querySelector("section.schemes.wrapper") as HTMLDivElement
+  }
+
   get $sectionWrapper(): HTMLDivElement {
     return document.querySelector("div.wrapper > section.block.block-desktop") as HTMLDivElement
+  }
+
+  get $models() {
+    return document.querySelector("section.models") as HTMLDivElement
   }
 
   storageType: StorageType = "chromeStorage"
@@ -217,6 +231,7 @@ export class SwaggerUIX {
   }
 
   changeLayout() {
+    this.$schemesWrapper.prepend(this.$headerWrapper)
     this.$wrapper.prepend(this.$sideBar)
     this.$wrapper.style.display = "flex"
     this.$wrapper.style.flexDirection = "row"
@@ -224,9 +239,11 @@ export class SwaggerUIX {
     this.$sectionWrapper.style.width = `100rem`
     this.$sectionWrapper.style.overflow = `auto`
     this.$sectionWrapper.style.maxHeight = `60rem`
-    const SwaggerSideBarComponent = withStorage(SwaggerSideBar, { storageType: this.storageType })
+    const SwaggerSideBar = withStorage(SwaggerSideBarComponent, { storageType: this.storageType })
+    const SwaggerHeader = withStorage(SwaggerHeaderComponent, { storageType: this.storageType })
 
-    UIManager.render({ Component: <SwaggerSideBarComponent swaggerUI={this} />, id: ID_SIDE_BAR })
+    UIManager.render({ Component: <SwaggerSideBar swaggerUI={this} />, id: ID_SIDE_BAR })
+    UIManager.render({ Component: <SwaggerHeader swaggerUI={this} />, id: ID_HEADER })
   }
 
   hideUINotNeeded() {
@@ -234,5 +251,10 @@ export class SwaggerUIX {
     this.$topBar.style.display = "none"
     this.$informationContainerWrapper.style.display = "none"
     this.$schemaContainer.style.padding = `10px 0`
+    this.$models.style.display = "none"
+  }
+
+  login(email: string, pass: string) {
+    console.log("login", email, pass)
   }
 }

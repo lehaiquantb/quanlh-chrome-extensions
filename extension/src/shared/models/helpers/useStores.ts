@@ -3,7 +3,8 @@ import { RootStore, RootStoreModel } from "../RootStore"
 import { ROOT_STATE_STORAGE_KEY, setupRootStore } from "./setupRootStore"
 import makeInspectable from "mobx-devtools-mst"
 import { applySnapshot } from "mobx-state-tree"
-import { StorageType, chrome, getRuntimeEnvironment } from "@/shared"
+import { StorageType, chrome, getRuntimeEnvironment, storageLocal } from "@/shared"
+
 /**
  * Create the initial (empty) global RootStore instance here.
  *
@@ -51,14 +52,20 @@ export const useStores = () => useContext(RootStoreContext)
  */
 export const useInitialRootStore = (
   callback: () => void | Promise<void>,
-  opts?: { storageType: StorageType },
+  opts?: {
+    storageType: StorageType
+    needTrackingStorageLocal?: boolean
+    needTrackingStorageChrome?: boolean
+  },
 ) => {
   const rootStore = useStores()
   const [rehydrated, setRehydrated] = useState(false)
 
   // Kick off initial async loading actions, like loading fonts and rehydrating RootStore
   useEffect(() => {
-    const needTrackingStorage = false
+    const needTrackingStorageLocal = opts?.needTrackingStorageLocal ?? true
+    const needTrackingStorageChrome = opts?.needTrackingStorageChrome ?? true
+
     let listener: any
     let _unsubscribe: () => void
     let timeout: any
@@ -70,10 +77,11 @@ export const useInitialRootStore = (
       // For DEBUG: reactotron integration with the MST root store (DEV only)
       makeInspectable(rootStore)
 
-      // For DEBUG: make some changes to show the root store in mst dev mode
-      timeout = setTimeout(() => {
-        rootStore.setProp("timeNow", `${new Date().getTime()}`)
-      }, 1000)
+      // For DEBUG: make some changes to show the root store in mst dev mode but it make storage being updated continuously => make logic wrong
+      // timeout = setTimeout(() => {
+      //   rootStore.setProp("timeNow", `${new Date().getTime()}`)
+      // }, 1000)
+      // rootStore.setProp("timeNow", `${new Date().getTime()}`)
 
       // let the app know we've finished rehydrating
       setRehydrated(true)
@@ -82,16 +90,27 @@ export const useInitialRootStore = (
       if (callback) {
         callback()
       }
-   
-      if (needTrackingStorage) {
-        listener = (changes: any, namespace: any) => {
+
+      if (needTrackingStorageLocal) {
+        storageLocal.onChange((changes) => {
+          if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue) {
+            const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
+            applySnapshot(rootStore, JSON.parse(newRootStore))
+          }
+        })
+      }
+
+      if (needTrackingStorageChrome) {
+        listener = (
+          changes: { [key: string]: chrome.storage.StorageChange },
+          namespace: chrome.storage.AreaName,
+        ) => {
           if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue && namespace === "local") {
             const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
-            console.log("CHANGE Y", JSON.parse(newRootStore))
-            applySnapshot(_rootStore, newRootStore)
+            applySnapshot(rootStore, JSON.parse(newRootStore))
           }
         }
-  
+
         chrome?.storage?.onChanged?.addListener(listener)
       }
     })()
@@ -100,13 +119,12 @@ export const useInitialRootStore = (
     // const needTrackingStorage =
     //   (envs?.includes("content_script") || envs?.includes("background")) && !envs?.includes("popup")
 
-
     return () => {
       // cleanup
       if (_unsubscribe) {
         _unsubscribe()
       }
-      if (needTrackingStorage && listener) {
+      if (needTrackingStorageChrome && listener) {
         chrome?.storage?.onChanged?.removeListener(listener)
       }
       if (timeout) {

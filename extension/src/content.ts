@@ -1,5 +1,5 @@
 import { ToolModel } from "./shared/models/website/ToolModel"
-import { Command, ECommandId, IMessage, parseJson, storageChrome } from "@/shared"
+import { Command, ECommandId, IMessage, parseJson, storageChrome, storageLocal } from "@/shared"
 import { downloadPdf } from "./tools/downloadPdf"
 import { downloadWord } from "./tools/downloadWord"
 import { render } from "./shared/components/css-to-tailwind/TailwindClassField"
@@ -77,12 +77,26 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.oldValue),
   //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
   // )
+  storageLocal.set(ROOT_STATE_STORAGE_KEY, changes?.[ROOT_STATE_STORAGE_KEY]?.newValue)
+})
+
+storageLocal.onChange((changes) => {
+  if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue) {
+    const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
+    storageChrome.set(ROOT_STATE_STORAGE_KEY, newRootStore)
+  }
 })
 
 chrome.runtime.onConnect.addListener(() => {
   console.log("on connect")
 })
 
+// storageLocal.onChange((value) => {
+//   console.log("value", value)
+// })
+
+// const swaggerUI = new SwaggerUIX({ initOnPageLoaded: true })
+// swaggerUI.initUI()
 // const autoExecute = () => {
 //   const { website } = _rootStore
 //   forEach(website, (tool: , key) => {
@@ -102,22 +116,19 @@ chrome.runtime.onConnect.addListener(() => {
 // }
 
 // autoExecute()
-;(async () => {
-  // set up the RootStore (returns the state restored from AsyncStorage)
-  const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
-    storageType: "chromeStorage",
-  })
-  // console.log(parseJson(_rootStore), restoredState)
-  // // console.log("rehydrated")
-  // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
-  // ;(window as any).swaggerUI = swaggerUI
-  // For DEBUG: reactotron integration with the MST root store (DEV only)
+// ;(async () => {
+//   // set up the RootStore (returns the state restored from AsyncStorage)
+//   const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
+//     storageType: "chromeStorage",
+//   })
+//   // console.log(parseJson(_rootStore), restoredState)
+//   // // console.log("rehydrated")
+//   // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
+//   // ;(window as any).swaggerUI = swaggerUI
+//   // For DEBUG: reactotron integration with the MST root store (DEV only)
 
-  // let the app know we've finished rehydrating
-  console.log("hello", parseJson(_rootStore), restoredState)
+//   // let the app know we've finished rehydrating
+//   console.log("hello", parseJson(_rootStore), restoredState)
 
-  // invoke the callback, if provided
-})()
-;(window as any).a = "a"
-
-localStorage?.setItem("chromeStorage", "hello")
+//   // invoke the callback, if provided
+// })()

@@ -17,6 +17,7 @@
     "css-to-tailwindcss": "^1.0.4",
     "font-awesome": "^4.7.0",
     "jspdf": "^2.5.1",
+    "md5": "^2.3.0",
     "mobx": "^6.9.0",
     "mobx-devtools-mst": "^0.9.30",
     "mobx-react-lite": "^3.4.3",
@@ -54,6 +55,7 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.239",
+    "@types/md5": "^2.3.5",
     "@vitejs/plugin-react": "^4.0.1",
     "autoprefixer": "^10.4.14",
     "node-sass": "^9.0.0",
