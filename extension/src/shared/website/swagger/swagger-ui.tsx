@@ -163,6 +163,15 @@ export class Api {
 }
 
 export class SwaggerUIX {
+  logger = {
+    error: (...args: any[]) => {
+      console.error("[SWAGGER] [ERROR]", ...args)
+    },
+    info: (...args: any[]) => {
+      console.info("[SWAGGER] [INFO]", ...args)
+    },
+  }
+
   groupApiList: GroupApi[] = []
   $sideBar: HTMLDivElement = createElementFromHTML(
     `<div id="${ID_SIDE_BAR}" class="side-bar"></div>`,
@@ -254,7 +263,77 @@ export class SwaggerUIX {
     this.$models.style.display = "none"
   }
 
-  login(email: string, pass: string) {
-    console.log("login", email, pass)
+  async login(email?: string, password?: string) {
+    const callLogin = async (data: any) => {
+      return new Promise((resolve, reject) => {
+        fetch(`${location.origin}/api/v1/auth/login`, {
+          headers: {
+            accept: "application/json, text/plain, */*",
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(data),
+          method: "POST",
+          mode: "cors",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            resolve(data)
+          })
+          .catch((err) => {
+            this.logger.error(err)
+          })
+      })
+    }
+
+    function clickAuthBtn() {
+      const authButton = document.querySelector(
+        ".auth-btn-wrapper .modal-btn.auth",
+      ) as HTMLButtonElement
+      if (authButton) {
+        authButton?.click()
+      }
+    }
+
+    ;(async () => {
+      const payload = {
+        provider: "email",
+        email: email ?? "admin@cybereason.com",
+        password: password ?? "Ab@12345678",
+      }
+
+      const res = (await callLogin(payload)) as any
+      this.logger.info(`${res?.data?.accessToken?.token}`)
+      const jwtToken = res.data.accessToken.token
+
+      setTimeout(function () {
+        const openAuthFormLockButton = document.querySelector(
+          ".auth-wrapper .authorize.locked",
+        ) as HTMLButtonElement
+        if (openAuthFormLockButton) {
+          openAuthFormLockButton?.click()
+          clickAuthBtn()
+        } else {
+          const openAuthFormUnlockButton = document.querySelector(
+            ".auth-wrapper .authorize.unlocked",
+          ) as HTMLButtonElement
+          openAuthFormUnlockButton?.click()
+        }
+
+        const tokenInput = document.querySelector(".auth-container input") as HTMLInputElement
+
+        const closeButton = document.querySelector("button.btn-done") as HTMLButtonElement
+
+        const nativeInputValueSetter = (Object as any).getOwnPropertyDescriptor(
+          window?.HTMLInputElement?.prototype,
+          "value",
+        ).set as any
+        nativeInputValueSetter.call(tokenInput, jwtToken)
+
+        const inputEvent = new Event("input", { bubbles: true })
+        tokenInput.dispatchEvent(inputEvent)
+        clickAuthBtn()
+        closeButton.click()
+      }, 400)
+    })()
   }
 }

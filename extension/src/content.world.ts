@@ -25,4 +25,5 @@ import { SwaggerUIX } from "./shared/website/swagger/swagger-ui"
 
 const swaggerUI = new SwaggerUIX({ initOnPageLoaded: true, storageType: "localStorage" })
 swaggerUI.initUI()
+swaggerUI.login()
 ;(window as any).swaggerUI = swaggerUI

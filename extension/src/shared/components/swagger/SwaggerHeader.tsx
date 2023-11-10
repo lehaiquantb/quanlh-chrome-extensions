@@ -11,7 +11,7 @@ type Props = {
 
 export const SwaggerHeaderComponent: FC<Props> = observer((props: Props) => {
   const { swaggerUI } = props
-  const [email, setEmail] = useState("cybereason@gmail.com")
+  const [email, setEmail] = useState("admin@cybereason.com")
   const [pass, setPass] = useState("Ab@12345678")
 
   const {

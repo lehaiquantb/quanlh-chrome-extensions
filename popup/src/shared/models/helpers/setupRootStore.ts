@@ -12,7 +12,6 @@
 import { applySnapshot, IDisposer, onSnapshot } from "mobx-state-tree"
 import type { RootStore } from "../RootStore"
 import { storageChrome, storageLocal, StorageType } from "@/shared"
-import md5 from "md5"
 /**
  * The key we'll be saving our state as within async storage.
  */

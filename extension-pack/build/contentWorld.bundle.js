@@ -69835,7 +69835,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const SwaggerHeaderComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_2__.observer)((props) => {
     const { swaggerUI } = props;
-    const [email, setEmail] = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)("cybereason@gmail.com");
+    const [email, setEmail] = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)("admin@cybereason.com");
     const [pass, setPass] = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)("Ab@12345678");
     const { website: { swaggerTool: { autoExecute, autoInitUI }, }, } = (0,_shared_models__WEBPACK_IMPORTED_MODULE_0__.useStores)();
     const onLogin = () => {
@@ -70964,6 +70964,14 @@ class Api {
     }
 }
 class SwaggerUIX {
+    logger = {
+        error: (...args) => {
+            console.error("[SWAGGER] [ERROR]", ...args);
+        },
+        info: (...args) => {
+            console.info("[SWAGGER] [INFO]", ...args);
+        },
+    };
     groupApiList = [];
     $sideBar = createElementFromHTML(`<div id="${ID_SIDE_BAR}" class="side-bar"></div>`);
     $headerWrapper = createElementFromHTML(`<div id="${ID_HEADER}"></div>`);
@@ -71034,8 +71042,63 @@ class SwaggerUIX {
         this.$schemaContainer.style.padding = `10px 0`;
         this.$models.style.display = "none";
     }
-    login(email, pass) {
-        console.log("login", email, pass);
+    async login(email, password) {
+        const callLogin = async (data) => {
+            return new Promise((resolve, reject) => {
+                fetch(`${location.origin}/api/v1/auth/login`, {
+                    headers: {
+                        accept: "application/json, text/plain, */*",
+                        "content-type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                    method: "POST",
+                    mode: "cors",
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                    resolve(data);
+                })
+                    .catch((err) => {
+                    this.logger.error(err);
+                });
+            });
+        };
+        function clickAuthBtn() {
+            const authButton = document.querySelector(".auth-btn-wrapper .modal-btn.auth");
+            if (authButton) {
+                authButton?.click();
+            }
+        }
+        ;
+        (async () => {
+            const payload = {
+                provider: "email",
+                email: email ?? "admin@cybereason.com",
+                password: password ?? "Ab@12345678",
+            };
+            const res = (await callLogin(payload));
+            this.logger.info(`${res?.data?.accessToken?.token}`);
+            const jwtToken = res.data.accessToken.token;
+            setTimeout(function () {
+                const openAuthFormLockButton = document.querySelector(".auth-wrapper .authorize.locked");
+                if (openAuthFormLockButton) {
+                    openAuthFormLockButton?.click();
+                    clickAuthBtn();
+                }
+                else {
+                    const openAuthFormUnlockButton = document.querySelector(".auth-wrapper .authorize.unlocked");
+                    openAuthFormUnlockButton?.click();
+                }
+                const tokenInput = document.querySelector(".auth-container input");
+                const closeButton = document.querySelector("button.btn-done");
+                const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window?.HTMLInputElement?.prototype, "value").set;
+                nativeInputValueSetter.call(tokenInput, jwtToken);
+                const inputEvent = new Event("input", { bubbles: true });
+                tokenInput.dispatchEvent(inputEvent);
+                clickAuthBtn();
+                closeButton.click();
+            }, 400);
+        })();
     }
 }
 
@@ -73080,6 +73143,7 @@ __webpack_require__.r(__webpack_exports__);
 // })
 const swaggerUI = new _shared_website_swagger_swagger_ui__WEBPACK_IMPORTED_MODULE_0__.SwaggerUIX({ initOnPageLoaded: true, storageType: "localStorage" });
 swaggerUI.initUI();
+swaggerUI.login();
 window.swaggerUI = swaggerUI;
 
 })();
