@@ -85,3 +85,5 @@ web-build/
 # Configurations
 app/config/env.*.js
 !env.js
+
+src/shared/config/local.json

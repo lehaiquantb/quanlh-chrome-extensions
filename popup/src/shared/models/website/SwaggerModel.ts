@@ -2,14 +2,15 @@ import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "../helpers/withSetPropAction"
 import { ToolModel } from "./ToolModel"
 import { ERegexUrl } from "@/shared/constants"
+import config from "@/shared/config"
 
 export const SwaggerModel = types
   .compose(
     ToolModel,
     types.model({
       autoInitUI: types.optional(types.boolean, false),
-      email: types.optional(types.string, "admin@cybereason.com"),
-      password: types.optional(types.string, "Ab@12345678"),
+      email: types.optional(types.string, config.cr.username),
+      password: types.optional(types.string, config.cr.password),
     }),
   )
   .named("SwaggerModel")
@@ -31,7 +32,7 @@ export type SwaggerSnapshot = SnapshotOut<typeof SwaggerModel>
 
 export const SWAGGER_MODEL_DEFAULT: SwaggerSnapshot = {
   autoInitUI: false,
-  matchRegexUrls: [ERegexUrl.FIGMA],
+  matchRegexUrls: config.cr.matchRegexUrls,
   email: "",
   password: "",
 }

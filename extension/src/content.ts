@@ -70,22 +70,36 @@ class ContentScript {
 }
 
 export const contentScript = new ContentScript()
+;(async () => {
+  // const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
+  //   storageType: "chromeStorage",
+  // })
+  // console.log("restoredState", restoredState)
+  // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
+  // ;(window as any).swaggerUI = swaggerUI
+  await storageLocal.set(ROOT_STATE_STORAGE_KEY, await storageChrome.get(ROOT_STATE_STORAGE_KEY))
 
-chrome.storage.onChanged.addListener((changes, namespace) => {
-  // console.log(
-  //   `[${namespace}] on change`,
-  //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.oldValue),
-  //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
-  // )
-  storageLocal.set(ROOT_STATE_STORAGE_KEY, changes?.[ROOT_STATE_STORAGE_KEY]?.newValue)
-})
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    // console.log(
+    //   `[${namespace}] on change`,
+    //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.oldValue),
+    //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
+    // )
+    // console.log("chrome change")
+    if (namespace === "local") {
+      storageLocal.set(ROOT_STATE_STORAGE_KEY, changes?.[ROOT_STATE_STORAGE_KEY]?.newValue)
+    }
+  })
 
-storageLocal.onChange((changes) => {
-  if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue) {
-    const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
-    storageChrome.set(ROOT_STATE_STORAGE_KEY, newRootStore)
-  }
-})
+  storageLocal.onChange((changes) => {
+    if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue) {
+      // console.log("local change")
+
+      const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
+      storageChrome.set(ROOT_STATE_STORAGE_KEY, newRootStore)
+    }
+  })
+})()
 
 chrome.runtime.onConnect.addListener(() => {
   console.log("on connect")
