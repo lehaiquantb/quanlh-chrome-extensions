@@ -87131,7 +87131,7 @@ const ApiComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)((
 const GroupApiComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)((props) => {
     const { groupApi } = props;
     const { name, apiList } = groupApi;
-    return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null, apiList.map((api) => (react__WEBPACK_IMPORTED_MODULE_2___default().createElement(ApiComponent, { key: api.path, api: api })))));
+    return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null, apiList.map((api, index) => (react__WEBPACK_IMPORTED_MODULE_2___default().createElement(ApiComponent, { key: `${api.method}-${api.path}-${index}`, api: api })))));
 });
 SwaggerSideBarComponent.defaultProps = {};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_3__["default"])(SwaggerSideBarComponent));
@@ -88033,8 +88033,20 @@ class Storage {
             case "chromeStorage":
                 _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.onChanged?.addListener?.((changes, namespace) => {
                     // console.log("changes", changes, namespace)
-                    cb?.(changes);
+                    if (namespace === "local") {
+                        cb?.(changes);
+                    }
                 });
+        }
+    }
+    async clear() {
+        switch (this.type) {
+            case "localStorage":
+                localStorage.clear();
+                break;
+            case "chromeStorage":
+                await _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.local?.clear?.();
+                break;
         }
     }
 }
@@ -89920,7 +89932,7 @@ function filter (array, pattern) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"]}}');
+module.exports = JSON.parse('{"cr":{"username":"admin","password":"admin","matchRegexUrls":[".*swagger.*"]}}');
 
 /***/ })
 

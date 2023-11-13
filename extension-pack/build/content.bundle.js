@@ -23612,8 +23612,20 @@ class Storage {
             case "chromeStorage":
                 _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.onChanged?.addListener?.((changes, namespace) => {
                     // console.log("changes", changes, namespace)
-                    cb?.(changes);
+                    if (namespace === "local") {
+                        cb?.(changes);
+                    }
                 });
+        }
+    }
+    async clear() {
+        switch (this.type) {
+            case "localStorage":
+                localStorage.clear();
+                break;
+            case "chromeStorage":
+                await _shared__WEBPACK_IMPORTED_MODULE_0__.chrome?.storage?.local?.clear?.();
+                break;
         }
     }
 }
@@ -23761,7 +23773,7 @@ function _typeof(obj) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"]}}');
+module.exports = JSON.parse('{"cr":{"username":"admin","password":"admin","matchRegexUrls":[".*swagger.*"]}}');
 
 /***/ })
 

@@ -76,8 +76,21 @@ export class Storage {
       case "chromeStorage":
         chrome?.storage?.onChanged?.addListener?.((changes, namespace) => {
           // console.log("changes", changes, namespace)
-          cb?.(changes)
+          if (namespace === "local") {
+            cb?.(changes)
+          }
         })
+    }
+  }
+
+  async clear() {
+    switch (this.type) {
+      case "localStorage":
+        localStorage.clear()
+        break
+      case "chromeStorage":
+        await chrome?.storage?.local?.clear?.()
+        break
     }
   }
 }
