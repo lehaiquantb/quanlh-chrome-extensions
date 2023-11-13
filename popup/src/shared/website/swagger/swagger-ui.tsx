@@ -11,6 +11,9 @@ import {
   injectCopyToClipboard,
   injectCopyToClipboardField,
 } from "@/shared/scripts/injectCopyToClipboard"
+import SwaggerExtraRightSection, {
+  SwaggerExtraRightSectionComponent,
+} from "@/shared/components/swagger/SwaggerExtraRightSection"
 
 // function whenAvailable(name: any, callback: any) {
 //     const interval = 10; // ms
@@ -24,6 +27,7 @@ import {
 // }
 
 const ID_SIDE_BAR = "side-bar"
+const ID_EXTRA_RIGHT = "extra-right"
 const ID_HEADER = "ql-sw-header"
 
 export function querySelectorIncludesText(selector: string, text: string, parent = document) {
@@ -256,6 +260,10 @@ export class SwaggerUIX {
     `<div id="${ID_SIDE_BAR}" class="side-bar"></div>`,
   ) as HTMLDivElement
 
+  $extraRight: HTMLDivElement = createElementFromHTML(
+    `<div id="${ID_EXTRA_RIGHT}" class="${ID_EXTRA_RIGHT}"></div>`,
+  ) as HTMLDivElement
+
   $headerWrapper: HTMLDivElement = createElementFromHTML(
     `<div id="${ID_HEADER}"></div>`,
   ) as HTMLDivElement
@@ -315,13 +323,17 @@ export class SwaggerUIX {
   }
 
   handleResponseInterceptor() {
+    this.onResponse((response) => {
+      setTimeout(() => {
+        this.injectCopyToClipboardField()
+      }, 1000)
+    })
+  }
+
+  onResponse(cb: (r: any) => void) {
     if (this.swaggerUIBundle) {
       this.swaggerUIBundle.getConfigs().responseInterceptor = (response: any) => {
-        console.log("responseInterceptor", response)
-
-        setTimeout(() => {
-          this.injectCopyToClipboardField()
-        }, 1000)
+        cb(response)
       }
     }
   }
@@ -346,18 +358,29 @@ export class SwaggerUIX {
   changeLayout() {
     this.$schemesWrapper.prepend(this.$headerWrapper)
     this.$mainWrapper.prepend(this.$sideBar)
+    this.$mainWrapper.append(this.$extraRight)
+    this.$extraRight.style.width = `45rem`
     this.$mainWrapper.style.display = "flex"
     this.$mainWrapper.style.flexDirection = "row"
-    this.$mainWrapper.style.maxWidth = `${window.screen.width}px`
-    this.$sideBar.style.width = `70rem`
+    this.$mainWrapper.style.maxWidth = `fit-content`
+    this.$mainWrapper.style.padding = `0px 30px`
+    this.$sideBar.style.width = `25rem`
+    this.$sideBar.style.marginRight = `3rem`
     this.$sectionWrapper.style.width = `100rem`
     this.$sectionWrapper.style.overflow = `auto`
     this.$sectionWrapper.style.maxHeight = `60rem`
     const SwaggerSideBar = withStorage(SwaggerSideBarComponent, { storageType: this.storageType })
     const SwaggerHeader = withStorage(SwaggerHeaderComponent, { storageType: this.storageType })
+    const SwaggerExtraRightSection = withStorage(SwaggerExtraRightSectionComponent, {
+      storageType: this.storageType,
+    })
 
     UIManager.render({ Component: <SwaggerSideBar swaggerUI={this} />, id: ID_SIDE_BAR })
     UIManager.render({ Component: <SwaggerHeader swaggerUI={this} />, id: ID_HEADER })
+    UIManager.render({
+      Component: <SwaggerExtraRightSection swaggerUI={this} />,
+      id: ID_EXTRA_RIGHT,
+    })
   }
 
   hideUINotNeeded() {
