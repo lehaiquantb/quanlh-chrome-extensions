@@ -6,6 +6,7 @@ import { UIManager } from "../UIManager"
 import withStorage from "@/shared/withStorage"
 import { Api, GroupApi, SwaggerUIX } from "@/shared/website/swagger/swagger-ui"
 import { Collapse, CollapseProps } from "antd"
+import { ButtonCopyToClipboard } from "../common/ButtonCopyToClipboard/ButtonCopyToClipboard"
 
 type Props = {
   swaggerUI: SwaggerUIX
@@ -46,6 +47,7 @@ export const SwaggerSideBarComponent: FC<Props> = observer((props: Props) => {
 
   return (
     <div>
+      <ButtonCopyToClipboard />
       <h1>Hello - {autoInitUI ? "true" : "false"}</h1>
       <Collapse items={items} bordered={false} defaultActiveKey={["1"]} />
     </div>

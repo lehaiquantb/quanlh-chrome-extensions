@@ -2,6 +2,8 @@ import config from "./shared/config"
 import { _rootStore } from "./shared/models"
 import { SwaggerUIX } from "./shared/website/swagger/swagger-ui"
 import { setupRootStore } from "./shared/models/helpers/setupRootStore"
+import "./assets/scss/copy-field.scss"
+
 // chrome.storage.onChanged.addListener((changes, namespace) => {
 //   console.log(
 //     `[${namespace}] on change`,

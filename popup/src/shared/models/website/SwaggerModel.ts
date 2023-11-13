@@ -33,6 +33,6 @@ export type SwaggerSnapshot = SnapshotOut<typeof SwaggerModel>
 export const SWAGGER_MODEL_DEFAULT: SwaggerSnapshot = {
   autoInitUI: false,
   matchRegexUrls: config.cr.matchRegexUrls,
-  email: "",
-  password: "",
+  email: config.cr.username,
+  password: config.cr.password,
 }

@@ -1,3 +1,4 @@
+import config from "@/shared/config"
 import { useStores } from "@/shared/models"
 import { SwaggerUIX } from "@/shared/website/swagger/swagger-ui"
 import withStorage from "@/shared/withStorage"
@@ -11,14 +12,14 @@ type Props = {
 
 export const SwaggerHeaderComponent: FC<Props> = observer((props: Props) => {
   const { swaggerUI } = props
-  const [email, setEmail] = useState("admin@cybereason.com")
-  const [pass, setPass] = useState("Ab@12345678")
 
   const {
     website: {
-      swaggerTool: { autoExecute, autoInitUI },
+      swaggerTool: { autoExecute, autoInitUI, email: _email, password: _password },
     },
   } = useStores()
+  const [pass, setPass] = useState(config.cr.password)
+  const [email, setEmail] = useState(config.cr.username)
 
   const onLogin = () => {
     swaggerUI.login(email, pass)

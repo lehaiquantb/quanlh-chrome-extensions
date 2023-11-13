@@ -23472,8 +23472,8 @@ const SwaggerModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.compose(
 const SWAGGER_MODEL_DEFAULT = {
     autoInitUI: false,
     matchRegexUrls: _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.matchRegexUrls,
-    email: "",
-    password: "",
+    email: _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.username,
+    password: _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.password,
 };
 
 
@@ -23773,7 +23773,7 @@ function _typeof(obj) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin","password":"admin","matchRegexUrls":[".*swagger.*"]}}');
+module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"]}}');
 
 /***/ })
 
@@ -24144,7 +24144,7 @@ const contentScript = new ContentScript();
     // console.log("restoredState", restoredState)
     // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
     // ;(window as any).swaggerUI = swaggerUI
-    await _shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.set(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY, await _shared__WEBPACK_IMPORTED_MODULE_0__.storageChrome.get(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY));
+    // await storageLocal.set(ROOT_STATE_STORAGE_KEY, await storageChrome.get(ROOT_STATE_STORAGE_KEY))
     chrome.storage.onChanged.addListener((changes, namespace) => {
         // console.log(
         //   `[${namespace}] on change`,

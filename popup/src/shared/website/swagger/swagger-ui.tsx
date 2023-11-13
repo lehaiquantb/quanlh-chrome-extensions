@@ -7,6 +7,10 @@ import withStorage from "@/shared/withStorage"
 import { SwaggerHeaderComponent } from "@/shared/components/swagger/SwaggerHeader"
 import config from "@/shared/config"
 import { camelCase } from "lodash"
+import {
+  injectCopyToClipboard,
+  injectCopyToClipboardField,
+} from "@/shared/scripts/injectCopyToClipboard"
 
 // function whenAvailable(name: any, callback: any) {
 //     const interval = 10; // ms
@@ -136,6 +140,13 @@ export class Api {
     //   })
     // }
     this.handleHiddenResponseExample()
+  }
+
+  injectCopyToClipboardField() {
+    const pre = this?.$responsesTableLive?.querySelector("pre") as HTMLPreElement
+    if (pre) {
+      injectCopyToClipboardField(pre)
+    }
   }
 
   handleHiddenResponseExample() {
@@ -297,6 +308,18 @@ export class SwaggerUIX {
     this.$informationContainerWrapper.style.display = "none"
     this.$schemaContainer.style.padding = `10px 0`
     this.$models.style.display = "none"
+  }
+
+  injectCopyToClipboard() {
+    injectCopyToClipboard()
+  }
+
+  injectCopyToClipboardField() {
+    this.groupApiList.forEach((g) => {
+      g.apiList.forEach((api) => {
+        api.injectCopyToClipboardField()
+      })
+    })
   }
 
   async login(email?: string, password?: string) {

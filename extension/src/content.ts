@@ -77,7 +77,7 @@ export const contentScript = new ContentScript()
   // console.log("restoredState", restoredState)
   // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
   // ;(window as any).swaggerUI = swaggerUI
-  await storageLocal.set(ROOT_STATE_STORAGE_KEY, await storageChrome.get(ROOT_STATE_STORAGE_KEY))
+  // await storageLocal.set(ROOT_STATE_STORAGE_KEY, await storageChrome.get(ROOT_STATE_STORAGE_KEY))
 
   chrome.storage.onChanged.addListener((changes, namespace) => {
     // console.log(
