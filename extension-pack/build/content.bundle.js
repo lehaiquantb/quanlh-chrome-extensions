@@ -22718,6 +22718,24 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./src/shared/config/index.ts":
+/*!************************************!*\
+  !*** ./src/shared/config/index.ts ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _local_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./local.json */ "./src/shared/config/local.json");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_local_json__WEBPACK_IMPORTED_MODULE_0__);
+
+
+/***/ }),
+
 /***/ "./src/shared/constants.ts":
 /*!*********************************!*\
   !*** ./src/shared/constants.ts ***!
@@ -22758,6 +22776,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getRuntimeEnvironment": () => (/* binding */ getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* binding */ globalVarIsExist),
 /* harmony export */   "isEmptyString": () => (/* binding */ isEmptyString),
+/* harmony export */   "isMatchWebsite": () => (/* binding */ isMatchWebsite),
 /* harmony export */   "parseJson": () => (/* binding */ parseJson),
 /* harmony export */   "tryEval": () => (/* binding */ tryEval)
 /* harmony export */ });
@@ -22870,6 +22889,9 @@ const parseJson = (value) => {
         return undefined;
     }
 };
+const isMatchWebsite = (matchRegexUrls) => {
+    return matchRegexUrls?.some((url) => new RegExp(url).test(window.location.href));
+};
 
 
 /***/ }),
@@ -22894,6 +22916,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getRuntimeEnvironment": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.globalVarIsExist),
 /* harmony export */   "isEmptyString": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.isEmptyString),
+/* harmony export */   "isMatchWebsite": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.isMatchWebsite),
 /* harmony export */   "parseJson": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.parseJson),
 /* harmony export */   "storageChrome": () => (/* reexport safe */ _services_storage__WEBPACK_IMPORTED_MODULE_1__.storageChrome),
 /* harmony export */   "storageLocal": () => (/* reexport safe */ _services_storage__WEBPACK_IMPORTED_MODULE_1__.storageLocal),
@@ -23425,15 +23448,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
 /* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
 /* harmony import */ var _ToolModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ToolModel */ "./src/shared/models/website/ToolModel.ts");
-/* harmony import */ var _shared_constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/constants */ "./src/shared/constants.ts");
+/* harmony import */ var _shared_config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/config */ "./src/shared/config/index.ts");
 
 
 
 
 const SwaggerModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.compose(_ToolModel__WEBPACK_IMPORTED_MODULE_1__.ToolModel, mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model({
     autoInitUI: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.boolean, false),
-    email: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, "admin@cybereason.com"),
-    password: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, "Ab@12345678"),
+    email: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.username),
+    password: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.password),
 }))
     .named("SwaggerModel")
     .views((self) => ({}))
@@ -23448,7 +23471,7 @@ const SwaggerModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.compose(
 }));
 const SWAGGER_MODEL_DEFAULT = {
     autoInitUI: false,
-    matchRegexUrls: [_shared_constants__WEBPACK_IMPORTED_MODULE_2__.ERegexUrl.FIGMA],
+    matchRegexUrls: _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.matchRegexUrls,
     email: "",
     password: "",
 };
@@ -23728,6 +23751,17 @@ function _typeof(obj) {
     return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   }, _typeof(obj);
 }
+
+/***/ }),
+
+/***/ "./src/shared/config/local.json":
+/*!**************************************!*\
+  !*** ./src/shared/config/local.json ***!
+  \**************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"]}}');
 
 /***/ })
 
@@ -24091,20 +24125,33 @@ class ContentScript {
     }
 }
 const contentScript = new ContentScript();
-chrome.storage.onChanged.addListener((changes, namespace) => {
-    // console.log(
-    //   `[${namespace}] on change`,
-    //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.oldValue),
-    //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
-    // )
-    _shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.set(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY, changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue);
-});
-_shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.onChange((changes) => {
-    if (changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue) {
-        const newRootStore = changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue;
-        _shared__WEBPACK_IMPORTED_MODULE_0__.storageChrome.set(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY, newRootStore);
-    }
-});
+(async () => {
+    // const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
+    //   storageType: "chromeStorage",
+    // })
+    // console.log("restoredState", restoredState)
+    // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
+    // ;(window as any).swaggerUI = swaggerUI
+    await _shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.set(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY, await _shared__WEBPACK_IMPORTED_MODULE_0__.storageChrome.get(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY));
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+        // console.log(
+        //   `[${namespace}] on change`,
+        //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.oldValue),
+        //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
+        // )
+        // console.log("chrome change")
+        if (namespace === "local") {
+            _shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.set(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY, changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue);
+        }
+    });
+    _shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.onChange((changes) => {
+        if (changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue) {
+            // console.log("local change")
+            const newRootStore = changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue;
+            _shared__WEBPACK_IMPORTED_MODULE_0__.storageChrome.set(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY, newRootStore);
+        }
+    });
+})();
 chrome.runtime.onConnect.addListener(() => {
     console.log("on connect");
 });

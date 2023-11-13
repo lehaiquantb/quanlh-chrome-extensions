@@ -4,12 +4,12 @@ import "./assets/scss/app.scss";
 import logo from "./logo.svg";
 import { getChrome, getCurrentTab } from "./utils/helper";
 import { Extension } from "./utils/Extension";
-import { ECommandId } from "./shared";
+import { ECommandId, storageChrome, storageLocal } from "./shared";
 import { useInitialRootStore, useStores } from "@/shared/models";
 import ConvertCssToTailwind from "./components/ConvertCssToTailwind/ConvertCssToTailwind";
 import CodeEditor from "./components/Editor/CodeEditor";
 import { editor } from "monaco-editor";
-import { Switch, Tabs, TabsProps } from "antd";
+import { Button, Switch, Tabs, TabsProps } from "antd";
 import { observer } from "mobx-react-lite";
 // console.log(getChrome()?.devtools?.inspectedWindow?.eval("chrome"));
 
@@ -82,8 +82,18 @@ const Tab2 = () => {
   );
 };
 
-const Tab3 = () => {
-  return <div>Tab3</div>;
+const CommonSetting = () => {
+  const onResetStorage = async () => {
+    await storageChrome.clear();
+    await storageLocal.clear();
+  };
+  return (
+    <div>
+      <Button type="primary" danger onClick={onResetStorage}>
+        Reset storage
+      </Button>
+    </div>
+  );
 };
 
 const items: TabsProps["items"] = [
@@ -99,8 +109,8 @@ const items: TabsProps["items"] = [
   },
   {
     key: "3",
-    label: `Tab 3`,
-    children: <Tab3 />,
+    label: `Common Setting`,
+    children: <CommonSetting />,
   },
 ];
 

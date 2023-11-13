@@ -122,3 +122,7 @@ export const parseJson = (value: any) => {
     return undefined
   }
 }
+
+export const isMatchWebsite = (matchRegexUrls: string[]) => {
+  return matchRegexUrls?.some((url) => new RegExp(url).test(window.location.href))
+}

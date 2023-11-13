@@ -5,6 +5,8 @@ import { getGlobalVar } from "@/shared/helper.common"
 import { StorageType } from "@/shared/services/storage"
 import withStorage from "@/shared/withStorage"
 import { SwaggerHeaderComponent } from "@/shared/components/swagger/SwaggerHeader"
+import config from "@/shared/config"
+import { camelCase } from "lodash"
 
 // function whenAvailable(name: any, callback: any) {
 //     const interval = 10; // ms
@@ -21,9 +23,13 @@ const ID_SIDE_BAR = "side-bar"
 const ID_HEADER = "ql-sw-header"
 
 export function querySelectorIncludesText(selector: string, text: string, parent = document) {
-  return Array.from(parent?.querySelectorAll?.(selector))?.find((el) =>
-    el?.textContent?.includes(text),
-  )
+  try {
+    return Array.from(parent?.querySelectorAll?.(selector))?.find((el) =>
+      el?.textContent?.includes(text),
+    )
+  } catch (error) {
+    return null
+  }
 }
 
 export function createElementFromHTML(htmlString: string) {
@@ -33,20 +39,24 @@ export function createElementFromHTML(htmlString: string) {
   return div.firstChild as HTMLElement
 }
 
-export function polling(callback: () => boolean, execute: () => void) {
+export function polling(callback: () => boolean, execute: () => void, maxRetry = 1000) {
   const interval = 100 // ms
+  if (maxRetry <= 0) {
+    return
+  }
   const id = setTimeout(function () {
     if (callback()) {
       execute()
       id && clearTimeout(id)
     } else {
-      polling(callback, execute)
+      polling(callback, execute, maxRetry - 1)
       id && clearTimeout(id)
     }
   }, interval)
 }
 
 export class GroupApi {
+  id!: string
   name: string
   $el: HTMLSpanElement
   apiList: Api[] = []
@@ -59,6 +69,9 @@ export class GroupApi {
   constructor(opts: { $el: HTMLSpanElement }) {
     this.$el = opts.$el
     this.name = this.$el?.querySelector("h3")?.getAttribute("data-tag") ?? ""
+    this.id = `group-${camelCase(this.name)}`
+    this.$el.id = this.id
+
     this.apiList = Array.from(
       this.$el.querySelector("div.operation-tag-content")?.childNodes as any,
     )?.map(($el: any) => new Api({ $el, parent: this }))
@@ -67,6 +80,7 @@ export class GroupApi {
 }
 
 export class Api {
+  id!: string
   description: string
   path: string
   method: string
@@ -79,12 +93,16 @@ export class Api {
     return this.$el.querySelector("div.responses-inner") as HTMLDivElement
   }
 
-  get $responsesTable(): HTMLTableElement {
-    return this.$el.querySelector("table.responses-table") as HTMLTableElement
+  get $responsesTableExample(): HTMLTableElement {
+    return this.$el.querySelector("table.responses-table[aria-live='polite']") as HTMLTableElement
+  }
+
+  get $responsesTableLive(): HTMLTableElement {
+    return this.$el.querySelector("table.responses-table.live-responses-table") as HTMLTableElement
   }
 
   get $responseHeaders(): HTMLDivElement {
-    return querySelectorIncludesText("h5", "Response headers", this.$el as any)
+    return querySelectorIncludesText("h5", "Response headers", this.$responsesTableLive as any)
       ?.parentElement as HTMLDivElement
   }
 
@@ -100,22 +118,23 @@ export class Api {
     this.description = this.$el?.querySelector(".opblock-summary-description")?.textContent ?? ""
     this.href = this.$el?.querySelector(".opblock-summary-path a")?.getAttribute("href") ?? ""
     this.$btnExpand = this.$el.querySelector("button.opblock-control-arrow") as any
-    if (this.parent?.$inner) {
-      new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (mutation.type === "childList") {
-            polling(
-              () => !!this.$responsesInner,
-              () => {
-                this.handleChangeChildList()
-              },
-            )
-          }
-        })
-      }).observe(this.parent.$inner, {
-        childList: true,
-      })
-    }
+    this.id = `api-${camelCase(this.method)}-${camelCase(this.path)}`
+    this.$el.id = this.id
+    // if (this.parent?.$inner) {
+    //   new MutationObserver((mutations) => {
+    //     mutations.forEach((mutation) => {
+    //       if (mutation.type === "childList") {
+    //         polling(
+    //           () => !!this.$responsesInner,
+    //           () => {
+    //           },
+    //         )
+    //       }
+    //     })
+    //   }).observe(this.parent.$inner, {
+    //     childList: true,
+    //   })
+    // }
     this.handleHiddenResponseExample()
   }
 
@@ -124,10 +143,12 @@ export class Api {
       mutations.forEach((mutation) => {
         if (mutation.type === "attributes") {
           if (this.isExpanded) {
+            this.handleChangeChildList()
+
             polling(
-              () => !!this.$responsesTable?.style,
+              () => !!this.$responsesTableExample?.style,
               () => {
-                this.$responsesTable.style.display = "none"
+                this.$responsesTableExample.style.display = "none"
               },
             )
           }
@@ -137,6 +158,12 @@ export class Api {
     observer.observe(this.$btnExpand, {
       attributes: true,
     })
+  }
+
+  hideResponseHeader() {
+    if (this.$responseHeaders?.style) {
+      this.$responseHeaders.style.display = "none"
+    }
   }
 
   handleChangeChildList() {
@@ -155,6 +182,8 @@ export class Api {
       })
     })
     if (this.$responsesInner) {
+      // console.log("handleChangeChildList", this.$responsesInner)
+
       observer.observe(this.$responsesInner, {
         childList: true,
       })
@@ -165,7 +194,7 @@ export class Api {
 export class SwaggerUIX {
   logger = {
     error: (...args: any[]) => {
-      console.error("[SWAGGER] [ERROR]", ...args)
+      console.error("[SWAGGER] [ERROR]", args)
     },
     info: (...args: any[]) => {
       console.info("[SWAGGER] [INFO]", ...args)
@@ -193,7 +222,7 @@ export class SwaggerUIX {
     return document.querySelector(".information-container.wrapper") as HTMLDivElement
   }
 
-  get $wrapper(): HTMLDivElement {
+  get $mainWrapper(): HTMLDivElement {
     return this.$sectionWrapper.parentElement as HTMLDivElement
   }
 
@@ -229,7 +258,6 @@ export class SwaggerUIX {
   }
 
   onPageLoaded() {
-    console.log("onPageLoaded")
     this.hideUINotNeeded()
     const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes as any)
     els?.forEach(($el: any) => {
@@ -237,13 +265,21 @@ export class SwaggerUIX {
     })
 
     this.changeLayout()
+    document.addEventListener("change", (e) => {
+      this.groupApiList.forEach((groupApi) => {
+        groupApi.apiList.forEach((api) => {
+          api?.hideResponseHeader()
+        })
+      })
+    })
   }
 
   changeLayout() {
     this.$schemesWrapper.prepend(this.$headerWrapper)
-    this.$wrapper.prepend(this.$sideBar)
-    this.$wrapper.style.display = "flex"
-    this.$wrapper.style.flexDirection = "row"
+    this.$mainWrapper.prepend(this.$sideBar)
+    this.$mainWrapper.style.display = "flex"
+    this.$mainWrapper.style.flexDirection = "row"
+    this.$mainWrapper.style.maxWidth = `${window.screen.width}px`
     this.$sideBar.style.width = `70rem`
     this.$sectionWrapper.style.width = `100rem`
     this.$sectionWrapper.style.overflow = `auto`
@@ -297,8 +333,8 @@ export class SwaggerUIX {
     ;(async () => {
       const payload = {
         provider: "email",
-        email: email ?? "admin@cybereason.com",
-        password: password ?? "Ab@12345678",
+        email: email ?? config.cr.username,
+        password: password ?? config.cr.password,
       }
 
       const res = (await callLogin(payload)) as any
