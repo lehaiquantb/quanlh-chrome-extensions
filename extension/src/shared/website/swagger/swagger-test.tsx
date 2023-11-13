@@ -1,6 +1,6 @@
 import { _rootStore, setupRootStore } from "@/shared/models"
 import { SwaggerUIX } from "./swagger-ui"
-
+import "../../../assets/scss/copy-field.scss"
 // test
 // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: true, storageType: "localStorage" })
 // swaggerUI.initUI()
@@ -9,7 +9,7 @@ import { SwaggerUIX } from "./swagger-ui"
   const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
     storageType: "localStorage",
   })
-  const swaggerUI = new SwaggerUIX({ storageType: "localStorage" })
+  const swaggerUI = new SwaggerUIX({ storageType: "localStorage", swaggerUIBundle: undefined })
 
   swaggerUI.initUI()
 

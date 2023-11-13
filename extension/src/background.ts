@@ -1,5 +1,5 @@
 const color = "#3aa757"
-console.log("Background script running...");
+console.log("Background script running...")
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({ color })

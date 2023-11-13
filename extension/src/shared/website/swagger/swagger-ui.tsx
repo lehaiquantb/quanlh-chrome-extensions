@@ -65,13 +65,15 @@ export class GroupApi {
   $el: HTMLSpanElement
   apiList: Api[] = []
   href: string
+  swaggerUI!: SwaggerUIX
 
   get $inner(): HTMLDivElement {
     return this.$el.querySelector("div.opblock") as HTMLDivElement
   }
 
-  constructor(opts: { $el: HTMLSpanElement }) {
+  constructor(opts: { $el: HTMLSpanElement; swaggerUI: SwaggerUIX }) {
     this.$el = opts.$el
+    this.swaggerUI = opts.swaggerUI
     this.name = this.$el?.querySelector("h3")?.getAttribute("data-tag") ?? ""
     this.id = `group-${camelCase(this.name)}`
     this.$el.id = this.id
@@ -92,6 +94,7 @@ export class Api {
   $el: HTMLSpanElement
   parent: GroupApi
   $btnExpand: HTMLButtonElement
+  swaggerUI!: SwaggerUIX
 
   get $responsesInner(): HTMLDivElement {
     return this.$el.querySelector("div.responses-inner") as HTMLDivElement
@@ -103,6 +106,10 @@ export class Api {
 
   get $responsesTableLive(): HTMLTableElement {
     return this.$el.querySelector("table.responses-table.live-responses-table") as HTMLTableElement
+  }
+
+  get $codePreResponse(): HTMLTableElement {
+    return this.$responsesTableLive?.querySelector("pre code") as HTMLTableElement
   }
 
   get $responseHeaders(): HTMLDivElement {
@@ -117,6 +124,7 @@ export class Api {
   constructor(opts: { $el: HTMLSpanElement; parent: GroupApi }) {
     this.$el = opts.$el
     this.parent = opts.parent
+    this.swaggerUI = opts.parent.swaggerUI
     this.method = this.$el?.querySelector(".opblock-summary-method")?.textContent ?? ""
     this.path = this.$el?.querySelector(".opblock-summary-path")?.getAttribute("data-path") ?? ""
     this.description = this.$el?.querySelector(".opblock-summary-description")?.textContent ?? ""
@@ -145,7 +153,7 @@ export class Api {
   injectCopyToClipboardField() {
     const pre = this?.$responsesTableLive?.querySelector("pre") as HTMLPreElement
     if (pre) {
-      injectCopyToClipboardField(pre)
+      injectCopyToClipboardField(pre, this.swaggerUI)
     }
   }
 
@@ -154,8 +162,9 @@ export class Api {
       mutations.forEach((mutation) => {
         if (mutation.type === "attributes") {
           if (this.isExpanded) {
-            this.handleChangeChildList()
+            console.log("handleHiddenResponseExample")
 
+            this.handleChangeResponseLive()
             polling(
               () => !!this.$responsesTableExample?.style,
               () => {
@@ -177,27 +186,55 @@ export class Api {
     }
   }
 
-  handleChangeChildList() {
+  handleChangeResponseLive() {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === "childList") {
           if (this.isExpanded) {
+            console.log("handleChangeResponseLive")
+
             polling(
               () => !!this.$responseHeaders?.style,
               () => {
                 this.$responseHeaders.style.display = "none"
               },
             )
+
+            // polling(
+            //   () => !!this.$codePreResponse?.style,
+            //   () => {
+            //     this.injectCopyToClipboardField()
+            //     // this.handleChangeCodePre()
+            //   },
+            // )
           }
         }
       })
     })
     if (this.$responsesInner) {
-      // console.log("handleChangeChildList", this.$responsesInner)
-
+      // this.injectCopyToClipboardField()
+      console.log("handleChangeResponseLive", "success")
       observer.observe(this.$responsesInner, {
         childList: true,
       })
+    }
+  }
+
+  handleChangeCodePre() {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "childList") {
+          if (this.isExpanded) {
+            console.log("handleChangeCodePre")
+            this.injectCopyToClipboardField()
+          }
+        }
+      })
+    })
+    if (this.$codePreResponse) {
+      // observer.observe(this.$codePreResponse, {
+      //   childList: true,
+      // })
     }
   }
 }
@@ -212,7 +249,9 @@ export class SwaggerUIX {
     },
   }
 
+  mouseEvent: MouseEvent | null = null
   groupApiList: GroupApi[] = []
+  swaggerUIBundle: any
   $sideBar: HTMLDivElement = createElementFromHTML(
     `<div id="${ID_SIDE_BAR}" class="side-bar"></div>`,
   ) as HTMLDivElement
@@ -252,7 +291,12 @@ export class SwaggerUIX {
   storageType: StorageType = "chromeStorage"
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function, no-useless-constructor
-  constructor(opts?: { initOnPageLoaded?: boolean; storageType?: StorageType }) {
+  constructor(opts?: {
+    initOnPageLoaded?: boolean
+    storageType?: StorageType
+    swaggerUIBundle: any
+  }) {
+    this.swaggerUIBundle = opts?.swaggerUIBundle
     const { initOnPageLoaded = false, storageType = "chromeStorage" } = opts ?? {}
     this.storageType = storageType
     if (initOnPageLoaded) {
@@ -260,6 +304,8 @@ export class SwaggerUIX {
         this.initUI()
       })
     }
+    this.trackMouse()
+    this.handleResponseInterceptor()
   }
 
   initUI() {
@@ -268,11 +314,23 @@ export class SwaggerUIX {
     }, 500)
   }
 
+  handleResponseInterceptor() {
+    if (this.swaggerUIBundle) {
+      this.swaggerUIBundle.getConfigs().responseInterceptor = (response: any) => {
+        console.log("responseInterceptor", response)
+
+        setTimeout(() => {
+          this.injectCopyToClipboardField()
+        }, 1000)
+      }
+    }
+  }
+
   onPageLoaded() {
     this.hideUINotNeeded()
     const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes as any)
     els?.forEach(($el: any) => {
-      this.groupApiList.push(new GroupApi({ $el }))
+      this.groupApiList.push(new GroupApi({ $el, swaggerUI: this }))
     })
 
     this.changeLayout()
@@ -304,10 +362,18 @@ export class SwaggerUIX {
 
   hideUINotNeeded() {
     // hide top bar
-    this.$topBar.style.display = "none"
-    this.$informationContainerWrapper.style.display = "none"
-    this.$schemaContainer.style.padding = `10px 0`
-    this.$models.style.display = "none"
+    if (this.$topBar?.style) {
+      this.$topBar.style.display = "none"
+    }
+    if (this.$informationContainerWrapper?.style) {
+      this.$informationContainerWrapper.style.display = "none"
+    }
+    if (this.$schemaContainer?.style) {
+      this.$schemaContainer.style.padding = `10px 0`
+    }
+    if (this.$models?.style) {
+      this.$models.style.display = "none"
+    }
   }
 
   injectCopyToClipboard() {
@@ -322,9 +388,17 @@ export class SwaggerUIX {
     })
   }
 
+  trackMouse() {
+    const onMouseUpdate = (e: MouseEvent) => {
+      this.mouseEvent = e
+    }
+    document.addEventListener("mousemove", onMouseUpdate, false)
+    document.addEventListener("mouseenter", onMouseUpdate, false)
+  }
+
   async login(email?: string, password?: string) {
     const callLogin = async (data: any) => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         fetch(`${location.origin}/api/v1/auth/login`, {
           headers: {
             accept: "application/json, text/plain, */*",

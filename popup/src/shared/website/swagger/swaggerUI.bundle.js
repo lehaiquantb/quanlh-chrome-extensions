@@ -11329,7 +11329,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".quanlh-copy-button {\n  width: 25px;\n  height: 25px;\n  background-color: white;\n  border-radius: 3px;\n  position: absolute;\n  right: 5px;\n  bottom: 5px;\n  border: 1px solid #e5e5e5;\n  opacity: 0.8;\n}\n.quanlh-copy-button span {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.quanlh-copy-button:hover {\n  opacity: 0.7;\n  cursor: pointer;\n}\n\n.quanlh-d-none {\n  display: none !important;\n}\n\n.quanlh-super-center {\n  display: grid;\n  place-items: center;\n}\n\n.quanlh-copy-success svg {\n  color: #3fb950;\n  fill: currentColor;\n}", "",{"version":3,"sources":["webpack://./src/shared/components/common/ButtonCopyToClipboard/index.scss"],"names":[],"mappings":"AAAA;EACI,WAAA;EACA,YAAA;EACA,uBAAA;EACA,kBAAA;EACA,kBAAA;EACA,UAAA;EACA,WAAA;EACA,yBAAA;EACA,YAAA;AACJ;AAAI;EACI,WAAA;EACA,YAAA;EACA,aAAA;EACA,mBAAA;EACA,uBAAA;AAER;AACI;EACI,YAAA;EACA,eAAA;AACR;;AAGA;EACI,wBAAA;AAAJ;;AAGA;EACI,aAAA;EACA,mBAAA;AAAJ;;AAII;EACI,cAAA;EACA,kBAAA;AADR","sourcesContent":[".quanlh-copy-button {\n    width: 25px;\n    height: 25px;\n    background-color: white;\n    border-radius: 3px;\n    position: absolute;\n    right: 5px;\n    bottom: 5px;\n    border: 1px solid #e5e5e5;\n    opacity: 0.8;\n    span {\n        width: 100%;\n        height: 100%;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n    }\n\n    &:hover {\n        opacity: 0.7;\n        cursor: pointer;\n    }\n}\n\n.quanlh-d-none {\n    display: none !important;\n}\n\n.quanlh-super-center {\n    display: grid;\n    place-items: center;\n}\n\n.quanlh-copy-success {\n    & svg {\n        color: #3fb950;\n        fill: currentColor;\n    }\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".quanlh-copy-button {\n  width: 25px;\n  height: 25px;\n  background-color: white;\n  border-radius: 3px;\n  position: absolute;\n  right: 5px;\n  bottom: 5px;\n  border: 1px solid #e5e5e5;\n  opacity: 0.8;\n}\n.quanlh-copy-button span {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.quanlh-copy-button:hover {\n  opacity: 0.7;\n  cursor: pointer;\n}\n\n.quanlh-d-none {\n  display: none !important;\n}\n\n.quanlh-super-center {\n  display: grid;\n  place-items: center;\n}\n\n.quanlh-copy-success svg {\n  color: #3fb950;\n  fill: currentColor;\n}", "",{"version":3,"sources":["webpack://./src/shared/components/common/ButtonCopyToClipboard/index.scss"],"names":[],"mappings":"AAAA;EACI,WAAA;EACA,YAAA;EACA,uBAAA;EACA,kBAAA;EACA,kBAAA;EACA,UAAA;EACA,WAAA;EACA,yBAAA;EACA,YAAA;AACJ;AAAI;EACI,WAAA;EACA,YAAA;EACA,aAAA;EACA,mBAAA;EACA,uBAAA;AAER;AACI;EACI,YAAA;EACA,eAAA;AACR;;AAGA;EACI,wBAAA;AAAJ;;AAGA;EACI,aAAA;EACA,mBAAA;AAAJ;;AAII;EACI,cAAA;EACA,kBAAA;AADR","sourcesContent":[".quanlh-copy-button {\r\n    width: 25px;\r\n    height: 25px;\r\n    background-color: white;\r\n    border-radius: 3px;\r\n    position: absolute;\r\n    right: 5px;\r\n    bottom: 5px;\r\n    border: 1px solid #e5e5e5;\r\n    opacity: 0.8;\r\n    span {\r\n        width: 100%;\r\n        height: 100%;\r\n        display: flex;\r\n        align-items: center;\r\n        justify-content: center;\r\n    }\r\n\r\n    &:hover {\r\n        opacity: 0.7;\r\n        cursor: pointer;\r\n    }\r\n}\r\n\r\n.quanlh-d-none {\r\n    display: none !important;\r\n}\r\n\r\n.quanlh-super-center {\r\n    display: grid;\r\n    place-items: center;\r\n}\r\n\r\n.quanlh-copy-success {\r\n    & svg {\r\n        color: #3fb950;\r\n        fill: currentColor;\r\n    }\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -88551,8 +88551,7 @@ const buttonCopy = `
 </div>
 `;
 const buttonCopyField = `
-<div class="quanlh-copy-field-button quanlh-super-center quanlh-field-none">
-    <div class="quanlh-copy-field-inner">
+<div class="quanlh-copy-field-button quanlh-field-none">
       <span class="quanlh-copy-success quanlh-field-none">
       <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check color-fg-success">
           <path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path>
@@ -88563,7 +88562,6 @@ const buttonCopyField = `
             <path fill-rule="evenodd" d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"></path><path fill-rule="evenodd" d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"></path>
         </svg>
     </span>
-    </div>
 
 </div>
 `;
@@ -88606,28 +88604,31 @@ const injectCopyToClipboard = (_snippets) => {
         });
     });
 };
-const injectCopyToClipboardField = (parent) => {
+const injectCopyToClipboardField = (parent, swaggerUI) => {
     const fields = Array.from(parent.querySelectorAll("span"))?.filter((item) => item?.style?.color === "rgb(162, 252, 162)");
     const listElement = [];
     fields.forEach((field) => {
-        // const wrapper = document.createElement("div")
-        // wrapper.appendChild(field.cloneNode())
+        const wrapper = document.createElement("div");
+        wrapper.style.display = "inline-block";
+        wrapper.style.position = "relative";
+        wrapper.appendChild((0,_helper_common__WEBPACK_IMPORTED_MODULE_0__.createElementByText)(field.outerHTML));
         // field.replaceWith(wrapper)
-        field.style.position = "relative";
         const buttonCopyElement = (0,_helper_common__WEBPACK_IMPORTED_MODULE_0__.createElementByText)(buttonCopyField);
         listElement.push({
             copyButton: buttonCopyElement,
             field,
+            wrapper,
         });
-        field.appendChild(buttonCopyElement);
-        // wrapper?.appendChild(buttonCopyElement)
+        // field.appendChild(buttonCopyElement)
+        wrapper?.appendChild(buttonCopyElement);
+        field.replaceWith(wrapper);
     });
-    listElement.forEach(({ copyButton, field }) => {
+    listElement.forEach(({ copyButton, field, wrapper }) => {
         const iconSuccess = copyButton.querySelector(".quanlh-copy-success");
         const iconCopy = copyButton.querySelector(".quanlh-copy-cp");
         copyButton.addEventListener("click", (event) => {
             const stringInCode = field?.textContent ?? "";
-            const text = stringInCode;
+            const text = stringInCode.slice(1, -1);
             const success = (0,_helper_common__WEBPACK_IMPORTED_MODULE_0__.copyToClipboard)(text);
             if (success) {
                 iconSuccess?.classList.remove("quanlh-field-none");
@@ -88638,14 +88639,31 @@ const injectCopyToClipboardField = (parent) => {
                 }, 1000);
             }
         });
-        field.addEventListener("mouseenter", (event) => {
+        wrapper.addEventListener("mouseenter", (event) => {
             copyButton.classList.remove("quanlh-field-none");
         });
-        field.addEventListener("mouseleave", (event) => {
-            copyButton.classList.add("quanlh-field-none");
+        wrapper.addEventListener("mouseleave", (event) => {
+            // eslint-disable-next-line prefer-const
+            let timeoutId;
+            timeoutId && clearTimeout(timeoutId);
+            timeoutId = setTimeout(function () {
+                let mouseIsInsideCopy = false;
+                let mouseIsInsideField = false;
+                if (swaggerUI.mouseEvent?.clientX && swaggerUI.mouseEvent?.clientY) {
+                    mouseIsInsideCopy = isMouseInsideElement(swaggerUI.mouseEvent?.clientX, swaggerUI.mouseEvent?.clientY, copyButton);
+                    mouseIsInsideField = isMouseInsideElement(swaggerUI.mouseEvent?.clientX, swaggerUI.mouseEvent?.clientY, wrapper);
+                }
+                if (!mouseIsInsideCopy && !mouseIsInsideField) {
+                    copyButton.classList.add("quanlh-field-none");
+                }
+            }, 100);
         });
     });
 };
+function isMouseInsideElement(mouseX, mouseY, element) {
+    const rect = element.getBoundingClientRect();
+    return mouseX >= rect.left && mouseX <= rect.right && mouseY >= rect.top && mouseY <= rect.bottom;
+}
 
 
 /***/ }),
@@ -90860,11 +90878,13 @@ class GroupApi {
     $el;
     apiList = [];
     href;
+    swaggerUI;
     get $inner() {
         return this.$el.querySelector("div.opblock");
     }
     constructor(opts) {
         this.$el = opts.$el;
+        this.swaggerUI = opts.swaggerUI;
         this.name = this.$el?.querySelector("h3")?.getAttribute("data-tag") ?? "";
         this.id = `group-${(0,lodash__WEBPACK_IMPORTED_MODULE_6__.camelCase)(this.name)}`;
         this.$el.id = this.id;
@@ -90881,6 +90901,7 @@ class Api {
     $el;
     parent;
     $btnExpand;
+    swaggerUI;
     get $responsesInner() {
         return this.$el.querySelector("div.responses-inner");
     }
@@ -90889,6 +90910,9 @@ class Api {
     }
     get $responsesTableLive() {
         return this.$el.querySelector("table.responses-table.live-responses-table");
+    }
+    get $codePreResponse() {
+        return this.$responsesTableLive?.querySelector("pre code");
     }
     get $responseHeaders() {
         return querySelectorIncludesText("h5", "Response headers", this.$responsesTableLive)
@@ -90900,6 +90924,7 @@ class Api {
     constructor(opts) {
         this.$el = opts.$el;
         this.parent = opts.parent;
+        this.swaggerUI = opts.parent.swaggerUI;
         this.method = this.$el?.querySelector(".opblock-summary-method")?.textContent ?? "";
         this.path = this.$el?.querySelector(".opblock-summary-path")?.getAttribute("data-path") ?? "";
         this.description = this.$el?.querySelector(".opblock-summary-description")?.textContent ?? "";
@@ -90927,7 +90952,7 @@ class Api {
     injectCopyToClipboardField() {
         const pre = this?.$responsesTableLive?.querySelector("pre");
         if (pre) {
-            (0,_shared_scripts_injectCopyToClipboard__WEBPACK_IMPORTED_MODULE_7__.injectCopyToClipboardField)(pre);
+            (0,_shared_scripts_injectCopyToClipboard__WEBPACK_IMPORTED_MODULE_7__.injectCopyToClipboardField)(pre, this.swaggerUI);
         }
     }
     handleHiddenResponseExample() {
@@ -90935,7 +90960,8 @@ class Api {
             mutations.forEach((mutation) => {
                 if (mutation.type === "attributes") {
                     if (this.isExpanded) {
-                        this.handleChangeChildList();
+                        console.log("handleHiddenResponseExample");
+                        this.handleChangeResponseLive();
                         polling(() => !!this.$responsesTableExample?.style, () => {
                             this.$responsesTableExample.style.display = "none";
                         });
@@ -90952,23 +90978,49 @@ class Api {
             this.$responseHeaders.style.display = "none";
         }
     }
-    handleChangeChildList() {
+    handleChangeResponseLive() {
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (mutation.type === "childList") {
                     if (this.isExpanded) {
+                        console.log("handleChangeResponseLive");
                         polling(() => !!this.$responseHeaders?.style, () => {
                             this.$responseHeaders.style.display = "none";
                         });
+                        // polling(
+                        //   () => !!this.$codePreResponse?.style,
+                        //   () => {
+                        //     this.injectCopyToClipboardField()
+                        //     // this.handleChangeCodePre()
+                        //   },
+                        // )
                     }
                 }
             });
         });
         if (this.$responsesInner) {
-            // console.log("handleChangeChildList", this.$responsesInner)
+            // this.injectCopyToClipboardField()
+            console.log("handleChangeResponseLive", "success");
             observer.observe(this.$responsesInner, {
                 childList: true,
             });
+        }
+    }
+    handleChangeCodePre() {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === "childList") {
+                    if (this.isExpanded) {
+                        console.log("handleChangeCodePre");
+                        this.injectCopyToClipboardField();
+                    }
+                }
+            });
+        });
+        if (this.$codePreResponse) {
+            // observer.observe(this.$codePreResponse, {
+            //   childList: true,
+            // })
         }
     }
 }
@@ -90981,7 +91033,9 @@ class SwaggerUIX {
             console.info("[SWAGGER] [INFO]", ...args);
         },
     };
+    mouseEvent = null;
     groupApiList = [];
+    swaggerUIBundle;
     $sideBar = createElementFromHTML(`<div id="${ID_SIDE_BAR}" class="side-bar"></div>`);
     $headerWrapper = createElementFromHTML(`<div id="${ID_HEADER}"></div>`);
     get $schemaContainer() {
@@ -91008,6 +91062,7 @@ class SwaggerUIX {
     storageType = "chromeStorage";
     // eslint-disable-next-line @typescript-eslint/no-empty-function, no-useless-constructor
     constructor(opts) {
+        this.swaggerUIBundle = opts?.swaggerUIBundle;
         const { initOnPageLoaded = false, storageType = "chromeStorage" } = opts ?? {};
         this.storageType = storageType;
         if (initOnPageLoaded) {
@@ -91015,17 +91070,29 @@ class SwaggerUIX {
                 this.initUI();
             });
         }
+        this.trackMouse();
+        this.handleResponseInterceptor();
     }
     initUI() {
         setTimeout(() => {
             this.onPageLoaded();
         }, 500);
     }
+    handleResponseInterceptor() {
+        if (this.swaggerUIBundle) {
+            this.swaggerUIBundle.getConfigs().responseInterceptor = (response) => {
+                console.log("responseInterceptor", response);
+                setTimeout(() => {
+                    this.injectCopyToClipboardField();
+                }, 1000);
+            };
+        }
+    }
     onPageLoaded() {
         this.hideUINotNeeded();
         const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes);
         els?.forEach(($el) => {
-            this.groupApiList.push(new GroupApi({ $el }));
+            this.groupApiList.push(new GroupApi({ $el, swaggerUI: this }));
         });
         this.changeLayout();
         document.addEventListener("change", (e) => {
@@ -91053,10 +91120,18 @@ class SwaggerUIX {
     }
     hideUINotNeeded() {
         // hide top bar
-        this.$topBar.style.display = "none";
-        this.$informationContainerWrapper.style.display = "none";
-        this.$schemaContainer.style.padding = `10px 0`;
-        this.$models.style.display = "none";
+        if (this.$topBar?.style) {
+            this.$topBar.style.display = "none";
+        }
+        if (this.$informationContainerWrapper?.style) {
+            this.$informationContainerWrapper.style.display = "none";
+        }
+        if (this.$schemaContainer?.style) {
+            this.$schemaContainer.style.padding = `10px 0`;
+        }
+        if (this.$models?.style) {
+            this.$models.style.display = "none";
+        }
     }
     injectCopyToClipboard() {
         (0,_shared_scripts_injectCopyToClipboard__WEBPACK_IMPORTED_MODULE_7__.injectCopyToClipboard)();
@@ -91068,9 +91143,16 @@ class SwaggerUIX {
             });
         });
     }
+    trackMouse() {
+        const onMouseUpdate = (e) => {
+            this.mouseEvent = e;
+        };
+        document.addEventListener("mousemove", onMouseUpdate, false);
+        document.addEventListener("mouseenter", onMouseUpdate, false);
+    }
     async login(email, password) {
         const callLogin = async (data) => {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 fetch(`${location.origin}/api/v1/auth/login`, {
                     headers: {
                         accept: "application/json, text/plain, */*",
