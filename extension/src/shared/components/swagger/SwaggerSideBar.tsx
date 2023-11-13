@@ -70,8 +70,8 @@ export const GroupApiComponent = observer((props: { groupApi: GroupApi }) => {
   const { name, apiList } = groupApi
   return (
     <div>
-      {apiList.map((api) => (
-        <ApiComponent key={api.path} api={api} />
+      {apiList.map((api, index) => (
+        <ApiComponent key={`${api.method}-${api.path}-${index}`} api={api} />
       ))}
     </div>
   )
