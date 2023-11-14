@@ -268,6 +268,10 @@ export class SwaggerUIX {
     `<div id="${ID_HEADER}"></div>`,
   ) as HTMLDivElement
 
+  get $swaggerContainer(): HTMLDivElement {
+    return document.querySelector("#swagger-ui") as HTMLDivElement
+  }
+
   get $schemaContainer(): HTMLDivElement {
     return document.querySelector("div.scheme-container") as HTMLDivElement
   }
@@ -359,16 +363,27 @@ export class SwaggerUIX {
     this.$schemesWrapper.prepend(this.$headerWrapper)
     this.$mainWrapper.prepend(this.$sideBar)
     this.$mainWrapper.append(this.$extraRight)
-    this.$extraRight.style.width = `45rem`
+    this.$extraRight.style.maxWidth = `40rem`
+    this.$extraRight.style.minWidth = `40rem`
+
+    this.$extraRight.style.overflowY = `auto`
+
     this.$mainWrapper.style.display = "flex"
     this.$mainWrapper.style.flexDirection = "row"
     this.$mainWrapper.style.maxWidth = `fit-content`
     this.$mainWrapper.style.padding = `0px 30px`
+    this.$mainWrapper.style.height = `47rem`
+    this.$mainWrapper.style.backgroundColor = `#eaeaea`
+
     this.$sideBar.style.width = `25rem`
+    this.$sideBar.style.overflowY = `auto`
     this.$sideBar.style.marginRight = `3rem`
     this.$sectionWrapper.style.width = `100rem`
     this.$sectionWrapper.style.overflow = `auto`
     this.$sectionWrapper.style.maxHeight = `60rem`
+    this.$swaggerContainer.style.maxHeight = `${window.innerHeight}px`
+    this.$swaggerContainer.style.overflow = `hidden`
+
     const SwaggerSideBar = withStorage(SwaggerSideBarComponent, { storageType: this.storageType })
     const SwaggerHeader = withStorage(SwaggerHeaderComponent, { storageType: this.storageType })
     const SwaggerExtraRightSection = withStorage(SwaggerExtraRightSectionComponent, {
