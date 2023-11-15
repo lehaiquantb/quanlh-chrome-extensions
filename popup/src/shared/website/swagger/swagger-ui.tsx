@@ -14,6 +14,8 @@ import {
 import SwaggerExtraRightSection, {
   SwaggerExtraRightSectionComponent,
 } from "@/shared/components/swagger/SwaggerExtraRightSection"
+import { notification } from "antd"
+import { NotificationManager } from "@/shared/services/notification"
 
 // function whenAvailable(name: any, callback: any) {
 //     const interval = 10; // ms
@@ -434,7 +436,9 @@ export class SwaggerUIX {
     document.addEventListener("mouseenter", onMouseUpdate, false)
   }
 
-  async login(email?: string, password?: string) {
+  async login(_email?: string, _password?: string) {
+    const email = _email ?? config.cr.username
+    const password = _password ?? config.cr.password
     const callLogin = async (data: any) => {
       return new Promise((resolve) => {
         fetch(`${location.origin}/api/v1/auth/login`, {
@@ -448,9 +452,11 @@ export class SwaggerUIX {
         })
           .then((res) => res.json())
           .then((data) => {
+            NotificationManager.success({ message: `Login successful [${email}]` })
             resolve(data)
           })
           .catch((err) => {
+            NotificationManager.error({ message: `Login fail [${email}]` })
             this.logger.error(err)
           })
       })
@@ -468,8 +474,8 @@ export class SwaggerUIX {
     ;(async () => {
       const payload = {
         provider: "email",
-        email: email ?? config.cr.username,
-        password: password ?? config.cr.password,
+        email,
+        password,
       }
 
       const res = (await callLogin(payload)) as any
