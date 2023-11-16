@@ -1,3 +1,4 @@
+import { copyToClipboard } from "@/shared/helper.common"
 import { useStores } from "@/shared/models"
 import { SwaggerUIX } from "@/shared/website/swagger/swagger-ui"
 import withStorage from "@/shared/withStorage"
@@ -19,13 +20,29 @@ export const SwaggerExtraRightSectionComponent: FC<Props> = observer((props: Pro
 
   useEffect(() => {
     swaggerUI.onResponse((res) => {
-      setJson(res?.body)
+      const body = res?.body
+      if (typeof body === "object") {
+        setJson(body)
+      } else if (typeof body === "string") {
+        setJson({ value: body })
+      }
     })
   }, [])
 
   return (
     <div>
-      <ReactJson src={json} />
+      <ReactJson
+        src={json}
+        displayDataTypes={false}
+        enableClipboard={(copy) => {
+          const { name, namespace, src } = copy
+          if (typeof src === "string") {
+            copyToClipboard(src)
+          } else {
+            copyToClipboard(JSON.stringify(src))
+          }
+        }}
+      />
     </div>
   )
 })

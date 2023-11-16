@@ -90186,32 +90186,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "SwaggerExtraRightSectionComponent": () => (/* binding */ SwaggerExtraRightSectionComponent),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
-/* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
-/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_json_view__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-json-view */ "./node_modules/react-json-view/dist/main.js");
-/* harmony import */ var react_json_view__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_json_view__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _shared_helper_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared/helper.common */ "./src/shared/helper.common.ts");
+/* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
+/* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react_json_view__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-json-view */ "./node_modules/react-json-view/dist/main.js");
+/* harmony import */ var react_json_view__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_json_view__WEBPACK_IMPORTED_MODULE_5__);
 
 
 
 
 
-const SwaggerExtraRightSectionComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_2__.observer)((props) => {
+
+const SwaggerExtraRightSectionComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__.observer)((props) => {
     const { swaggerUI } = props;
-    const [json, setJson] = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)({});
-    const { website: { swaggerTool: { autoExecute }, }, } = (0,_shared_models__WEBPACK_IMPORTED_MODULE_0__.useStores)();
-    (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
+    const [json, setJson] = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)({});
+    const { website: { swaggerTool: { autoExecute }, }, } = (0,_shared_models__WEBPACK_IMPORTED_MODULE_1__.useStores)();
+    (0,react__WEBPACK_IMPORTED_MODULE_4__.useEffect)(() => {
         swaggerUI.onResponse((res) => {
-            setJson(res?.body);
+            const body = res?.body;
+            if (typeof body === "object") {
+                setJson(body);
+            }
+            else if (typeof body === "string") {
+                setJson({ value: body });
+            }
         });
     }, []);
-    return (react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", null,
-        react__WEBPACK_IMPORTED_MODULE_3___default().createElement((react_json_view__WEBPACK_IMPORTED_MODULE_4___default()), { src: json })));
+    return (react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", null,
+        react__WEBPACK_IMPORTED_MODULE_4___default().createElement((react_json_view__WEBPACK_IMPORTED_MODULE_5___default()), { src: json, displayDataTypes: false, enableClipboard: (copy) => {
+                const { name, namespace, src } = copy;
+                if (typeof src === "string") {
+                    (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_0__.copyToClipboard)(src);
+                }
+                else {
+                    (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_0__.copyToClipboard)(JSON.stringify(src));
+                }
+            } })));
 });
 SwaggerExtraRightSectionComponent.defaultProps = {};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_1__["default"])(SwaggerExtraRightSectionComponent));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_2__["default"])(SwaggerExtraRightSectionComponent));
 
 
 /***/ }),
