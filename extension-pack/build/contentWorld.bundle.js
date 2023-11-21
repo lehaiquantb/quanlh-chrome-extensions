@@ -91922,7 +91922,12 @@ class SwaggerUIX {
                 })
                     .then((res) => res.json())
                     .then((data) => {
-                    _shared_services_notification__WEBPACK_IMPORTED_MODULE_9__.NotificationManager.success({ message: `Login successful [${email}]` });
+                    if (data?.data?.accessToken?.token) {
+                        _shared_services_notification__WEBPACK_IMPORTED_MODULE_9__.NotificationManager.success({ message: `Login successful [${email}]` });
+                    }
+                    else {
+                        _shared_services_notification__WEBPACK_IMPORTED_MODULE_9__.NotificationManager.error({ message: `Login fail [${JSON.stringify(data)}]` });
+                    }
                     resolve(data);
                 })
                     .catch((err) => {

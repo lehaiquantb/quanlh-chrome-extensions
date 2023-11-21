@@ -452,7 +452,11 @@ export class SwaggerUIX {
         })
           .then((res) => res.json())
           .then((data) => {
-            NotificationManager.success({ message: `Login successful [${email}]` })
+            if (data?.data?.accessToken?.token) {
+              NotificationManager.success({ message: `Login successful [${email}]` })
+            } else {
+              NotificationManager.error({ message: `Login fail [${JSON.stringify(data)}]` })
+            }
             resolve(data)
           })
           .catch((err) => {
