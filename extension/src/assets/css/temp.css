@@ -1,0 +1,19 @@
+.opblock-body table.parameters tbody {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0px;
+}
+.opblock-body table.parameters tbody tr {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0;
+}
+.opblock-body table.parameters tbody tr .parameters-col_description {
+  display: flex;
+  flex-direction: column;
+  height: 5rem;
+  justify-content: flex-end;
+}
+
+/*# sourceMappingURL=temp.css.map */

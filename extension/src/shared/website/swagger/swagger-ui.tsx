@@ -1,7 +1,7 @@
 import React from "react"
 import { UIManager } from "@/shared/components/UIManager"
 import { SwaggerSideBarComponent } from "@/shared/components/swagger/SwaggerSideBar"
-import { getGlobalVar } from "@/shared/helper.common"
+import { getGlobalVar, injectReplaceCSS } from "@/shared/helper.common"
 import { StorageType } from "@/shared/services/storage"
 import withStorage from "@/shared/withStorage"
 import { SwaggerHeaderComponent } from "@/shared/components/swagger/SwaggerHeader"
@@ -154,6 +154,66 @@ export class Api {
     //   })
     // }
     this.handleHiddenResponseExample()
+  }
+
+  generateCss() {
+    return `
+    #${this.id} .opblock-body table.parameters tbody {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 0px;
+      width: 55rem;
+      font-size: 14px;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+      min-width: 33%;
+      border: 1px solid;
+      border-radius: 8px;
+      padding: 1px 9px;
+      border-color: aliceblue;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_description {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-bottom: 0.3rem;
+    }
+    #${this.id} .opblock-body table.parameters tbody div {
+      font-size: 14px;
+    }
+    #${this.id} .opblock-body table.parameters thead {
+      display: none;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name {
+      padding: 5px 0px;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name .parameter__name {
+      font-weight: bold;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name .parameter__type {
+      display: none;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name .parameter__in {
+      display: none;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name .parameter__deprecated {
+      display: none;
+    }
+
+    ${this.generateResponseTableCss()}
+    `
+  }
+
+  generateResponseTableCss() {
+    return `
+      #${this.id} .responses-inner .responses-table.live-responses-table {
+        display: none;
+      }
+    `
   }
 
   injectCopyToClipboardField() {
@@ -398,6 +458,15 @@ export class SwaggerUIX {
       Component: <SwaggerExtraRightSection swaggerUI={this} />,
       id: ID_EXTRA_RIGHT,
     })
+    this.injectCss()
+  }
+
+  injectCss() {
+    const apis: Api[] = []
+    this.groupApiList?.forEach((g) => apis.push(...(g?.apiList ?? [])))
+    let css = ""
+    apis.forEach((a) => (css += " " + a.generateCss()))
+    injectReplaceCSS(css)
   }
 
   hideUINotNeeded() {

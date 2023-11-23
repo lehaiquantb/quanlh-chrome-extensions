@@ -1,0 +1,21 @@
+// #operations-Comments_APIs-CommentsController_getComments > div.no-margin > div > div.opblock-section > div.parameters-container > div > table > tbody
+
+.opblock-body table.parameters {
+    tbody {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 0px;
+        tr {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-top: 0;
+            .parameters-col_description {
+                display: flex;
+                flex-direction: column;
+                height: 5rem;
+                justify-content: flex-end;
+            }
+        }
+    }
+}
