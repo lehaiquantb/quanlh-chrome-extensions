@@ -91748,7 +91748,7 @@ class Api {
     }
     generateResponseTableCss() {
         return `
-      #${this.id} .responses-inner .responses-table.live-responses-table {
+      #${this.id} .responses-wrapper .responses-inner table.live-responses-table {
         display: none;
       }
     `;
