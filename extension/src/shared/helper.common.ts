@@ -126,3 +126,15 @@ export const parseJson = (value: any) => {
 export const isMatchWebsite = (matchRegexUrls: string[]) => {
   return matchRegexUrls?.some((url) => new RegExp(url).test(window.location.href))
 }
+
+export const injectReplaceCSS = (() => {
+  const style = document.createElement("style")
+  document.head.append(style)
+  return (cssText: string) => {
+    try {
+      style.textContent = cssText
+    } catch (error) {
+      console.log(`Error in injectReplaceCSS ${error}`)
+    }
+  }
+})()

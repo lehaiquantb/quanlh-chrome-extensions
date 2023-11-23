@@ -90413,6 +90413,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getGlobalVar": () => (/* binding */ getGlobalVar),
 /* harmony export */   "getRuntimeEnvironment": () => (/* binding */ getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* binding */ globalVarIsExist),
+/* harmony export */   "injectReplaceCSS": () => (/* binding */ injectReplaceCSS),
 /* harmony export */   "isEmptyString": () => (/* binding */ isEmptyString),
 /* harmony export */   "isMatchWebsite": () => (/* binding */ isMatchWebsite),
 /* harmony export */   "parseJson": () => (/* binding */ parseJson),
@@ -90530,6 +90531,18 @@ const parseJson = (value) => {
 const isMatchWebsite = (matchRegexUrls) => {
     return matchRegexUrls?.some((url) => new RegExp(url).test(window.location.href));
 };
+const injectReplaceCSS = (() => {
+    const style = document.createElement("style");
+    document.head.append(style);
+    return (cssText) => {
+        try {
+            style.textContent = cssText;
+        }
+        catch (error) {
+            console.log(`Error in injectReplaceCSS ${error}`);
+        }
+    };
+})();
 
 
 /***/ }),
@@ -90553,6 +90566,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getGlobalVar": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getGlobalVar),
 /* harmony export */   "getRuntimeEnvironment": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.globalVarIsExist),
+/* harmony export */   "injectReplaceCSS": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.injectReplaceCSS),
 /* harmony export */   "isEmptyString": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.isEmptyString),
 /* harmony export */   "isMatchWebsite": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.isMatchWebsite),
 /* harmony export */   "parseJson": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.parseJson),
@@ -93482,14 +93496,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/components/UIManager */ "./src/shared/components/UIManager.tsx");
 /* harmony import */ var _shared_components_swagger_SwaggerSideBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/components/swagger/SwaggerSideBar */ "./src/shared/components/swagger/SwaggerSideBar.tsx");
-/* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
-/* harmony import */ var _shared_components_swagger_SwaggerHeader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/shared/components/swagger/SwaggerHeader */ "./src/shared/components/swagger/SwaggerHeader.tsx");
-/* harmony import */ var _shared_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/shared/config */ "./src/shared/config/index.ts");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _shared_scripts_injectCopyToClipboard__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/shared/scripts/injectCopyToClipboard */ "./src/shared/scripts/injectCopyToClipboard.tsx");
-/* harmony import */ var _shared_components_swagger_SwaggerExtraRightSection__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/shared/components/swagger/SwaggerExtraRightSection */ "./src/shared/components/swagger/SwaggerExtraRightSection.tsx");
-/* harmony import */ var _shared_services_notification__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/shared/services/notification */ "./src/shared/services/notification.ts");
+/* harmony import */ var _shared_helper_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/shared/helper.common */ "./src/shared/helper.common.ts");
+/* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
+/* harmony import */ var _shared_components_swagger_SwaggerHeader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/shared/components/swagger/SwaggerHeader */ "./src/shared/components/swagger/SwaggerHeader.tsx");
+/* harmony import */ var _shared_config__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/shared/config */ "./src/shared/config/index.ts");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _shared_scripts_injectCopyToClipboard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/shared/scripts/injectCopyToClipboard */ "./src/shared/scripts/injectCopyToClipboard.tsx");
+/* harmony import */ var _shared_components_swagger_SwaggerExtraRightSection__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/shared/components/swagger/SwaggerExtraRightSection */ "./src/shared/components/swagger/SwaggerExtraRightSection.tsx");
+/* harmony import */ var _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/shared/services/notification */ "./src/shared/services/notification.ts");
+
 
 
 
@@ -93556,7 +93572,7 @@ class GroupApi {
         this.$el = opts.$el;
         this.swaggerUI = opts.swaggerUI;
         this.name = this.$el?.querySelector("h3")?.getAttribute("data-tag") ?? "";
-        this.id = `group-${(0,lodash__WEBPACK_IMPORTED_MODULE_6__.camelCase)(this.name)}`;
+        this.id = `group-${(0,lodash__WEBPACK_IMPORTED_MODULE_7__.camelCase)(this.name)}`;
         this.$el.id = this.id;
         this.apiList = Array.from(this.$el.querySelector("div.operation-tag-content")?.childNodes)?.map(($el) => new Api({ $el, parent: this }));
         this.href = this.$el.querySelector("h3 a")?.getAttribute("href") ?? "";
@@ -93600,7 +93616,7 @@ class Api {
         this.description = this.$el?.querySelector(".opblock-summary-description")?.textContent ?? "";
         this.href = this.$el?.querySelector(".opblock-summary-path a")?.getAttribute("href") ?? "";
         this.$btnExpand = this.$el.querySelector("button.opblock-control-arrow");
-        this.id = `api-${(0,lodash__WEBPACK_IMPORTED_MODULE_6__.camelCase)(this.method)}-${(0,lodash__WEBPACK_IMPORTED_MODULE_6__.camelCase)(this.path)}`;
+        this.id = `api-${(0,lodash__WEBPACK_IMPORTED_MODULE_7__.camelCase)(this.method)}-${(0,lodash__WEBPACK_IMPORTED_MODULE_7__.camelCase)(this.path)}`;
         this.$el.id = this.id;
         // if (this.parent?.$inner) {
         //   new MutationObserver((mutations) => {
@@ -93619,10 +93635,68 @@ class Api {
         // }
         this.handleHiddenResponseExample();
     }
+    generateCss() {
+        return `
+    #${this.id} .opblock-body table.parameters tbody {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 0px;
+      width: 55rem;
+      font-size: 14px;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+      min-width: 33%;
+      border: 1px solid;
+      border-radius: 8px;
+      padding: 1px 9px;
+      border-color: aliceblue;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_description {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-bottom: 0.3rem;
+    }
+    #${this.id} .opblock-body table.parameters tbody div {
+      font-size: 14px;
+    }
+    #${this.id} .opblock-body table.parameters thead {
+      display: none;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name {
+      padding: 5px 0px;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name .parameter__name {
+      font-weight: bold;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name .parameter__type {
+      display: none;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name .parameter__in {
+      display: none;
+    }
+    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name .parameter__deprecated {
+      display: none;
+    }
+
+    ${this.generateResponseTableCss()}
+    `;
+    }
+    generateResponseTableCss() {
+        return `
+      #${this.id} .responses-inner .responses-table.live-responses-table {
+        display: none;
+      }
+    `;
+    }
     injectCopyToClipboardField() {
         const pre = this?.$responsesTableLive?.querySelector("pre");
         if (pre) {
-            (0,_shared_scripts_injectCopyToClipboard__WEBPACK_IMPORTED_MODULE_7__.injectCopyToClipboardField)(pre, this.swaggerUI);
+            (0,_shared_scripts_injectCopyToClipboard__WEBPACK_IMPORTED_MODULE_8__.injectCopyToClipboardField)(pre, this.swaggerUI);
         }
     }
     handleHiddenResponseExample() {
@@ -93802,9 +93876,9 @@ class SwaggerUIX {
         this.$sectionWrapper.style.maxHeight = `60rem`;
         this.$swaggerContainer.style.maxHeight = `${window.innerHeight}px`;
         this.$swaggerContainer.style.overflow = `hidden`;
-        const SwaggerSideBar = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_3__["default"])(_shared_components_swagger_SwaggerSideBar__WEBPACK_IMPORTED_MODULE_2__.SwaggerSideBarComponent, { storageType: this.storageType });
-        const SwaggerHeader = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_3__["default"])(_shared_components_swagger_SwaggerHeader__WEBPACK_IMPORTED_MODULE_4__.SwaggerHeaderComponent, { storageType: this.storageType });
-        const SwaggerExtraRightSection = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_3__["default"])(_shared_components_swagger_SwaggerExtraRightSection__WEBPACK_IMPORTED_MODULE_8__.SwaggerExtraRightSectionComponent, {
+        const SwaggerSideBar = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_4__["default"])(_shared_components_swagger_SwaggerSideBar__WEBPACK_IMPORTED_MODULE_2__.SwaggerSideBarComponent, { storageType: this.storageType });
+        const SwaggerHeader = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_4__["default"])(_shared_components_swagger_SwaggerHeader__WEBPACK_IMPORTED_MODULE_5__.SwaggerHeaderComponent, { storageType: this.storageType });
+        const SwaggerExtraRightSection = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_4__["default"])(_shared_components_swagger_SwaggerExtraRightSection__WEBPACK_IMPORTED_MODULE_9__.SwaggerExtraRightSectionComponent, {
             storageType: this.storageType,
         });
         _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SwaggerSideBar, { swaggerUI: this }), id: ID_SIDE_BAR });
@@ -93813,6 +93887,14 @@ class SwaggerUIX {
             Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SwaggerExtraRightSection, { swaggerUI: this }),
             id: ID_EXTRA_RIGHT,
         });
+        this.injectCss();
+    }
+    injectCss() {
+        const apis = [];
+        this.groupApiList?.forEach((g) => apis.push(...(g?.apiList ?? [])));
+        let css = "";
+        apis.forEach((a) => (css += " " + a.generateCss()));
+        (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.injectReplaceCSS)(css);
     }
     hideUINotNeeded() {
         // hide top bar
@@ -93830,7 +93912,7 @@ class SwaggerUIX {
         }
     }
     injectCopyToClipboard() {
-        (0,_shared_scripts_injectCopyToClipboard__WEBPACK_IMPORTED_MODULE_7__.injectCopyToClipboard)();
+        (0,_shared_scripts_injectCopyToClipboard__WEBPACK_IMPORTED_MODULE_8__.injectCopyToClipboard)();
     }
     injectCopyToClipboardField() {
         this.groupApiList.forEach((g) => {
@@ -93847,8 +93929,8 @@ class SwaggerUIX {
         document.addEventListener("mouseenter", onMouseUpdate, false);
     }
     async login(_email, _password) {
-        const email = _email ?? _shared_config__WEBPACK_IMPORTED_MODULE_5__["default"].cr.username;
-        const password = _password ?? _shared_config__WEBPACK_IMPORTED_MODULE_5__["default"].cr.password;
+        const email = _email ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.username;
+        const password = _password ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.password;
         const callLogin = async (data) => {
             return new Promise((resolve) => {
                 fetch(`${location.origin}/api/v1/auth/login`, {
@@ -93862,11 +93944,16 @@ class SwaggerUIX {
                 })
                     .then((res) => res.json())
                     .then((data) => {
-                    _shared_services_notification__WEBPACK_IMPORTED_MODULE_9__.NotificationManager.success({ message: `Login successful [${email}]` });
+                    if (data?.data?.accessToken?.token) {
+                        _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.success({ message: `Login successful [${email}]` });
+                    }
+                    else {
+                        _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.error({ message: `Login fail [${JSON.stringify(data)}]` });
+                    }
                     resolve(data);
                 })
                     .catch((err) => {
-                    _shared_services_notification__WEBPACK_IMPORTED_MODULE_9__.NotificationManager.error({ message: `Login fail [${email}]` });
+                    _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.error({ message: `Login fail [${email}]` });
                     this.logger.error(err);
                 });
             });

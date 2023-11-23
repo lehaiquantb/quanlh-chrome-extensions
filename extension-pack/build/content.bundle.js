@@ -22775,6 +22775,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getGlobalVar": () => (/* binding */ getGlobalVar),
 /* harmony export */   "getRuntimeEnvironment": () => (/* binding */ getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* binding */ globalVarIsExist),
+/* harmony export */   "injectReplaceCSS": () => (/* binding */ injectReplaceCSS),
 /* harmony export */   "isEmptyString": () => (/* binding */ isEmptyString),
 /* harmony export */   "isMatchWebsite": () => (/* binding */ isMatchWebsite),
 /* harmony export */   "parseJson": () => (/* binding */ parseJson),
@@ -22892,6 +22893,18 @@ const parseJson = (value) => {
 const isMatchWebsite = (matchRegexUrls) => {
     return matchRegexUrls?.some((url) => new RegExp(url).test(window.location.href));
 };
+const injectReplaceCSS = (() => {
+    const style = document.createElement("style");
+    document.head.append(style);
+    return (cssText) => {
+        try {
+            style.textContent = cssText;
+        }
+        catch (error) {
+            console.log(`Error in injectReplaceCSS ${error}`);
+        }
+    };
+})();
 
 
 /***/ }),
@@ -22915,6 +22928,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getGlobalVar": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getGlobalVar),
 /* harmony export */   "getRuntimeEnvironment": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.globalVarIsExist),
+/* harmony export */   "injectReplaceCSS": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.injectReplaceCSS),
 /* harmony export */   "isEmptyString": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.isEmptyString),
 /* harmony export */   "isMatchWebsite": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.isMatchWebsite),
 /* harmony export */   "parseJson": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.parseJson),
