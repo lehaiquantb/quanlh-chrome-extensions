@@ -95,7 +95,7 @@ export class Api {
   id!: string
   description: string
   path: string
-  method: string
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
   href: string
   $el: HTMLSpanElement
   parent: GroupApi
@@ -127,11 +127,20 @@ export class Api {
     return this.$btnExpand.getAttribute("aria-expanded") === "true"
   }
 
+  set isExpanded(value: boolean) {
+    this.$btnExpand.setAttribute("aria-expanded", value ? "true" : "false")
+  }
+
+  get shortPath() {
+    return this.path.replace(/\/api\/v1\//g, "")
+  }
+
   constructor(opts: { $el: HTMLSpanElement; parent: GroupApi }) {
     this.$el = opts.$el
     this.parent = opts.parent
     this.swaggerUI = opts.parent.swaggerUI
-    this.method = this.$el?.querySelector(".opblock-summary-method")?.textContent ?? ""
+    this.method = (this.$el?.querySelector(".opblock-summary-method")?.textContent?.toUpperCase() ??
+      "") as any
     this.path = this.$el?.querySelector(".opblock-summary-path")?.getAttribute("data-path") ?? ""
     this.description = this.$el?.querySelector(".opblock-summary-description")?.textContent ?? ""
     this.href = this.$el?.querySelector(".opblock-summary-path a")?.getAttribute("href") ?? ""
@@ -200,7 +209,9 @@ export class Api {
     #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name .parameter__in {
       display: none;
     }
-    #${this.id} .opblock-body table.parameters tbody tr .parameters-col_name .parameter__deprecated {
+    #${
+      this.id
+    } .opblock-body table.parameters tbody tr .parameters-col_name .parameter__deprecated {
       display: none;
     }
 
@@ -243,6 +254,26 @@ export class Api {
     })
     observer.observe(this.$btnExpand, {
       attributes: true,
+    })
+  }
+
+  onChangeExpanded(cb: (expanded: boolean) => void) {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "attributes") {
+          if (this.isExpanded) {
+            // eslint-disable-next-line node/no-callback-literal
+            cb(true)
+          } else {
+            // eslint-disable-next-line node/no-callback-literal
+            cb(false)
+          }
+        }
+      })
+    })
+    observer.observe(this.$btnExpand, {
+      attributes: true,
+      attributeFilter: ["aria-expanded"],
     })
   }
 
@@ -439,8 +470,9 @@ export class SwaggerUIX {
 
     this.$sideBar.style.width = `25rem`
     this.$sideBar.style.overflowY = `auto`
-    this.$sideBar.style.marginRight = `3rem`
+    // this.$sideBar.style.marginRight = `3rem`
     this.$sectionWrapper.style.width = `100rem`
+    this.$sectionWrapper.style.padding = `0 2rem`
     this.$sectionWrapper.style.overflow = `auto`
     this.$sectionWrapper.style.maxHeight = `60rem`
     this.$swaggerContainer.style.maxHeight = `${window.innerHeight}px`
