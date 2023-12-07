@@ -13391,7 +13391,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".quanlh-copy-button {\n  width: 25px;\n  height: 25px;\n  background-color: white;\n  border-radius: 3px;\n  position: absolute;\n  right: 5px;\n  bottom: 5px;\n  border: 1px solid #e5e5e5;\n  opacity: 0.8;\n}\n.quanlh-copy-button span {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.quanlh-copy-button:hover {\n  opacity: 0.7;\n  cursor: pointer;\n}\n\n.quanlh-d-none {\n  display: none !important;\n}\n\n.quanlh-super-center {\n  display: grid;\n  place-items: center;\n}\n\n.quanlh-copy-success svg {\n  color: #3fb950;\n  fill: currentColor;\n}", "",{"version":3,"sources":["webpack://./src/shared/components/common/ButtonCopyToClipboard/index.scss"],"names":[],"mappings":"AAAA;EACI,WAAA;EACA,YAAA;EACA,uBAAA;EACA,kBAAA;EACA,kBAAA;EACA,UAAA;EACA,WAAA;EACA,yBAAA;EACA,YAAA;AACJ;AAAI;EACI,WAAA;EACA,YAAA;EACA,aAAA;EACA,mBAAA;EACA,uBAAA;AAER;AACI;EACI,YAAA;EACA,eAAA;AACR;;AAGA;EACI,wBAAA;AAAJ;;AAGA;EACI,aAAA;EACA,mBAAA;AAAJ;;AAII;EACI,cAAA;EACA,kBAAA;AADR","sourcesContent":[".quanlh-copy-button {\n    width: 25px;\n    height: 25px;\n    background-color: white;\n    border-radius: 3px;\n    position: absolute;\n    right: 5px;\n    bottom: 5px;\n    border: 1px solid #e5e5e5;\n    opacity: 0.8;\n    span {\n        width: 100%;\n        height: 100%;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n    }\n\n    &:hover {\n        opacity: 0.7;\n        cursor: pointer;\n    }\n}\n\n.quanlh-d-none {\n    display: none !important;\n}\n\n.quanlh-super-center {\n    display: grid;\n    place-items: center;\n}\n\n.quanlh-copy-success {\n    & svg {\n        color: #3fb950;\n        fill: currentColor;\n    }\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".quanlh-copy-button {\n  width: 25px;\n  height: 25px;\n  background-color: white;\n  border-radius: 3px;\n  position: absolute;\n  right: 5px;\n  bottom: 5px;\n  border: 1px solid #e5e5e5;\n  opacity: 0.8;\n}\n.quanlh-copy-button span {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.quanlh-copy-button:hover {\n  opacity: 0.7;\n  cursor: pointer;\n}\n\n.quanlh-d-none {\n  display: none !important;\n}\n\n.quanlh-super-center {\n  display: grid;\n  place-items: center;\n}\n\n.quanlh-copy-success svg {\n  color: #3fb950;\n  fill: currentColor;\n}", "",{"version":3,"sources":["webpack://./src/shared/components/common/ButtonCopyToClipboard/index.scss"],"names":[],"mappings":"AAAA;EACI,WAAA;EACA,YAAA;EACA,uBAAA;EACA,kBAAA;EACA,kBAAA;EACA,UAAA;EACA,WAAA;EACA,yBAAA;EACA,YAAA;AACJ;AAAI;EACI,WAAA;EACA,YAAA;EACA,aAAA;EACA,mBAAA;EACA,uBAAA;AAER;AACI;EACI,YAAA;EACA,eAAA;AACR;;AAGA;EACI,wBAAA;AAAJ;;AAGA;EACI,aAAA;EACA,mBAAA;AAAJ;;AAII;EACI,cAAA;EACA,kBAAA;AADR","sourcesContent":[".quanlh-copy-button {\r\n    width: 25px;\r\n    height: 25px;\r\n    background-color: white;\r\n    border-radius: 3px;\r\n    position: absolute;\r\n    right: 5px;\r\n    bottom: 5px;\r\n    border: 1px solid #e5e5e5;\r\n    opacity: 0.8;\r\n    span {\r\n        width: 100%;\r\n        height: 100%;\r\n        display: flex;\r\n        align-items: center;\r\n        justify-content: center;\r\n    }\r\n\r\n    &:hover {\r\n        opacity: 0.7;\r\n        cursor: pointer;\r\n    }\r\n}\r\n\r\n.quanlh-d-none {\r\n    display: none !important;\r\n}\r\n\r\n.quanlh-super-center {\r\n    display: grid;\r\n    place-items: center;\r\n}\r\n\r\n.quanlh-copy-success {\r\n    & svg {\r\n        color: #3fb950;\r\n        fill: currentColor;\r\n    }\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -90296,6 +90296,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ApiComponent": () => (/* binding */ ApiComponent),
 /* harmony export */   "GroupApiComponent": () => (/* binding */ GroupApiComponent),
+/* harmony export */   "MAP_METHOD_BACKGROUND": () => (/* binding */ MAP_METHOD_BACKGROUND),
+/* harmony export */   "MAP_METHOD_COLOR": () => (/* binding */ MAP_METHOD_COLOR),
 /* harmony export */   "SwaggerSideBarComponent": () => (/* binding */ SwaggerSideBarComponent),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -90330,25 +90332,73 @@ const SwaggerSideBarComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.
             extra: (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", { onClick: (e) => {
                     groupApi.$el.scrollIntoView(true);
                 } }, "Go")),
+            style: {
+                fontWeight: "bolder",
+            },
         }));
     }, [swaggerUI]);
     return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null,
         react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_common_ButtonCopyToClipboard_ButtonCopyToClipboard__WEBPACK_IMPORTED_MODULE_4__.ButtonCopyToClipboard, null),
-        react__WEBPACK_IMPORTED_MODULE_2___default().createElement("h1", null,
-            "Hello - ",
-            autoInitUI ? "true" : "false"),
+        react__WEBPACK_IMPORTED_MODULE_2___default().createElement("h1", null, "APIs"),
         react__WEBPACK_IMPORTED_MODULE_2___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"], { items: items, bordered: false, defaultActiveKey: ["1"] })));
 });
+const MAP_METHOD_COLOR = {
+    POST: "#49cc90",
+    GET: "#61affe",
+    PUT: "#faad14",
+    DELETE: "#f93e3e",
+    PATCH: "#50e3c2",
+};
+const MAP_METHOD_BACKGROUND = {
+    GET: "rgba(97,175,254,.1)",
+    POST: "rgba(73,204,144,.1)",
+    PUT: "#faad14",
+    DELETE: "rgba(249,62,62,.1)",
+    PATCH: "rgba(80,227,194,.1)",
+};
 const ApiComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)((props) => {
     const { api } = props;
-    const { description, path, method, href } = api;
-    return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null,
-        react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null, path)));
+    const { description, path, method, href, shortPath } = api;
+    (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
+        setTimeout(() => {
+            api.onChangeExpanded((expanded) => {
+                console.log("expanded", expanded);
+            });
+        }, 2000);
+    }, []);
+    return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", { style: {
+            marginTop: 2,
+            padding: 3,
+            backgroundColor: MAP_METHOD_COLOR?.[method],
+            borderRadius: 3,
+            borderColor: MAP_METHOD_COLOR?.[method],
+            borderWidth: 1,
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+        }, onClick: (e) => {
+            api.$el.scrollIntoView(true);
+        } },
+        react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", { style: {
+                padding: 3,
+                fontWeight: "bold",
+                borderRadius: 3,
+                width: 50,
+                fontSize: 12,
+            } }, method),
+        react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", { style: {
+                fontWeight: "bold",
+                fontSize: 11,
+            } }, shortPath)));
 });
 const GroupApiComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)((props) => {
     const { groupApi } = props;
     const { name, apiList } = groupApi;
-    return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null, apiList.map((api, index) => (react__WEBPACK_IMPORTED_MODULE_2___default().createElement(ApiComponent, { key: `${api.method}-${api.path}-${index}`, api: api })))));
+    return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", { style: {
+            paddingLeft: 10,
+            paddingRight: 10,
+        } }, apiList.map((api, index) => (react__WEBPACK_IMPORTED_MODULE_2___default().createElement(ApiComponent, { key: `${api.method}-${api.path}-${index}`, api: api })))));
 });
 SwaggerSideBarComponent.defaultProps = {};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_3__["default"])(SwaggerSideBarComponent));
@@ -93607,11 +93657,18 @@ class Api {
     get isExpanded() {
         return this.$btnExpand.getAttribute("aria-expanded") === "true";
     }
+    set isExpanded(value) {
+        this.$btnExpand.setAttribute("aria-expanded", value ? "true" : "false");
+    }
+    get shortPath() {
+        return this.path.replace(/\/api\/v1\//g, "");
+    }
     constructor(opts) {
         this.$el = opts.$el;
         this.parent = opts.parent;
         this.swaggerUI = opts.parent.swaggerUI;
-        this.method = this.$el?.querySelector(".opblock-summary-method")?.textContent ?? "";
+        this.method = (this.$el?.querySelector(".opblock-summary-method")?.textContent?.toUpperCase() ??
+            "");
         this.path = this.$el?.querySelector(".opblock-summary-path")?.getAttribute("data-path") ?? "";
         this.description = this.$el?.querySelector(".opblock-summary-description")?.textContent ?? "";
         this.href = this.$el?.querySelector(".opblock-summary-path a")?.getAttribute("href") ?? "";
@@ -93715,6 +93772,26 @@ class Api {
         });
         observer.observe(this.$btnExpand, {
             attributes: true,
+        });
+    }
+    onChangeExpanded(cb) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === "attributes") {
+                    if (this.isExpanded) {
+                        // eslint-disable-next-line node/no-callback-literal
+                        cb(true);
+                    }
+                    else {
+                        // eslint-disable-next-line node/no-callback-literal
+                        cb(false);
+                    }
+                }
+            });
+        });
+        observer.observe(this.$btnExpand, {
+            attributes: true,
+            attributeFilter: ["aria-expanded"],
         });
     }
     hideResponseHeader() {
@@ -93870,8 +93947,9 @@ class SwaggerUIX {
         this.$mainWrapper.style.backgroundColor = `#eaeaea`;
         this.$sideBar.style.width = `25rem`;
         this.$sideBar.style.overflowY = `auto`;
-        this.$sideBar.style.marginRight = `3rem`;
+        // this.$sideBar.style.marginRight = `3rem`
         this.$sectionWrapper.style.width = `100rem`;
+        this.$sectionWrapper.style.padding = `0 2rem`;
         this.$sectionWrapper.style.overflow = `auto`;
         this.$sectionWrapper.style.maxHeight = `60rem`;
         this.$swaggerContainer.style.maxHeight = `${window.innerHeight}px`;
