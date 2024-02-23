@@ -138,3 +138,37 @@ export const injectReplaceCSS = (() => {
     }
   }
 })()
+
+export const waitUntil = async (
+  conditionCb: () => Promise<boolean>,
+  interval = 100,
+  maxAttempts = 5000,
+) => {
+  let attempts = 0
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (await conditionCb()) {
+        return resolve(null)
+      }
+      const intervalId = setInterval(async function () {
+        attempts++
+        try {
+          const a = await conditionCb()
+          if (a || attempts >= maxAttempts) {
+            resolve(null)
+            clearInterval(intervalId)
+            return null
+          }
+        } catch (error) {
+          reject(error)
+          clearInterval(intervalId)
+        }
+      }, interval)
+    } catch (error) {
+      console.log("Error in waitUntil", error)
+
+      reject(error)
+    }
+  })
+}

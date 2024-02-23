@@ -33,13 +33,38 @@ import { getGlobalVar, isMatchWebsite } from "./shared"
         ;(window as any).swaggerUIBundle = swaggerUIBundle
 
         const swaggerUI = new SwaggerUIX({ storageType: "localStorage", swaggerUIBundle })
+        console.log("_rootStore.website.swaggerTool", _rootStore.website.swaggerTool)
 
         if (_rootStore.website.swaggerTool.autoInitUI) {
           swaggerUI.initUI()
           swaggerUI.login()
         }
         ;(window as any).swaggerUI = swaggerUI
-      }, 1000)
+      }, 1500)
     }
   }
 })()
+
+const injectRecaptcha = (siteKey: string) => {
+  const recaptcha = document.createElement("script")
+  recaptcha.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+  recaptcha.async = true
+  recaptcha.defer = true
+  document.head.appendChild(recaptcha)
+
+  function getToken() {
+    const grecaptcha = getGlobalVar("grecaptcha") as any
+    return new Promise<string | null>((resolve) => {
+      if (grecaptcha) {
+        grecaptcha.execute(siteKey, { action: "submit" }).then(function (token: string) {
+          console.log(token)
+          resolve(token)
+        })
+      } else {
+        resolve(null)
+      }
+    })
+  }
+
+  return recaptcha
+}

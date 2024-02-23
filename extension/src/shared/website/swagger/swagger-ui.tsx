@@ -1,7 +1,7 @@
 import React from "react"
 import { UIManager } from "@/shared/components/UIManager"
 import { SwaggerSideBarComponent } from "@/shared/components/swagger/SwaggerSideBar"
-import { getGlobalVar, injectReplaceCSS } from "@/shared/helper.common"
+import { getGlobalVar, injectReplaceCSS, waitUntil } from "@/shared/helper.common"
 import { StorageType } from "@/shared/services/storage"
 import withStorage from "@/shared/withStorage"
 import { SwaggerHeaderComponent } from "@/shared/components/swagger/SwaggerHeader"
@@ -16,6 +16,8 @@ import SwaggerExtraRightSection, {
 } from "@/shared/components/swagger/SwaggerExtraRightSection"
 import { notification } from "antd"
 import { NotificationManager } from "@/shared/services/notification"
+import { ReCaptcha, reCaptchaRef } from "@/shared/components/ReCaptcha/ReCaptcha"
+import { _rootStore } from "@/shared/models"
 
 // function whenAvailable(name: any, callback: any) {
 //     const interval = 10; // ms
@@ -31,6 +33,7 @@ import { NotificationManager } from "@/shared/services/notification"
 const ID_SIDE_BAR = "side-bar"
 const ID_EXTRA_RIGHT = "extra-right"
 const ID_HEADER = "ql-sw-header"
+const ID_RECAPTCHA_SITE_KEY = "reCAPTCHA_SITE_KEY"
 
 export function querySelectorIncludesText(selector: string, text: string, parent = document) {
   try {
@@ -361,6 +364,14 @@ export class SwaggerUIX {
     `<div id="${ID_HEADER}"></div>`,
   ) as HTMLDivElement
 
+  $recaptchaInput: HTMLDivElement = createElementFromHTML(
+    `<div id="${ID_RECAPTCHA_SITE_KEY}"></div>`,
+  ) as HTMLDivElement
+
+  get reCaptchaSiteKey() {
+    return _rootStore.website.swaggerTool.recaptchaSiteKey
+  }
+
   get $swaggerContainer(): HTMLDivElement {
     return document.querySelector("#swagger-ui") as HTMLDivElement
   }
@@ -427,6 +438,39 @@ export class SwaggerUIX {
     })
   }
 
+  // injectReCaptcha = (siteKey: string) => {
+  //   const recaptcha = document.createElement("script")
+  //   recaptcha.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+  //   recaptcha.async = true
+  //   recaptcha.defer = true
+  //   document.head.appendChild(recaptcha)
+  // }
+
+  async getRecaptchaToken(action: string) {
+    try {
+      await waitUntil(async () => !!(await reCaptchaRef?.current?.getReCaptchaToken()))
+      const token = await reCaptchaRef.current?.getReCaptchaToken(action)
+      return token
+    } catch (error: any) {
+      NotificationManager.error({ message: error.message })
+      return null
+    }
+
+    // const grecaptcha = getGlobalVar("grecaptcha") as any
+    // return new Promise<string | null>((resolve) => {
+    //   if (grecaptcha) {
+    //     grecaptcha
+    //       .execute(this.reCaptchaSiteKey, { action: "submit" })
+    //       .then(function (token: string) {
+    //         console.log(token)
+    //         resolve(token)
+    //       })
+    //   } else {
+    //     resolve(null)
+    //   }
+    // })
+  }
+
   onResponse(cb: (r: any) => void) {
     if (this.swaggerUIBundle) {
       this.swaggerUIBundle.getConfigs().responseInterceptor = (response: any) => {
@@ -453,6 +497,7 @@ export class SwaggerUIX {
   }
 
   changeLayout() {
+    this.$schemesWrapper.prepend(this.$recaptchaInput)
     this.$schemesWrapper.prepend(this.$headerWrapper)
     this.$mainWrapper.prepend(this.$sideBar)
     this.$mainWrapper.append(this.$extraRight)
@@ -483,6 +528,7 @@ export class SwaggerUIX {
     const SwaggerExtraRightSection = withStorage(SwaggerExtraRightSectionComponent, {
       storageType: this.storageType,
     })
+    const ReCaptchaCom = withStorage(ReCaptcha, { storageType: this.storageType })
 
     UIManager.render({ Component: <SwaggerSideBar swaggerUI={this} />, id: ID_SIDE_BAR })
     UIManager.render({ Component: <SwaggerHeader swaggerUI={this} />, id: ID_HEADER })
@@ -490,6 +536,7 @@ export class SwaggerUIX {
       Component: <SwaggerExtraRightSection swaggerUI={this} />,
       id: ID_EXTRA_RIGHT,
     })
+    UIManager.render({ Component: <ReCaptchaCom />, id: ID_RECAPTCHA_SITE_KEY })
     this.injectCss()
   }
 
@@ -541,11 +588,15 @@ export class SwaggerUIX {
     const email = _email ?? config.cr.username
     const password = _password ?? config.cr.password
     const callLogin = async (data: any) => {
+      const recaptcha = (await this.getRecaptchaToken("LOGIN")) || ""
+      console.log("recaptchaxx", recaptcha)
+
       return new Promise((resolve) => {
         fetch(`${location.origin}/api/v1/auth/login`, {
           headers: {
             accept: "application/json, text/plain, */*",
             "content-type": "application/json",
+            recaptcha,
           },
           body: JSON.stringify(data),
           method: "POST",
