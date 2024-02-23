@@ -40,7 +40,7 @@ import { getGlobalVar, isMatchWebsite } from "./shared"
           swaggerUI.login()
         }
         ;(window as any).swaggerUI = swaggerUI
-      }, 1500)
+      }, 5000)
     }
   }
 })()
