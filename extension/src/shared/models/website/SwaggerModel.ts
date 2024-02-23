@@ -11,6 +11,7 @@ export const SwaggerModel = types
       autoInitUI: types.optional(types.boolean, false),
       email: types.optional(types.string, config.cr.username),
       password: types.optional(types.string, config.cr.password),
+      recaptchaSiteKey: types.optional(types.string, config.cr.recaptchaSiteKey),
     }),
   )
   .named("SwaggerModel")
@@ -35,4 +36,5 @@ export const SWAGGER_MODEL_DEFAULT: SwaggerSnapshot = {
   matchRegexUrls: config.cr.matchRegexUrls,
   email: config.cr.username,
   password: config.cr.password,
+  recaptchaSiteKey: config.cr.recaptchaSiteKey,
 }
