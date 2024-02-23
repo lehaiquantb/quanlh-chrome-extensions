@@ -33,13 +33,14 @@ import { getGlobalVar, isMatchWebsite } from "./shared"
         ;(window as any).swaggerUIBundle = swaggerUIBundle
 
         const swaggerUI = new SwaggerUIX({ storageType: "localStorage", swaggerUIBundle })
+        console.log("_rootStore.website.swaggerTool", _rootStore.website.swaggerTool)
 
         if (_rootStore.website.swaggerTool.autoInitUI) {
           swaggerUI.initUI()
           swaggerUI.login()
         }
         ;(window as any).swaggerUI = swaggerUI
-      }, 1000)
+      }, 1500)
     }
   }
 })()
