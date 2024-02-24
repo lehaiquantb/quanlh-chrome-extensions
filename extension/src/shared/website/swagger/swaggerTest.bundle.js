@@ -90810,7 +90810,7 @@ function getRuntimeEnvironment() {
 }
 const parseJson = (value) => {
     try {
-        return JSON.parse(JSON.stringify(value));
+        return JSON.parse(typeof value === "string" ? value : JSON.stringify(value));
     }
     catch (error) {
         console.log("Error in parseJson", error);
@@ -90902,10 +90902,34 @@ var ECommandId;
     ECommandId["DOWNLOAD_WORD"] = "download-word";
     ECommandId["DOWNLOAD_PDF"] = "download-pdf";
     ECommandId["TEST_COMMAND"] = "test-command";
+    ECommandId["GET_RECAPTCHA_TOKEN"] = "get-reCAPTCHA-token";
 })(ECommandId || (ECommandId = {}));
 
 
 const chrome = (0,_helper_common__WEBPACK_IMPORTED_MODULE_0__.getChrome)();
+
+
+/***/ }),
+
+/***/ "./src/shared/models/EventModel.ts":
+/*!*****************************************!*\
+  !*** ./src/shared/models/EventModel.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "EventModel": () => (/* binding */ EventModel)
+/* harmony export */ });
+/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
+
+const EventModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.model("EventModel").props({
+    id: mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.string,
+    type: mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.string,
+    params: mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.frozen(), {}),
+    response: mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.frozen(), {}),
+});
 
 
 /***/ }),
@@ -90921,10 +90945,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RootStoreModel": () => (/* binding */ RootStoreModel)
 /* harmony export */ });
-/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
+/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
 /* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
 /* harmony import */ var _SettingStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SettingStore */ "./src/shared/models/SettingStore.ts");
 /* harmony import */ var _WebsiteStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./WebsiteStore */ "./src/shared/models/WebsiteStore.ts");
+/* harmony import */ var _EventModel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EventModel */ "./src/shared/models/EventModel.ts");
+
 
 
 
@@ -90932,12 +90958,13 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * A RootStore model.
  */
-const RootStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model("RootStore")
+const RootStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.model("RootStore")
     .props({
-    settingStore: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(_SettingStore__WEBPACK_IMPORTED_MODULE_1__.SettingStoreModel, _SettingStore__WEBPACK_IMPORTED_MODULE_1__.SETTING_STORE_DEFAULT),
-    timeNow: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.maybe(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string),
-    startAt: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, new Date().toISOString()),
-    website: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(_WebsiteStore__WEBPACK_IMPORTED_MODULE_2__.WebsiteStoreModel, {}),
+    settingStore: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_SettingStore__WEBPACK_IMPORTED_MODULE_1__.SettingStoreModel, _SettingStore__WEBPACK_IMPORTED_MODULE_1__.SETTING_STORE_DEFAULT),
+    timeNow: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.maybe(mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.string),
+    startAt: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.string, new Date().toISOString()),
+    website: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_WebsiteStore__WEBPACK_IMPORTED_MODULE_2__.WebsiteStoreModel, {}),
+    nextEvent: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_EventModel__WEBPACK_IMPORTED_MODULE_3__.EventModel, { id: "", type: "" }),
 })
     .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
     .actions((self) => ({

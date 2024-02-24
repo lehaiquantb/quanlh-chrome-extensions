@@ -1,7 +1,7 @@
 import config from "./shared/config"
 import { _rootStore } from "./shared/models"
 import { SwaggerUIX } from "./shared/website/swagger/swagger-ui"
-import { setupRootStore } from "./shared/models/helpers/setupRootStore"
+import { ROOT_STATE_STORAGE_KEY, setupRootStore } from "./shared/models/helpers/setupRootStore"
 import "./assets/scss/copy-field.scss"
 
 // chrome.storage.onChanged.addListener((changes, namespace) => {
@@ -11,8 +11,9 @@ import "./assets/scss/copy-field.scss"
 //     JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
 //   )
 // })
-import { getGlobalVar, isMatchWebsite } from "./shared"
-;(async () => {
+import { IMessage, getGlobalVar, isMatchWebsite, parseJson, storageLocal } from "./shared"
+;import { contentScript } from "./tools/content.executor"
+(async () => {
   // set up the RootStore (returns the state restored from AsyncStorage)
   const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
     storageType: "localStorage",
@@ -68,3 +69,16 @@ const injectRecaptcha = (siteKey: string) => {
 
   return recaptcha
 }
+
+storageLocal.onChange(async (c) => {
+  const newValue = parseJson(c?.[ROOT_STATE_STORAGE_KEY]?.newValue)
+  
+  const { nextEvent } = newValue
+  if (nextEvent?.type ) {
+    const res = await contentScript.executeCommand({
+      commandId: nextEvent.type,
+      params: nextEvent.params,
+    })
+    console.log("[TOKEN]", res)
+  }
+})

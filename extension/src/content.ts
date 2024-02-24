@@ -1,22 +1,32 @@
-import { ToolModel } from "./shared/models/website/ToolModel"
-import { Command, ECommandId, IMessage, parseJson, storageChrome, storageLocal } from "@/shared"
-import { downloadPdf } from "./tools/downloadPdf"
-import { downloadWord } from "./tools/downloadWord"
-import { render } from "./shared/components/css-to-tailwind/TailwindClassField"
-import { ROOT_STATE_STORAGE_KEY, _rootStore } from "./shared/models"
-import { forEach } from "lodash"
-import { ToolSnapshot } from "@/shared/models"
-import { SwaggerUIX } from "./shared/website/swagger/swagger-ui"
-import { setupRootStore } from "./shared/models/helpers/setupRootStore"
+import {
+  IMessage,
+  storageChrome,
+  storageLocal
+} from "@/shared"
+import { ROOT_STATE_STORAGE_KEY } from "./shared/models"
+import { contentScript } from "./tools/content.executor"
 // import "./assets/scss/content.scss"
 
 console.log("Content script running...")
 
-chrome.runtime.onMessage.addListener(function (message: IMessage, sender, sendResponse) {
-  console.log("sender", sender)
-  console.log("message", message)
+chrome.runtime.onMessage.addListener(async function (message: IMessage, sender, sendResponse) {
+  // console.log("sender", sender)
+  // console.log("message", message)
   if (message?.commandId) {
-    contentScript.executeCommand(message)
+    try {
+      // console.log("message", message)
+      // console.log(_rootStore)
+
+      // _rootStore.setProp("nextEvent", {
+      //   id: message.commandId,
+      //   type: message?.commandId,
+      //   params: message?.params,
+      // })
+      const res = await contentScript.executeCommand(message)
+      sendResponse(res)
+    } catch (error) {
+      sendResponse(error)
+    }
   }
 })
 
@@ -41,35 +51,7 @@ chrome.runtime.onMessage.addListener(function (message: IMessage, sender, sendRe
 // if (checkHost(host)) {
 //   handleCopyCodeToClipboard()
 // }
-class ContentScript {
-  commands: Command[] = [
-    {
-      id: ECommandId.DOWNLOAD_PDF,
-      func: downloadPdf,
-    },
-    {
-      id: ECommandId.DOWNLOAD_WORD,
-      func: downloadWord,
-    },
-    {
-      id: ECommandId.TEST_COMMAND,
-      func: () => {
-        console.log("test command")
-        // render()
-      },
-    },
-  ]
 
-  executeCommand(message: IMessage) {
-    const { commandId, params } = message
-    const command = this.commands.find((command) => command.id === commandId)
-    if (command) {
-      command?.func?.(params)
-    }
-  }
-}
-
-export const contentScript = new ContentScript()
 ;(async () => {
   // const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
   //   storageType: "chromeStorage",
@@ -148,7 +130,7 @@ chrome.runtime.onConnect.addListener(() => {
 // })()
 // chrome.devtools.network.onRequestFinished.addListener(function (request) {
 //   console.log("request", request);
-  
+
 //   // if (request.response.bodySize > 40 * 1024) {
 //   //   chrome.devtools.inspectedWindow.eval(
 //   //     'console.log("Large image: " + unescape("' + escape(request.request.url) + '"))',

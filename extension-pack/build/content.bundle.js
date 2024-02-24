@@ -22884,7 +22884,7 @@ function getRuntimeEnvironment() {
 }
 const parseJson = (value) => {
     try {
-        return JSON.parse(JSON.stringify(value));
+        return JSON.parse(typeof value === "string" ? value : JSON.stringify(value));
     }
     catch (error) {
         console.log("Error in parseJson", error);
@@ -22976,10 +22976,34 @@ var ECommandId;
     ECommandId["DOWNLOAD_WORD"] = "download-word";
     ECommandId["DOWNLOAD_PDF"] = "download-pdf";
     ECommandId["TEST_COMMAND"] = "test-command";
+    ECommandId["GET_RECAPTCHA_TOKEN"] = "get-reCAPTCHA-token";
 })(ECommandId || (ECommandId = {}));
 
 
 const chrome = (0,_helper_common__WEBPACK_IMPORTED_MODULE_0__.getChrome)();
+
+
+/***/ }),
+
+/***/ "./src/shared/models/EventModel.ts":
+/*!*****************************************!*\
+  !*** ./src/shared/models/EventModel.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "EventModel": () => (/* binding */ EventModel)
+/* harmony export */ });
+/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
+
+const EventModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.model("EventModel").props({
+    id: mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.string,
+    type: mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.string,
+    params: mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.frozen(), {}),
+    response: mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_0__.types.frozen(), {}),
+});
 
 
 /***/ }),
@@ -22995,10 +23019,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RootStoreModel": () => (/* binding */ RootStoreModel)
 /* harmony export */ });
-/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
+/* harmony import */ var mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! mobx-state-tree */ "./node_modules/mobx-state-tree/dist/mobx-state-tree.module.js");
 /* harmony import */ var _helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers/withSetPropAction */ "./src/shared/models/helpers/withSetPropAction.ts");
 /* harmony import */ var _SettingStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SettingStore */ "./src/shared/models/SettingStore.ts");
 /* harmony import */ var _WebsiteStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./WebsiteStore */ "./src/shared/models/WebsiteStore.ts");
+/* harmony import */ var _EventModel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EventModel */ "./src/shared/models/EventModel.ts");
+
 
 
 
@@ -23006,12 +23032,13 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * A RootStore model.
  */
-const RootStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model("RootStore")
+const RootStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.model("RootStore")
     .props({
-    settingStore: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(_SettingStore__WEBPACK_IMPORTED_MODULE_1__.SettingStoreModel, _SettingStore__WEBPACK_IMPORTED_MODULE_1__.SETTING_STORE_DEFAULT),
-    timeNow: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.maybe(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string),
-    startAt: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, new Date().toISOString()),
-    website: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(_WebsiteStore__WEBPACK_IMPORTED_MODULE_2__.WebsiteStoreModel, {}),
+    settingStore: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_SettingStore__WEBPACK_IMPORTED_MODULE_1__.SettingStoreModel, _SettingStore__WEBPACK_IMPORTED_MODULE_1__.SETTING_STORE_DEFAULT),
+    timeNow: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.maybe(mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.string),
+    startAt: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.string, new Date().toISOString()),
+    website: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_WebsiteStore__WEBPACK_IMPORTED_MODULE_2__.WebsiteStoreModel, {}),
+    nextEvent: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_EventModel__WEBPACK_IMPORTED_MODULE_3__.EventModel, { id: "", type: "" }),
 })
     .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
     .actions((self) => ({
@@ -23683,6 +23710,67 @@ const storageLocal = new Storage("localStorage");
 
 /***/ }),
 
+/***/ "./src/tools/content.executor.ts":
+/*!***************************************!*\
+  !*** ./src/tools/content.executor.ts ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "contentScript": () => (/* binding */ contentScript)
+/* harmony export */ });
+/* harmony import */ var _shared__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared */ "./src/shared/index.ts");
+/* harmony import */ var _downloadPdf__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./downloadPdf */ "./src/tools/downloadPdf.ts");
+/* harmony import */ var _downloadWord__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./downloadWord */ "./src/tools/downloadWord.ts");
+
+
+
+class ContentExecutor {
+    commands = [
+        {
+            id: _shared__WEBPACK_IMPORTED_MODULE_0__.ECommandId.DOWNLOAD_PDF,
+            func: _downloadPdf__WEBPACK_IMPORTED_MODULE_1__.downloadPdf,
+        },
+        {
+            id: _shared__WEBPACK_IMPORTED_MODULE_0__.ECommandId.DOWNLOAD_WORD,
+            func: _downloadWord__WEBPACK_IMPORTED_MODULE_2__.downloadWord,
+        },
+        {
+            id: _shared__WEBPACK_IMPORTED_MODULE_0__.ECommandId.TEST_COMMAND,
+            func: () => {
+                console.log("test command");
+                // render()
+            },
+        },
+        {
+            id: _shared__WEBPACK_IMPORTED_MODULE_0__.ECommandId.GET_RECAPTCHA_TOKEN,
+            func: (params) => {
+                return new Promise((resolve) => {
+                    const grecaptcha = (0,_shared__WEBPACK_IMPORTED_MODULE_0__.getGlobalVar)("grecaptcha");
+                    grecaptcha
+                        .execute(params.siteKey, { action: params?.action })
+                        .then(function (token) {
+                        resolve(token);
+                    });
+                });
+            },
+        },
+    ];
+    async executeCommand(message) {
+        const { commandId, params } = message;
+        const command = this.commands.find((command) => command.id === commandId);
+        if (command) {
+            return await command?.func?.(params);
+        }
+    }
+}
+const contentScript = new ContentExecutor();
+
+
+/***/ }),
+
 /***/ "./src/tools/downloadPdf.ts":
 /*!**********************************!*\
   !*** ./src/tools/downloadPdf.ts ***!
@@ -24121,70 +24209,34 @@ var __webpack_exports__ = {};
   !*** ./src/content.ts ***!
   \************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "contentScript": () => (/* binding */ contentScript)
-/* harmony export */ });
 /* harmony import */ var _shared__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared */ "./src/shared/index.ts");
-/* harmony import */ var _tools_downloadPdf__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools/downloadPdf */ "./src/tools/downloadPdf.ts");
-/* harmony import */ var _tools_downloadWord__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tools/downloadWord */ "./src/tools/downloadWord.ts");
-/* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./shared/models */ "./src/shared/models/index.ts");
-
+/* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shared/models */ "./src/shared/models/index.ts");
+/* harmony import */ var _tools_content_executor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tools/content.executor */ "./src/tools/content.executor.ts");
 
 
 
 // import "./assets/scss/content.scss"
 console.log("Content script running...");
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    console.log("sender", sender);
-    console.log("message", message);
+chrome.runtime.onMessage.addListener(async function (message, sender, sendResponse) {
+    // console.log("sender", sender)
+    // console.log("message", message)
     if (message?.commandId) {
-        contentScript.executeCommand(message);
-    }
-});
-// const host = window.location.host
-// function checkHost(host: string): boolean {
-//   for (const enableHost of enableHostClipboardFeature) {
-//     if (!enableHost.test(host)) {
-//       return false
-//     }
-//   }
-//   for (const disableHost of disableHostClipboardFeature) {
-//     if (disableHost.test(host)) {
-//       return false
-//     }
-//   }
-//   return true
-// }
-// if (checkHost(host)) {
-//   handleCopyCodeToClipboard()
-// }
-class ContentScript {
-    commands = [
-        {
-            id: _shared__WEBPACK_IMPORTED_MODULE_0__.ECommandId.DOWNLOAD_PDF,
-            func: _tools_downloadPdf__WEBPACK_IMPORTED_MODULE_1__.downloadPdf,
-        },
-        {
-            id: _shared__WEBPACK_IMPORTED_MODULE_0__.ECommandId.DOWNLOAD_WORD,
-            func: _tools_downloadWord__WEBPACK_IMPORTED_MODULE_2__.downloadWord,
-        },
-        {
-            id: _shared__WEBPACK_IMPORTED_MODULE_0__.ECommandId.TEST_COMMAND,
-            func: () => {
-                console.log("test command");
-                // render()
-            },
-        },
-    ];
-    executeCommand(message) {
-        const { commandId, params } = message;
-        const command = this.commands.find((command) => command.id === commandId);
-        if (command) {
-            command?.func?.(params);
+        try {
+            // console.log("message", message)
+            // console.log(_rootStore)
+            // _rootStore.setProp("nextEvent", {
+            //   id: message.commandId,
+            //   type: message?.commandId,
+            //   params: message?.params,
+            // })
+            const res = await _tools_content_executor__WEBPACK_IMPORTED_MODULE_2__.contentScript.executeCommand(message);
+            sendResponse(res);
+        }
+        catch (error) {
+            sendResponse(error);
         }
     }
-}
-const contentScript = new ContentScript();
+});
 (async () => {
     // const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
     //   storageType: "chromeStorage",
@@ -24201,14 +24253,14 @@ const contentScript = new ContentScript();
         // )
         // console.log("chrome change")
         if (namespace === "local") {
-            _shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.set(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY, changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue);
+            _shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.set(_shared_models__WEBPACK_IMPORTED_MODULE_1__.ROOT_STATE_STORAGE_KEY, changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_1__.ROOT_STATE_STORAGE_KEY]?.newValue);
         }
     });
     _shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.onChange((changes) => {
-        if (changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue) {
+        if (changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_1__.ROOT_STATE_STORAGE_KEY]?.newValue) {
             // console.log("local change")
-            const newRootStore = changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY]?.newValue;
-            _shared__WEBPACK_IMPORTED_MODULE_0__.storageChrome.set(_shared_models__WEBPACK_IMPORTED_MODULE_3__.ROOT_STATE_STORAGE_KEY, newRootStore);
+            const newRootStore = changes?.[_shared_models__WEBPACK_IMPORTED_MODULE_1__.ROOT_STATE_STORAGE_KEY]?.newValue;
+            _shared__WEBPACK_IMPORTED_MODULE_0__.storageChrome.set(_shared_models__WEBPACK_IMPORTED_MODULE_1__.ROOT_STATE_STORAGE_KEY, newRootStore);
         }
     });
 })();

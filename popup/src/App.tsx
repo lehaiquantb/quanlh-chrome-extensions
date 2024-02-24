@@ -11,6 +11,7 @@ import CodeEditor from "./components/Editor/CodeEditor";
 import { editor } from "monaco-editor";
 import { Button, Switch, Tabs, TabsProps } from "antd";
 import { observer } from "mobx-react-lite";
+import { Tools } from "./components/Tools/Tools";
 // console.log(getChrome()?.devtools?.inspectedWindow?.eval("chrome"));
 
 // getChrome()?.action?.onClicked.addListener((tab) => {
@@ -104,8 +105,8 @@ const items: TabsProps["items"] = [
   },
   {
     key: "2",
-    label: `Tab 2`,
-    children: <Tab2 />,
+    label: `Tools`,
+    children: <Tools />,
   },
   {
     key: "3",
