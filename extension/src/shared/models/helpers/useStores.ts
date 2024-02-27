@@ -75,7 +75,8 @@ export const useInitialRootStore = (
       _unsubscribe = unsubscribe
 
       // For DEBUG: reactotron integration with the MST root store (DEV only)
-      makeInspectable(rootStore)
+      
+      // makeInspectable(rootStore)
 
       // For DEBUG: make some changes to show the root store in mst dev mode but it make storage being updated continuously => make logic wrong
       // timeout = setTimeout(() => {
