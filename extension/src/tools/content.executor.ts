@@ -26,7 +26,7 @@ class ContentExecutor {
           const grecaptcha = getGlobalVar("grecaptcha") as any
 
           grecaptcha
-            .execute(params.siteKey, { action: params?.action })
+            ?.execute(params.siteKey, { action: params?.action })
             .then(function (token: string) {
               resolve(token)
             })

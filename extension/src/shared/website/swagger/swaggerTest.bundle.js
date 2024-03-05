@@ -90651,13 +90651,15 @@ class SwaggerUIX {
     // }
     async getRecaptchaToken(action) {
         try {
-            await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(async () => !!(await _shared_components_ReCaptcha_ReCaptcha__WEBPACK_IMPORTED_MODULE_11__.reCaptchaRef?.current?.getReCaptchaToken()));
-            const token = await _shared_components_ReCaptcha_ReCaptcha__WEBPACK_IMPORTED_MODULE_11__.reCaptchaRef.current?.getReCaptchaToken(action);
-            return token;
+            return "";
+            // await waitUntil(async () => !!(await reCaptchaRef?.current?.getReCaptchaToken()))
+            // const token = await reCaptchaRef.current?.getReCaptchaToken(action)
+            // return token
+            // eslint-disable-next-line no-unreachable
         }
         catch (error) {
-            _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.error({ message: error.message });
-            return null;
+            // NotificationManager.error({ message: error.message })
+            // return null
         }
         // const grecaptcha = getGlobalVar("grecaptcha") as any
         // return new Promise<string | null>((resolve) => {

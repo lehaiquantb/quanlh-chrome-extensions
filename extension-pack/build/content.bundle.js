@@ -22196,7 +22196,7 @@ class ContentExecutor {
                 return new Promise((resolve) => {
                     const grecaptcha = (0,_shared__WEBPACK_IMPORTED_MODULE_0__.getGlobalVar)("grecaptcha");
                     grecaptcha
-                        .execute(params.siteKey, { action: params?.action })
+                        ?.execute(params.siteKey, { action: params?.action })
                         .then(function (token) {
                         resolve(token);
                     });

@@ -41,7 +41,7 @@ import { IMessage, getGlobalVar, isMatchWebsite, parseJson, storageLocal } from 
           swaggerUI.login()
         }
         ;(window as any).swaggerUI = swaggerUI
-      }, 5000)
+      }, 3000)
     }
   }
 })()
