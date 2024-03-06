@@ -448,12 +448,14 @@ export class SwaggerUIX {
 
   async getRecaptchaToken(action: string) {
     try {
-      await waitUntil(async () => !!(await reCaptchaRef?.current?.getReCaptchaToken()))
-      const token = await reCaptchaRef.current?.getReCaptchaToken(action)
-      return token
+      return ""
+      // await waitUntil(async () => !!(await reCaptchaRef?.current?.getReCaptchaToken()))
+      // const token = await reCaptchaRef.current?.getReCaptchaToken(action)
+      // return token
+      // eslint-disable-next-line no-unreachable
     } catch (error: any) {
-      NotificationManager.error({ message: error.message })
-      return null
+      // NotificationManager.error({ message: error.message })
+      // return null
     }
 
     // const grecaptcha = getGlobalVar("grecaptcha") as any

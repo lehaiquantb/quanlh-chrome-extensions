@@ -116,7 +116,7 @@ export function getRuntimeEnvironment() {
 
 export const parseJson = (value: any) => {
   try {
-    return JSON.parse(JSON.stringify(value))
+    return JSON.parse(typeof value === "string" ? value : JSON.stringify(value))
   } catch (error) {
     console.log("Error in parseJson", error)
     return undefined
