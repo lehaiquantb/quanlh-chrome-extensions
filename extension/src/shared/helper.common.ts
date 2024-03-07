@@ -140,7 +140,7 @@ export const injectReplaceCSS = (() => {
 })()
 
 export const waitUntil = async (
-  conditionCb: () => Promise<boolean>,
+  conditionCb: () => Promise<boolean> | boolean,
   interval = 100,
   maxAttempts = 5000,
 ) => {

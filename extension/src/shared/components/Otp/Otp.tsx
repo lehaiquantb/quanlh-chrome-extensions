@@ -16,17 +16,25 @@ export const Otp = observer(() => {
 
   return (
     <div
-      style={{ backgroundColor: "gray", padding: "3px", borderRadius: "3px", marginLeft: "1rem" }}
+      style={{
+        backgroundColor: "gray",
+        padding: "3px",
+        borderRadius: "3px",
+        marginLeft: "1rem",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+      }}
     >
       <Switch
-        checkedChildren="on"
-        unCheckedChildren="off"
+        // checkedChildren="on"
+        // unCheckedChildren="off"
         defaultChecked={false}
         checked={loginWithOtp}
         onChange={() => setProp("loginWithOtp", !loginWithOtp)}
       />
       <Input
-        style={{ marginLeft: "3px" }}
+        style={{ marginLeft: "3px", width: "4rem" }}
         placeholder="Otp"
         min={1}
         max={10}

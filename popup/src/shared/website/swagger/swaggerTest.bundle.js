@@ -4326,32 +4326,6 @@ var unitlessKeys = {
 
 /***/ }),
 
-/***/ "./node_modules/antd/es/_util/hooks/useFlexGapSupport.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/antd/es/_util/hooks/useFlexGapSupport.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _styleChecker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styleChecker */ "./node_modules/antd/es/_util/styleChecker.js");
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {
-  const [flexible, setFlexible] = react__WEBPACK_IMPORTED_MODULE_0__.useState(false);
-  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
-    setFlexible((0,_styleChecker__WEBPACK_IMPORTED_MODULE_1__.detectFlexGapSupported)());
-  }, []);
-  return flexible;
-});
-
-/***/ }),
-
 /***/ "./node_modules/antd/es/_util/motion.js":
 /*!**********************************************!*\
   !*** ./node_modules/antd/es/_util/motion.js ***!
@@ -4478,50 +4452,6 @@ function getStatusClassNames(prefixCls, status, hasFeedback) {
   });
 }
 const getMergedStatus = (contextStatus, customStatus) => customStatus || contextStatus;
-
-/***/ }),
-
-/***/ "./node_modules/antd/es/_util/styleChecker.js":
-/*!****************************************************!*\
-  !*** ./node_modules/antd/es/_util/styleChecker.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "canUseDocElement": () => (/* binding */ canUseDocElement),
-/* harmony export */   "detectFlexGapSupported": () => (/* binding */ detectFlexGapSupported),
-/* harmony export */   "isStyleSupport": () => (/* reexport safe */ rc_util_es_Dom_styleChecker__WEBPACK_IMPORTED_MODULE_1__.isStyleSupport)
-/* harmony export */ });
-/* harmony import */ var rc_util_es_Dom_canUseDom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rc-util/es/Dom/canUseDom */ "./node_modules/rc-util/es/Dom/canUseDom.js");
-/* harmony import */ var rc_util_es_Dom_styleChecker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rc-util/es/Dom/styleChecker */ "./node_modules/rc-util/es/Dom/styleChecker.js");
-
-
-const canUseDocElement = () => (0,rc_util_es_Dom_canUseDom__WEBPACK_IMPORTED_MODULE_0__["default"])() && window.document.documentElement;
-
-let flexGapSupported;
-const detectFlexGapSupported = () => {
-  if (!canUseDocElement()) {
-    return false;
-  }
-  if (flexGapSupported !== undefined) {
-    return flexGapSupported;
-  }
-  // create flex container with row-gap set
-  const flex = document.createElement('div');
-  flex.style.display = 'flex';
-  flex.style.flexDirection = 'column';
-  flex.style.rowGap = '1px';
-  // create two, elements inside it
-  flex.appendChild(document.createElement('div'));
-  flex.appendChild(document.createElement('div'));
-  // append to the DOM (needed to obtain scrollHeight)
-  document.body.appendChild(flex);
-  flexGapSupported = flex.scrollHeight === 1; // flex container should be 1px high from the row-gap
-  document.body.removeChild(flex);
-  return flexGapSupported;
-};
 
 /***/ }),
 
@@ -10116,235 +10046,6 @@ const Compact = props => {
   }, restProps), nodes));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Compact);
-
-/***/ }),
-
-/***/ "./node_modules/antd/es/space/Item.js":
-/*!********************************************!*\
-  !*** ./node_modules/antd/es/space/Item.js ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Item)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./context */ "./node_modules/antd/es/space/context.js");
-
-
-function Item(_ref) {
-  let {
-    className,
-    direction,
-    index,
-    marginDirection,
-    children,
-    split,
-    wrap,
-    style: customStyle
-  } = _ref;
-  const {
-    horizontalSize,
-    verticalSize,
-    latestIndex,
-    supportFlexGap
-  } = react__WEBPACK_IMPORTED_MODULE_0__.useContext(_context__WEBPACK_IMPORTED_MODULE_1__.SpaceContext);
-  let style = {};
-  if (!supportFlexGap) {
-    if (direction === 'vertical') {
-      if (index < latestIndex) {
-        style = {
-          marginBottom: horizontalSize / (split ? 2 : 1)
-        };
-      }
-    } else {
-      style = Object.assign(Object.assign({}, index < latestIndex && {
-        [marginDirection]: horizontalSize / (split ? 2 : 1)
-      }), wrap && {
-        paddingBottom: verticalSize
-      });
-    }
-  }
-  if (children === null || children === undefined) {
-    return null;
-  }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: className,
-    style: Object.assign(Object.assign({}, style), customStyle)
-  }, children), index < latestIndex && split && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
-    className: `${className}-split`,
-    style: style
-  }, split));
-}
-
-/***/ }),
-
-/***/ "./node_modules/antd/es/space/context.js":
-/*!***********************************************!*\
-  !*** ./node_modules/antd/es/space/context.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SpaceContext": () => (/* binding */ SpaceContext),
-/* harmony export */   "SpaceContextProvider": () => (/* binding */ SpaceContextProvider)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-const SpaceContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext({
-  latestIndex: 0,
-  horizontalSize: 0,
-  verticalSize: 0,
-  supportFlexGap: false
-});
-const SpaceContextProvider = SpaceContext.Provider;
-
-/***/ }),
-
-/***/ "./node_modules/antd/es/space/index.js":
-/*!*********************************************!*\
-  !*** ./node_modules/antd/es/space/index.js ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var rc_util_es_Children_toArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rc-util/es/Children/toArray */ "./node_modules/rc-util/es/Children/toArray.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _util_hooks_useFlexGapSupport__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_util/hooks/useFlexGapSupport */ "./node_modules/antd/es/_util/hooks/useFlexGapSupport.js");
-/* harmony import */ var _config_provider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../config-provider */ "./node_modules/antd/es/config-provider/context.js");
-/* harmony import */ var _Compact__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Compact */ "./node_modules/antd/es/space/Compact.js");
-/* harmony import */ var _Item__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Item */ "./node_modules/antd/es/space/Item.js");
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./context */ "./node_modules/antd/es/space/context.js");
-/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./style */ "./node_modules/antd/es/space/style/index.js");
-var __rest = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-
-
-
-
-
-
-
-
-const spaceSize = {
-  small: 8,
-  middle: 16,
-  large: 24
-};
-function getNumberSize(size) {
-  return typeof size === 'string' ? spaceSize[size] : size || 0;
-}
-const Space = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.forwardRef((props, ref) => {
-  var _a, _b;
-  const {
-    getPrefixCls,
-    space,
-    direction: directionConfig
-  } = react__WEBPACK_IMPORTED_MODULE_2__.useContext(_config_provider__WEBPACK_IMPORTED_MODULE_3__.ConfigContext);
-  const {
-      size = (space === null || space === void 0 ? void 0 : space.size) || 'small',
-      align,
-      className,
-      rootClassName,
-      children,
-      direction = 'horizontal',
-      prefixCls: customizePrefixCls,
-      split,
-      style,
-      wrap = false,
-      classNames: customClassNames,
-      styles
-    } = props,
-    otherProps = __rest(props, ["size", "align", "className", "rootClassName", "children", "direction", "prefixCls", "split", "style", "wrap", "classNames", "styles"]);
-  const supportFlexGap = (0,_util_hooks_useFlexGapSupport__WEBPACK_IMPORTED_MODULE_4__["default"])();
-  const [horizontalSize, verticalSize] = react__WEBPACK_IMPORTED_MODULE_2__.useMemo(() => (Array.isArray(size) ? size : [size, size]).map(item => getNumberSize(item)), [size]);
-  const childNodes = (0,rc_util_es_Children_toArray__WEBPACK_IMPORTED_MODULE_1__["default"])(children, {
-    keepEmpty: true
-  });
-  const mergedAlign = align === undefined && direction === 'horizontal' ? 'center' : align;
-  const prefixCls = getPrefixCls('space', customizePrefixCls);
-  const [wrapSSR, hashId] = (0,_style__WEBPACK_IMPORTED_MODULE_5__["default"])(prefixCls);
-  const cn = classnames__WEBPACK_IMPORTED_MODULE_0___default()(prefixCls, hashId, `${prefixCls}-${direction}`, {
-    [`${prefixCls}-rtl`]: directionConfig === 'rtl',
-    [`${prefixCls}-align-${mergedAlign}`]: mergedAlign
-  }, className !== null && className !== void 0 ? className : space === null || space === void 0 ? void 0 : space.className, rootClassName);
-  const itemClassName = classnames__WEBPACK_IMPORTED_MODULE_0___default()(`${prefixCls}-item`, (_a = customClassNames === null || customClassNames === void 0 ? void 0 : customClassNames.item) !== null && _a !== void 0 ? _a : (_b = space === null || space === void 0 ? void 0 : space.classNames) === null || _b === void 0 ? void 0 : _b.item);
-  const marginDirection = directionConfig === 'rtl' ? 'marginLeft' : 'marginRight';
-  // Calculate latest one
-  let latestIndex = 0;
-  const nodes = childNodes.map((child, i) => {
-    var _a, _b;
-    if (child !== null && child !== undefined) {
-      latestIndex = i;
-    }
-    const key = child && child.key || `${itemClassName}-${i}`;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_Item__WEBPACK_IMPORTED_MODULE_6__["default"], {
-      className: itemClassName,
-      key: key,
-      direction: direction,
-      index: i,
-      marginDirection: marginDirection,
-      split: split,
-      wrap: wrap,
-      style: (_a = styles === null || styles === void 0 ? void 0 : styles.item) !== null && _a !== void 0 ? _a : (_b = space === null || space === void 0 ? void 0 : space.styles) === null || _b === void 0 ? void 0 : _b.item
-    }, child);
-  });
-  const spaceContext = react__WEBPACK_IMPORTED_MODULE_2__.useMemo(() => ({
-    horizontalSize,
-    verticalSize,
-    latestIndex,
-    supportFlexGap
-  }), [horizontalSize, verticalSize, latestIndex, supportFlexGap]);
-  // =========================== Render ===========================
-  if (childNodes.length === 0) {
-    return null;
-  }
-  const gapStyle = {};
-  if (wrap) {
-    gapStyle.flexWrap = 'wrap';
-    // Patch for gap not support
-    if (!supportFlexGap) {
-      gapStyle.marginBottom = -verticalSize;
-    }
-  }
-  if (supportFlexGap) {
-    gapStyle.columnGap = horizontalSize;
-    gapStyle.rowGap = verticalSize;
-  }
-  return wrapSSR( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement("div", Object.assign({
-    ref: ref,
-    className: cn,
-    style: Object.assign(Object.assign(Object.assign({}, gapStyle), space === null || space === void 0 ? void 0 : space.style), style)
-  }, otherProps), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_context__WEBPACK_IMPORTED_MODULE_7__.SpaceContextProvider, {
-    value: spaceContext
-  }, nodes)));
-});
-if (true) {
-  Space.displayName = 'Space';
-}
-const CompoundedSpace = Space;
-CompoundedSpace.Compact = _Compact__WEBPACK_IMPORTED_MODULE_8__["default"];
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CompoundedSpace);
 
 /***/ }),
 
@@ -52751,47 +52452,6 @@ function getShadowRoot(ele) {
 
 /***/ }),
 
-/***/ "./node_modules/rc-util/es/Dom/styleChecker.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/rc-util/es/Dom/styleChecker.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "isStyleSupport": () => (/* binding */ isStyleSupport)
-/* harmony export */ });
-/* harmony import */ var _canUseDom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./canUseDom */ "./node_modules/rc-util/es/Dom/canUseDom.js");
-
-var isStyleNameSupport = function isStyleNameSupport(styleName) {
-  if ((0,_canUseDom__WEBPACK_IMPORTED_MODULE_0__["default"])() && window.document.documentElement) {
-    var styleNameList = Array.isArray(styleName) ? styleName : [styleName];
-    var documentElement = window.document.documentElement;
-    return styleNameList.some(function (name) {
-      return name in documentElement.style;
-    });
-  }
-  return false;
-};
-var isStyleValueSupport = function isStyleValueSupport(styleName, value) {
-  if (!isStyleNameSupport(styleName)) {
-    return false;
-  }
-  var ele = document.createElement('div');
-  var origin = ele.style[styleName];
-  ele.style[styleName] = value;
-  return ele.style[styleName] !== origin;
-};
-function isStyleSupport(styleName, styleValue) {
-  if (!Array.isArray(styleName) && styleValue !== undefined) {
-    return isStyleValueSupport(styleName, styleValue);
-  }
-  return isStyleNameSupport(styleName);
-}
-
-/***/ }),
-
 /***/ "./node_modules/rc-util/es/KeyCode.js":
 /*!********************************************!*\
   !*** ./node_modules/rc-util/es/KeyCode.js ***!
@@ -89201,9 +88861,23 @@ const Otp = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(() => {
     const onChange = (e) => {
         setProp("otpCode", `${e.target.value}`);
     };
-    return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", { style: { backgroundColor: "gray", padding: "3px", borderRadius: "3px", marginLeft: "1rem" } },
-        react__WEBPACK_IMPORTED_MODULE_2___default().createElement(antd__WEBPACK_IMPORTED_MODULE_3__["default"], { checkedChildren: "on", unCheckedChildren: "off", defaultChecked: false, checked: loginWithOtp, onChange: () => setProp("loginWithOtp", !loginWithOtp) }),
-        react__WEBPACK_IMPORTED_MODULE_2___default().createElement(antd__WEBPACK_IMPORTED_MODULE_4__["default"], { style: { marginLeft: "3px" }, placeholder: "Otp", min: 1, max: 10, defaultValue: 3, value: otpCode, onChange: onChange })));
+    return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", { style: {
+            backgroundColor: "gray",
+            padding: "3px",
+            borderRadius: "3px",
+            marginLeft: "1rem",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+        } },
+        react__WEBPACK_IMPORTED_MODULE_2___default().createElement(antd__WEBPACK_IMPORTED_MODULE_3__["default"]
+        // checkedChildren="on"
+        // unCheckedChildren="off"
+        , { 
+            // checkedChildren="on"
+            // unCheckedChildren="off"
+            defaultChecked: false, checked: loginWithOtp, onChange: () => setProp("loginWithOtp", !loginWithOtp) }),
+        react__WEBPACK_IMPORTED_MODULE_2___default().createElement(antd__WEBPACK_IMPORTED_MODULE_4__["default"], { style: { marginLeft: "3px", width: "4rem" }, placeholder: "Otp", min: 1, max: 10, defaultValue: 3, value: otpCode, onChange: onChange })));
 });
 
 
@@ -89449,9 +89123,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared/config */ "./src/shared/config/index.ts");
 /* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
 /* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/space/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
 /* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
@@ -89474,12 +89147,12 @@ const SwaggerHeaderComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__.o
         setEmail(inputValue);
     };
     return (react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", null,
-        react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"].Compact, { size: "small" },
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { placeholder: "Email", value: email, onChange: onChange }),
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { placeholder: "Password", value: pass, onChange: (e) => {
+        react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", { className: "flex items-center" },
+            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"], { placeholder: "Email", value: email, onChange: onChange }),
+            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"], { placeholder: "Password", value: pass, onChange: (e) => {
                     setPass(e.target.value);
                 } }),
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_7__["default"], { type: "primary", onClick: onLogin }, "Login"))));
+            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { type: "primary", onClick: onLogin }, "Login"))));
 });
 SwaggerHeaderComponent.defaultProps = {};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_2__["default"])(SwaggerHeaderComponent));
@@ -90661,6 +90334,8 @@ __webpack_require__.r(__webpack_exports__);
 class NotificationManager {
     static success = antd__WEBPACK_IMPORTED_MODULE_0__["default"].success;
     static error = antd__WEBPACK_IMPORTED_MODULE_0__["default"].error;
+    static warning = antd__WEBPACK_IMPORTED_MODULE_0__["default"].warning;
+    static info = antd__WEBPACK_IMPORTED_MODULE_0__["default"].info;
 }
 
 
@@ -91161,10 +90836,8 @@ class SwaggerUIX {
         this.trackMouse();
         this.handleResponseInterceptor();
     }
-    initUI() {
-        setTimeout(() => {
-            this.onPageLoaded();
-        }, 500);
+    async initUI() {
+        await this.onPageLoaded();
     }
     handleResponseInterceptor() {
         this.onResponse((response) => {
@@ -91213,7 +90886,8 @@ class SwaggerUIX {
             };
         }
     }
-    onPageLoaded() {
+    async onPageLoaded() {
+        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => !!this.$sectionWrapper, 1000, 10);
         this.hideUINotNeeded();
         const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes);
         els?.forEach(($el) => {
@@ -91386,7 +91060,7 @@ class SwaggerUIX {
                     .then((res) => res.json())
                     .then((data) => {
                     if (data?.data?.profile?.mfaEnforced && !loginWithOtp) {
-                        _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.error({ message: `Need Login via OTP` });
+                        _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.warning({ message: `Need Login via OTP` });
                         reject(new Error());
                         return;
                     }

@@ -24,7 +24,7 @@ import { contentScript } from "./tools/content.executor"
   ) {
     const SwaggerUIBundle = getGlobalVar("SwaggerUIBundle")
     if (SwaggerUIBundle) {
-      setTimeout(() => {
+      setTimeout(async () => {
         const swaggerUIBundle = SwaggerUIBundle({
           url: `${location?.href?.split("#")?.[0]}-json`,
           dom_id: "#swagger-ui",
@@ -37,7 +37,7 @@ import { contentScript } from "./tools/content.executor"
         console.log("_rootStore.website.swaggerTool", _rootStore.website.swaggerTool)
 
         if (_rootStore.website.swaggerTool.autoInitUI) {
-          swaggerUI.initUI()
+          await swaggerUI.initUI()
           swaggerUI.login(undefined, undefined, true)
         }
         ;(window as any).swaggerUI = swaggerUI
@@ -70,15 +70,15 @@ import { contentScript } from "./tools/content.executor"
 //   return recaptcha
 // }
 
-storageLocal.onChange(async (c) => {
-  const newValue = parseJson(c?.[ROOT_STATE_STORAGE_KEY]?.newValue)
+// storageLocal.onChange(async (c) => {
+//   const newValue = parseJson(c?.[ROOT_STATE_STORAGE_KEY]?.newValue)
 
-  const { nextEvent } = newValue
-  if (nextEvent?.type) {
-    const res = await contentScript.executeCommand({
-      commandId: nextEvent.type,
-      params: nextEvent.params,
-    })
-    console.log("[TOKEN]", res)
-  }
-})
+//   const { nextEvent } = newValue
+//   if (nextEvent?.type) {
+//     const res = await contentScript.executeCommand({
+//       commandId: nextEvent.type,
+//       params: nextEvent.params,
+//     })
+//     console.log("[TOKEN]", res)
+//   }
+// })
