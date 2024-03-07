@@ -92776,10 +92776,8 @@ class SwaggerUIX {
         this.trackMouse();
         this.handleResponseInterceptor();
     }
-    initUI() {
-        setTimeout(() => {
-            this.onPageLoaded();
-        }, 500);
+    async initUI() {
+        await this.onPageLoaded();
     }
     handleResponseInterceptor() {
         this.onResponse((response) => {
@@ -92828,7 +92826,8 @@ class SwaggerUIX {
             };
         }
     }
-    onPageLoaded() {
+    async onPageLoaded() {
+        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => !!this.$sectionWrapper, 1000, 10);
         this.hideUINotNeeded();
         const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes);
         els?.forEach(($el) => {

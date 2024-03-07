@@ -432,10 +432,8 @@ export class SwaggerUIX {
     this.handleResponseInterceptor()
   }
 
-  initUI() {
-    setTimeout(() => {
-      this.onPageLoaded()
-    }, 500)
+  async initUI() {
+    await this.onPageLoaded()
   }
 
   handleResponseInterceptor() {
@@ -489,7 +487,8 @@ export class SwaggerUIX {
     }
   }
 
-  onPageLoaded() {
+  async onPageLoaded() {
+    await waitUntil(() => !!this.$sectionWrapper, 1000, 10)
     this.hideUINotNeeded()
     const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes as any)
     els?.forEach(($el: any) => {

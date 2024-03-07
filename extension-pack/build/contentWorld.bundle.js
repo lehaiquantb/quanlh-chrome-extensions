@@ -90836,10 +90836,8 @@ class SwaggerUIX {
         this.trackMouse();
         this.handleResponseInterceptor();
     }
-    initUI() {
-        setTimeout(() => {
-            this.onPageLoaded();
-        }, 500);
+    async initUI() {
+        await this.onPageLoaded();
     }
     handleResponseInterceptor() {
         this.onResponse((response) => {
@@ -90888,7 +90886,8 @@ class SwaggerUIX {
             };
         }
     }
-    onPageLoaded() {
+    async onPageLoaded() {
+        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => !!this.$sectionWrapper, 1000, 10);
         this.hideUINotNeeded();
         const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes);
         els?.forEach(($el) => {
@@ -93159,7 +93158,7 @@ __webpack_require__.r(__webpack_exports__);
         !window.location?.host?.includes("127.0.0.1:5500")) {
         const SwaggerUIBundle = (0,_shared__WEBPACK_IMPORTED_MODULE_4__.getGlobalVar)("SwaggerUIBundle");
         if (SwaggerUIBundle) {
-            setTimeout(() => {
+            setTimeout(async () => {
                 const swaggerUIBundle = SwaggerUIBundle({
                     url: `${location?.href?.split("#")?.[0]}-json`,
                     dom_id: "#swagger-ui",
@@ -93169,7 +93168,7 @@ __webpack_require__.r(__webpack_exports__);
                 const swaggerUI = new _shared_website_swagger_swagger_ui__WEBPACK_IMPORTED_MODULE_1__.SwaggerUIX({ storageType: "localStorage", swaggerUIBundle });
                 console.log("_rootStore.website.swaggerTool", _shared_models__WEBPACK_IMPORTED_MODULE_0__._rootStore.website.swaggerTool);
                 if (_shared_models__WEBPACK_IMPORTED_MODULE_0__._rootStore.website.swaggerTool.autoInitUI) {
-                    swaggerUI.initUI();
+                    await swaggerUI.initUI();
                     swaggerUI.login(undefined, undefined, true);
                 }
                 ;
