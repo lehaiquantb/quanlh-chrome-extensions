@@ -63,19 +63,22 @@ export const useInitialRootStore = (
 
   // Kick off initial async loading actions, like loading fonts and rehydrating RootStore
   useEffect(() => {
+    const storageType = opts?.storageType ?? "chromeStorage"
     const needTrackingStorageLocal = opts?.needTrackingStorageLocal ?? true
     const needTrackingStorageChrome = opts?.needTrackingStorageChrome ?? true
-
     let listener: any
     let _unsubscribe: () => void
     let timeout: any
     ;(async () => {
       // set up the RootStore (returns the state restored from AsyncStorage)
-      const { restoredState, unsubscribe } = await setupRootStore(rootStore, opts)
+      const { restoredState, unsubscribe } = await setupRootStore(rootStore, {
+        ...(opts ?? {}),
+        storageType,
+      })
       _unsubscribe = unsubscribe
 
       // For DEBUG: reactotron integration with the MST root store (DEV only)
-      
+
       // makeInspectable(rootStore)
 
       // For DEBUG: make some changes to show the root store in mst dev mode but it make storage being updated continuously => make logic wrong
@@ -92,16 +95,16 @@ export const useInitialRootStore = (
         callback()
       }
 
-      if (needTrackingStorageLocal) {
-        storageLocal.onChange((changes) => {
-          if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue) {
-            const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
-            applySnapshot(rootStore, JSON.parse(newRootStore))
-          }
-        })
+      if (needTrackingStorageLocal && storageType === "localStorage") {
+        // storageLocal.onChange((changes) => {
+        //   if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue) {
+        //     const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
+        //     applySnapshot(rootStore, JSON.parse(newRootStore))
+        //   }
+        // })
       }
 
-      if (needTrackingStorageChrome) {
+      if (needTrackingStorageChrome && storageType === "chromeStorage") {
         listener = (
           changes: { [key: string]: chrome.storage.StorageChange },
           namespace: chrome.storage.AreaName,

@@ -8,10 +8,12 @@ export const SwaggerModel = types
   .compose(
     ToolModel,
     types.model({
-      autoInitUI: types.optional(types.boolean, false),
+      autoInitUI: types.optional(types.boolean, config.cr.autoInitUI),
       email: types.optional(types.string, config.cr.username),
       password: types.optional(types.string, config.cr.password),
       recaptchaSiteKey: types.optional(types.string, config.cr.recaptchaSiteKey),
+      loginWithOtp: types.optional(types.boolean, config.cr.loginWithOtp),
+      otpCode: types.optional(types.string, ""),
     }),
   )
   .named("SwaggerModel")
@@ -32,9 +34,11 @@ export type SwaggerSnapshotIn = SnapshotIn<typeof SwaggerModel>
 export type SwaggerSnapshot = SnapshotOut<typeof SwaggerModel>
 
 export const SWAGGER_MODEL_DEFAULT: SwaggerSnapshot = {
-  autoInitUI: false,
+  autoInitUI: config.cr.autoInitUI,
   matchRegexUrls: config.cr.matchRegexUrls,
   email: config.cr.username,
   password: config.cr.password,
   recaptchaSiteKey: config.cr.recaptchaSiteKey,
+  loginWithOtp: config.cr.loginWithOtp,
+  otpCode: "",
 }
