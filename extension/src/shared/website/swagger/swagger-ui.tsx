@@ -693,7 +693,7 @@ export class SwaggerUIX {
           .then((res) => res.json())
           .then((data) => {
             if (data?.data?.profile?.mfaEnforced && !loginWithOtp) {
-              NotificationManager.error({ message: `Need Login via OTP` })
+              NotificationManager.warning({ message: `Need Login via OTP` })
               reject(new Error())
               return
             }
