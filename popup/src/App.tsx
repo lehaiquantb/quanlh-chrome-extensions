@@ -1,10 +1,14 @@
-import "font-awesome/css/font-awesome.min.css";
 import React, { useEffect, useRef } from "react";
 import "./assets/scss/app.scss";
 import logo from "./logo.svg";
 import { getChrome, getCurrentTab } from "./utils/helper";
 import { Extension } from "./utils/Extension";
-import { ECommandId, storageChrome, storageLocal } from "./shared";
+import {
+  ECommandId,
+  createElementByText,
+  storageChrome,
+  storageLocal,
+} from "./shared";
 import { useInitialRootStore, useStores } from "@/shared/models";
 import ConvertCssToTailwind from "./components/ConvertCssToTailwind/ConvertCssToTailwind";
 import CodeEditor from "./components/Editor/CodeEditor";
@@ -12,6 +16,7 @@ import { editor } from "monaco-editor";
 import { Button, Switch, Tabs, TabsProps } from "antd";
 import { observer } from "mobx-react-lite";
 import { Tools } from "./components/Tools/Tools";
+import { ImageViewer } from "./shared/components/ImageViewer/ImageViewer";
 // console.log(getChrome()?.devtools?.inspectedWindow?.eval("chrome"));
 
 // getChrome()?.action?.onClicked.addListener((tab) => {
@@ -147,6 +152,31 @@ function App() {
   return (
     <div className="App p-2" style={$app}>
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+      <div
+        style={{
+          height: "200px",
+          overflow: "hidden",
+          position: "relative",
+          width: "100%",
+        }}
+      >
+        <div>
+          <ImageViewer
+            imgElement={
+              createElementByText(`
+        <img src="https://media.techmaster.vn/api/static/brbgh4451coepbqoch60/gJqA6Sw-" alt="Quiz luyện thi chứng chỉ AWS chủ đề S3 (P1)" onerror="this.onerror=null;this.src='/resources/image/thumbnail.jpg'"
+         style="height: 100%;
+        left: 0;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        width: 100%;"
+    >
+      `) as HTMLImageElement
+            } 
+          />
+        </div>
+      </div>
     </div>
   );
 }

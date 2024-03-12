@@ -16,7 +16,7 @@ import "./assets/scss/copy-field.scss"
 // })
 import { IMessage, getGlobalVar, isMatchWebsite, parseJson, storageLocal } from "./shared"
 import { contentScript } from "./tools/content.executor"
-import { imageViewerManager } from "./tools/imageViewer"
+import { imageViewerManager } from "./tools/ImageViewerManager"
 ;(async () => {
   // set up the RootStore (returns the state restored from AsyncStorage)
   const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
@@ -87,7 +87,6 @@ import { imageViewerManager } from "./tools/imageViewer"
 //   }
 // })
 
-
 // storageLocal.onChange(async (c) => {
 //   const newValue = parseJson(c?.[ROOT_STATE_STORAGE_KEY]?.newValue)
 
@@ -106,3 +105,9 @@ const Q = {
 }
 
 ;(window as any).Q = Q
+
+try {
+  // imageViewerManager.execute()
+} catch (error) {
+  console.log("error", error)
+}

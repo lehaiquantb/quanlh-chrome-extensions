@@ -15,26 +15,38 @@ export class ImageViewerManager {
   }
 
   findImageElements() {
-    return Array.from(document?.querySelectorAll?.("img") ?? [])
+    return Array.from(document?.querySelectorAll?.("img") ?? [])?.filter(
+      (i) =>
+        i?.getAttribute("data-viewerable") !== "false" && !i?.className?.includes("ant-image-img"),
+    )
   }
 
   execute() {
     const imgs = this.findImageElements()
+    console.log("TOTAL IMAGES", imgs?.length)
+
+    imgs?.forEach((img) => {
+      this.renderViewerWithImageElement(img)
+    })
   }
 
   renderViewerWithImageElement(img: HTMLImageElement) {
-    const parent = document.createElement("div")
-    const _img = img.cloneNode(true) as HTMLImageElement
+    try {
+      const parent = document.createElement("div")
+      const _img = img.cloneNode(true) as HTMLImageElement
+      _img.setAttribute("data-viewerable", "false")
+      img.replaceWith(parent)
+      // const ImageViewerCom = withStorage(ImageViewer, {
+      //   storageType: "localStorage",
+      // })
 
-    img.replaceWith(parent)
-    const ImageViewerCom = withStorage(ImageViewer, {
-      storageType: "localStorage",
-    })
-
-    UIManager.render({
-      htmlElement: parent,
-      Component: <ImageViewerCom imgElement={_img} />,
-    })
+      UIManager.render({
+        htmlElement: parent,
+        Component: <ImageViewer imgElement={_img} />,
+      })
+    } catch (error) {
+      console.error(`renderViewerWithImageElement ${error}`)
+    }
   }
 }
 
