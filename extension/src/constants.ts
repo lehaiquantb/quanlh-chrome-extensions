@@ -15,3 +15,5 @@ export const enableHostClipboardFeature: RegExp[] = [
 ]
 
 export const disableHostClipboardFeature: RegExp[] = [/w3schools.com/]
+
+export const QUANLH_CHROME_RUNTIME_ID = "QUANLH_CHROME_RUNTIME_ID"

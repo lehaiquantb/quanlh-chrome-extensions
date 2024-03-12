@@ -88930,7 +88930,7 @@ __webpack_require__.r(__webpack_exports__);
 class UIManager {
     static render(opts) {
         const { id, Component, htmlElement } = opts;
-        const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot(htmlElement ?? document.getElementById(id));
+        const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot(htmlElement ?? document.getElementById(id || 'body'));
         root.render(react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().StrictMode), null, Component));
     }
 }
