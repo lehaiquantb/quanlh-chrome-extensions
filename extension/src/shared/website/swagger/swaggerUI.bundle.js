@@ -89520,6 +89520,7 @@ const RootStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.model(
     startAt: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.string, new Date().toISOString()),
     website: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_WebsiteStore__WEBPACK_IMPORTED_MODULE_2__.WebsiteStoreModel, {}),
     nextEvent: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_EventModel__WEBPACK_IMPORTED_MODULE_3__.EventModel, { id: "", type: "" }),
+    chromeRuntimeId: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.maybe(mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.string),
 })
     .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
     .actions((self) => ({

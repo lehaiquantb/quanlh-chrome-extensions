@@ -15,6 +15,7 @@ export const RootStoreModel = types
     startAt: types.optional(types.string, new Date().toISOString()),
     website: types.optional(WebsiteStoreModel, {}),
     nextEvent: types.optional(EventModel, { id: "", type: "" }),
+    chromeRuntimeId: types.maybe(types.string),
   })
   .actions(withSetPropAction)
   .actions((self) => ({

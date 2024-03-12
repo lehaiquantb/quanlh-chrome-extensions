@@ -1,5 +1,5 @@
 import { IMessage, storageChrome, storageLocal } from "@/shared"
-import { ROOT_STATE_STORAGE_KEY } from "./shared/models"
+import { ROOT_STATE_STORAGE_KEY, _rootStore } from "./shared/models"
 import { contentScript } from "./tools/content.executor"
 // import "./assets/scss/content.scss"
 
@@ -79,6 +79,8 @@ const trackingStorage = async () => {
   })
 }
 
+storageLocal.set("chromeRuntimeId", chrome.runtime.id)
+
 // trackingStorage()
 
 chrome.runtime.onConnect.addListener(() => {
@@ -135,3 +137,5 @@ chrome.runtime.onConnect.addListener(() => {
 //   //   )
 //   // }
 // })
+
+console.log(chrome.runtime.getURL("assets/images/images/donate.png"))

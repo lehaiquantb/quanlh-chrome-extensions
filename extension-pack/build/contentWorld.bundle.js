@@ -89602,6 +89602,7 @@ const RootStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.model(
     startAt: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.string, new Date().toISOString()),
     website: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_WebsiteStore__WEBPACK_IMPORTED_MODULE_2__.WebsiteStoreModel, {}),
     nextEvent: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_EventModel__WEBPACK_IMPORTED_MODULE_3__.EventModel, { id: "", type: "" }),
+    chromeRuntimeId: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.maybe(mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.string),
 })
     .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
     .actions((self) => ({
@@ -93136,6 +93137,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_models_helpers_setupRootStore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./shared/models/helpers/setupRootStore */ "./src/shared/models/helpers/setupRootStore.ts");
 /* harmony import */ var _assets_scss_copy_field_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./assets/scss/copy-field.scss */ "./src/assets/scss/copy-field.scss");
 /* harmony import */ var _shared__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./shared */ "./src/shared/index.ts");
+/**
+ * IMPORTANT: chrome not available in content worl script
+ */
 
 
 
