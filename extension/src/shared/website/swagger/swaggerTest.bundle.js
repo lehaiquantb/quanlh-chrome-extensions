@@ -91010,7 +91010,7 @@ class SwaggerUIX {
         }, 400);
     }
     async callLoginMfa(data, token, email) {
-        const recaptcha = (await this.getRecaptchaToken("LOGIN")) || "";
+        const recaptcha = ""; // (await this.getRecaptchaToken("LOGIN")) || ""
         return new Promise((resolve) => {
             fetch(`${location.origin}/api/v1/auth/mfa/login`, {
                 headers: {
@@ -91044,8 +91044,7 @@ class SwaggerUIX {
         const email = _email ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.username;
         const password = _password ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.password;
         const callLogin = async (data) => {
-            const recaptcha = (await this.getRecaptchaToken("LOGIN")) || "";
-            console.log("recaptchaxx", recaptcha);
+            const recaptcha = ""; // (await this.getRecaptchaToken("LOGIN")) || ""
             return new Promise((resolve, reject) => {
                 fetch(`${location.origin}/api/v1/auth/login`, {
                     headers: {

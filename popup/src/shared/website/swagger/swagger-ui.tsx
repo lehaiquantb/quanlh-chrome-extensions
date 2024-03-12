@@ -639,7 +639,7 @@ export class SwaggerUIX {
   }
 
   async callLoginMfa(data: any, token: string, email: string) {
-    const recaptcha = (await this.getRecaptchaToken("LOGIN")) || ""
+    const recaptcha = "" // (await this.getRecaptchaToken("LOGIN")) || ""
 
     return new Promise((resolve) => {
       fetch(`${location.origin}/api/v1/auth/mfa/login`, {
@@ -675,8 +675,7 @@ export class SwaggerUIX {
     const email = _email ?? config.cr.username
     const password = _password ?? config.cr.password
     const callLogin = async (data: any) => {
-      const recaptcha = (await this.getRecaptchaToken("LOGIN")) || ""
-      console.log("recaptchaxx", recaptcha)
+      const recaptcha = "" // (await this.getRecaptchaToken("LOGIN")) || ""
 
       return new Promise((resolve, reject) => {
         fetch(`${location.origin}/api/v1/auth/login`, {
