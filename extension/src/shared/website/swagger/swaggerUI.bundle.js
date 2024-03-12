@@ -88741,7 +88741,7 @@ __webpack_require__.r(__webpack_exports__);
 class UIManager {
     static render(opts) {
         const { id, Component, htmlElement } = opts;
-        const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot(htmlElement ?? document.getElementById(id));
+        const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot(htmlElement ?? document.getElementById(id || 'body'));
         root.render(react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().StrictMode), null, Component));
     }
 }
@@ -92043,7 +92043,7 @@ function filter (array, pattern) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"],"recaptchaSiteKey":"6LdsWXopAAAAAHuWRtUBmw_3Sw61Ft66-0MjUQcS"}}');
+module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"],"recaptchaSiteKey":"6LdsWXopAAAAAHuWRtUBmw_3Sw61Ft66-0MjUQcS","loginWithOtp":false,"autoInitUI":true}}');
 
 /***/ })
 

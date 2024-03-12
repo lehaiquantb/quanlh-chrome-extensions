@@ -12,8 +12,9 @@ import "./assets/scss/copy-field.scss"
 //   )
 // })
 import { IMessage, getGlobalVar, isMatchWebsite, parseJson, storageLocal } from "./shared"
-;import { contentScript } from "./tools/content.executor"
-(async () => {
+import { contentScript } from "./tools/content.executor"
+import { imageViewerManager } from "./tools/imageViewer"
+;(async () => {
   // set up the RootStore (returns the state restored from AsyncStorage)
   const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
     storageType: "localStorage",
@@ -72,9 +73,9 @@ const injectRecaptcha = (siteKey: string) => {
 
 storageLocal.onChange(async (c) => {
   const newValue = parseJson(c?.[ROOT_STATE_STORAGE_KEY]?.newValue)
-  
+
   const { nextEvent } = newValue
-  if (nextEvent?.type ) {
+  if (nextEvent?.type) {
     const res = await contentScript.executeCommand({
       commandId: nextEvent.type,
       params: nextEvent.params,
@@ -82,3 +83,9 @@ storageLocal.onChange(async (c) => {
     console.log("[TOKEN]", res)
   }
 })
+
+const Q = {
+  imageViewerManager,
+}
+
+;(window as any).Q = Q

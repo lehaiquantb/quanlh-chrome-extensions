@@ -22355,7 +22355,7 @@ function _typeof(obj) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"],"recaptchaSiteKey":"6LdsWXopAAAAAHuWRtUBmw_3Sw61Ft66-0MjUQcS"}}');
+module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"],"recaptchaSiteKey":"6LdsWXopAAAAAHuWRtUBmw_3Sw61Ft66-0MjUQcS","loginWithOtp":false,"autoInitUI":true}}');
 
 /***/ })
 

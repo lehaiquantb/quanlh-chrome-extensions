@@ -2,7 +2,7 @@ import React, { ReactNode } from "react"
 import ReactDOM from "react-dom/client"
 
 type RenderOption = {
-  id: string
+  id?: string
   htmlElement?: HTMLElement
   Component: ReactNode
 }
@@ -10,7 +10,7 @@ type RenderOption = {
 export class UIManager {
   static render(opts: RenderOption) {
     const { id, Component, htmlElement } = opts
-    const root = ReactDOM.createRoot(htmlElement ?? (document.getElementById(id) as HTMLElement))
+    const root = ReactDOM.createRoot(htmlElement ?? (document.getElementById(id || 'body') as HTMLElement))
     root.render(<React.StrictMode>{Component}</React.StrictMode>)
   }
 }
