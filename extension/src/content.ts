@@ -1,9 +1,5 @@
-import {
-  IMessage,
-  storageChrome,
-  storageLocal
-} from "@/shared"
-import { ROOT_STATE_STORAGE_KEY } from "./shared/models"
+import { IMessage, storageChrome, storageLocal } from "@/shared"
+import { ROOT_STATE_STORAGE_KEY, _rootStore } from "./shared/models"
 import { contentScript } from "./tools/content.executor"
 // import "./assets/scss/content.scss"
 
@@ -52,22 +48,22 @@ chrome.runtime.onMessage.addListener(async function (message: IMessage, sender, 
 //   handleCopyCodeToClipboard()
 // }
 
-;(async () => {
-  // const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
-  //   storageType: "chromeStorage",
-  // })
-  // console.log("restoredState", restoredState)
-  // const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
-  // ;(window as any).swaggerUI = swaggerUI
-  // await storageLocal.set(ROOT_STATE_STORAGE_KEY, await storageChrome.get(ROOT_STATE_STORAGE_KEY))
+// const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
+//   storageType: "chromeStorage",
+// })
+// console.log("restoredState", restoredState)
+// const swaggerUI = new SwaggerUIX({ initOnPageLoaded: false, storageType: "chromeStorage" })
+// ;(window as any).swaggerUI = swaggerUI
+// await storageLocal.set(ROOT_STATE_STORAGE_KEY, await storageChrome.get(ROOT_STATE_STORAGE_KEY))
 
+const trackingStorage = async () => {
   chrome.storage.onChanged.addListener((changes, namespace) => {
     // console.log(
     //   `[${namespace}] on change`,
     //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.oldValue),
     //   JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
     // )
-    // console.log("chrome change")
+    console.log("chrome change")
     if (namespace === "local") {
       storageLocal.set(ROOT_STATE_STORAGE_KEY, changes?.[ROOT_STATE_STORAGE_KEY]?.newValue)
     }
@@ -75,13 +71,17 @@ chrome.runtime.onMessage.addListener(async function (message: IMessage, sender, 
 
   storageLocal.onChange((changes) => {
     if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue) {
-      // console.log("local change")
+      console.log("local change")
 
       const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
       storageChrome.set(ROOT_STATE_STORAGE_KEY, newRootStore)
     }
   })
-})()
+}
+
+storageLocal.set("chromeRuntimeId", chrome.runtime.id)
+
+// trackingStorage()
 
 chrome.runtime.onConnect.addListener(() => {
   console.log("on connect")
@@ -137,3 +137,5 @@ chrome.runtime.onConnect.addListener(() => {
 //   //   )
 //   // }
 // })
+
+console.log(chrome.runtime.getURL("assets/images/images/donate.png"))

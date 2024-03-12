@@ -1,9 +1,12 @@
+/**
+ * IMPORTANT: chrome not available in content worl script
+ */
+
 import config from "./shared/config"
 import { _rootStore } from "./shared/models"
 import { SwaggerUIX } from "./shared/website/swagger/swagger-ui"
 import { ROOT_STATE_STORAGE_KEY, setupRootStore } from "./shared/models/helpers/setupRootStore"
 import "./assets/scss/copy-field.scss"
-
 // chrome.storage.onChanged.addListener((changes, namespace) => {
 //   console.log(
 //     `[${namespace}] on change`,
@@ -25,7 +28,7 @@ import { imageViewerManager } from "./tools/imageViewer"
   ) {
     const SwaggerUIBundle = getGlobalVar("SwaggerUIBundle")
     if (SwaggerUIBundle) {
-      setTimeout(() => {
+      setTimeout(async () => {
         const swaggerUIBundle = SwaggerUIBundle({
           url: `${location?.href?.split("#")?.[0]}-json`,
           dom_id: "#swagger-ui",
@@ -38,8 +41,8 @@ import { imageViewerManager } from "./tools/imageViewer"
         console.log("_rootStore.website.swaggerTool", _rootStore.website.swaggerTool)
 
         if (_rootStore.website.swaggerTool.autoInitUI) {
-          swaggerUI.initUI()
-          swaggerUI.login()
+          await swaggerUI.initUI()
+          swaggerUI.login(undefined, undefined, true)
         }
         ;(window as any).swaggerUI = swaggerUI
       }, 3000)
@@ -47,29 +50,43 @@ import { imageViewerManager } from "./tools/imageViewer"
   }
 })()
 
-const injectRecaptcha = (siteKey: string) => {
-  const recaptcha = document.createElement("script")
-  recaptcha.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
-  recaptcha.async = true
-  recaptcha.defer = true
-  document.head.appendChild(recaptcha)
+// const injectRecaptcha = (siteKey: string) => {
+//   const recaptcha = document.createElement("script")
+//   recaptcha.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+//   recaptcha.async = true
+//   recaptcha.defer = true
+//   document.head.appendChild(recaptcha)
 
-  function getToken() {
-    const grecaptcha = getGlobalVar("grecaptcha") as any
-    return new Promise<string | null>((resolve) => {
-      if (grecaptcha) {
-        grecaptcha.execute(siteKey, { action: "submit" }).then(function (token: string) {
-          console.log(token)
-          resolve(token)
-        })
-      } else {
-        resolve(null)
-      }
-    })
-  }
+//   function getToken() {
+//     const grecaptcha = getGlobalVar("grecaptcha") as any
+//     return new Promise<string | null>((resolve) => {
+//       if (grecaptcha) {
+//         grecaptcha.execute(siteKey, { action: "submit" }).then(function (token: string) {
+//           console.log(token)
+//           resolve(token)
+//         })
+//       } else {
+//         resolve(null)
+//       }
+//     })
+//   }
 
-  return recaptcha
-}
+//   return recaptcha
+// }
+
+// storageLocal.onChange(async (c) => {
+//   const newValue = parseJson(c?.[ROOT_STATE_STORAGE_KEY]?.newValue)
+
+//   const { nextEvent } = newValue
+//   if (nextEvent?.type) {
+//     const res = await contentScript.executeCommand({
+//       commandId: nextEvent.type,
+//       params: nextEvent.params,
+//     })
+//     console.log("[TOKEN]", res)
+//   }
+// })
+
 
 storageLocal.onChange(async (c) => {
   const newValue = parseJson(c?.[ROOT_STATE_STORAGE_KEY]?.newValue)

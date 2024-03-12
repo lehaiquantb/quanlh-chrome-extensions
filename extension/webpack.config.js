@@ -93,6 +93,10 @@ module.exports = {
           from: path.resolve(__dirname, "./src/shared"),
           to: path.resolve(__dirname, "../popup/src/shared"),
         },
+        {
+          from: path.resolve(__dirname, "./src/assets/images"),
+          to: path.resolve(__dirname, "../extension-pack/assets/images/images"),
+        },
       ],
     }),
   ],

@@ -40,6 +40,8 @@ export async function setupRootStore(rootStore: RootStore, opts?: { storageType:
 
   // track changes & save to AsyncStorage
   _disposer = onSnapshot(rootStore, (snapshot) => {
+    console.log("snapshot from web", snapshot)
+
     storage.set(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot))
   })
 

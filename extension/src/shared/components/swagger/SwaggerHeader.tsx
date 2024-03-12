@@ -32,7 +32,7 @@ export const SwaggerHeaderComponent: FC<Props> = observer((props: Props) => {
 
   return (
     <div>
-      <Space.Compact size="small">
+      <div className="flex items-center">
         <Input placeholder="Email" value={email} onChange={onChange} />
         <Input
           placeholder="Password"
@@ -44,7 +44,7 @@ export const SwaggerHeaderComponent: FC<Props> = observer((props: Props) => {
         <Button type="primary" onClick={onLogin}>
           Login
         </Button>
-      </Space.Compact>
+      </div>
     </div>
   )
 })

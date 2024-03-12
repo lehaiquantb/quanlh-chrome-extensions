@@ -4326,32 +4326,6 @@ var unitlessKeys = {
 
 /***/ }),
 
-/***/ "./node_modules/antd/es/_util/hooks/useFlexGapSupport.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/antd/es/_util/hooks/useFlexGapSupport.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _styleChecker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../styleChecker */ "./node_modules/antd/es/_util/styleChecker.js");
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {
-  const [flexible, setFlexible] = react__WEBPACK_IMPORTED_MODULE_0__.useState(false);
-  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
-    setFlexible((0,_styleChecker__WEBPACK_IMPORTED_MODULE_1__.detectFlexGapSupported)());
-  }, []);
-  return flexible;
-});
-
-/***/ }),
-
 /***/ "./node_modules/antd/es/_util/motion.js":
 /*!**********************************************!*\
   !*** ./node_modules/antd/es/_util/motion.js ***!
@@ -4478,50 +4452,6 @@ function getStatusClassNames(prefixCls, status, hasFeedback) {
   });
 }
 const getMergedStatus = (contextStatus, customStatus) => customStatus || contextStatus;
-
-/***/ }),
-
-/***/ "./node_modules/antd/es/_util/styleChecker.js":
-/*!****************************************************!*\
-  !*** ./node_modules/antd/es/_util/styleChecker.js ***!
-  \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "canUseDocElement": () => (/* binding */ canUseDocElement),
-/* harmony export */   "detectFlexGapSupported": () => (/* binding */ detectFlexGapSupported),
-/* harmony export */   "isStyleSupport": () => (/* reexport safe */ rc_util_es_Dom_styleChecker__WEBPACK_IMPORTED_MODULE_1__.isStyleSupport)
-/* harmony export */ });
-/* harmony import */ var rc_util_es_Dom_canUseDom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rc-util/es/Dom/canUseDom */ "./node_modules/rc-util/es/Dom/canUseDom.js");
-/* harmony import */ var rc_util_es_Dom_styleChecker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rc-util/es/Dom/styleChecker */ "./node_modules/rc-util/es/Dom/styleChecker.js");
-
-
-const canUseDocElement = () => (0,rc_util_es_Dom_canUseDom__WEBPACK_IMPORTED_MODULE_0__["default"])() && window.document.documentElement;
-
-let flexGapSupported;
-const detectFlexGapSupported = () => {
-  if (!canUseDocElement()) {
-    return false;
-  }
-  if (flexGapSupported !== undefined) {
-    return flexGapSupported;
-  }
-  // create flex container with row-gap set
-  const flex = document.createElement('div');
-  flex.style.display = 'flex';
-  flex.style.flexDirection = 'column';
-  flex.style.rowGap = '1px';
-  // create two, elements inside it
-  flex.appendChild(document.createElement('div'));
-  flex.appendChild(document.createElement('div'));
-  // append to the DOM (needed to obtain scrollHeight)
-  document.body.appendChild(flex);
-  flexGapSupported = flex.scrollHeight === 1; // flex container should be 1px high from the row-gap
-  document.body.removeChild(flex);
-  return flexGapSupported;
-};
 
 /***/ }),
 
@@ -10119,235 +10049,6 @@ const Compact = props => {
 
 /***/ }),
 
-/***/ "./node_modules/antd/es/space/Item.js":
-/*!********************************************!*\
-  !*** ./node_modules/antd/es/space/Item.js ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Item)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./context */ "./node_modules/antd/es/space/context.js");
-
-
-function Item(_ref) {
-  let {
-    className,
-    direction,
-    index,
-    marginDirection,
-    children,
-    split,
-    wrap,
-    style: customStyle
-  } = _ref;
-  const {
-    horizontalSize,
-    verticalSize,
-    latestIndex,
-    supportFlexGap
-  } = react__WEBPACK_IMPORTED_MODULE_0__.useContext(_context__WEBPACK_IMPORTED_MODULE_1__.SpaceContext);
-  let style = {};
-  if (!supportFlexGap) {
-    if (direction === 'vertical') {
-      if (index < latestIndex) {
-        style = {
-          marginBottom: horizontalSize / (split ? 2 : 1)
-        };
-      }
-    } else {
-      style = Object.assign(Object.assign({}, index < latestIndex && {
-        [marginDirection]: horizontalSize / (split ? 2 : 1)
-      }), wrap && {
-        paddingBottom: verticalSize
-      });
-    }
-  }
-  if (children === null || children === undefined) {
-    return null;
-  }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: className,
-    style: Object.assign(Object.assign({}, style), customStyle)
-  }, children), index < latestIndex && split && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
-    className: `${className}-split`,
-    style: style
-  }, split));
-}
-
-/***/ }),
-
-/***/ "./node_modules/antd/es/space/context.js":
-/*!***********************************************!*\
-  !*** ./node_modules/antd/es/space/context.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SpaceContext": () => (/* binding */ SpaceContext),
-/* harmony export */   "SpaceContextProvider": () => (/* binding */ SpaceContextProvider)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-const SpaceContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext({
-  latestIndex: 0,
-  horizontalSize: 0,
-  verticalSize: 0,
-  supportFlexGap: false
-});
-const SpaceContextProvider = SpaceContext.Provider;
-
-/***/ }),
-
-/***/ "./node_modules/antd/es/space/index.js":
-/*!*********************************************!*\
-  !*** ./node_modules/antd/es/space/index.js ***!
-  \*********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var rc_util_es_Children_toArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rc-util/es/Children/toArray */ "./node_modules/rc-util/es/Children/toArray.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _util_hooks_useFlexGapSupport__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_util/hooks/useFlexGapSupport */ "./node_modules/antd/es/_util/hooks/useFlexGapSupport.js");
-/* harmony import */ var _config_provider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../config-provider */ "./node_modules/antd/es/config-provider/context.js");
-/* harmony import */ var _Compact__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Compact */ "./node_modules/antd/es/space/Compact.js");
-/* harmony import */ var _Item__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Item */ "./node_modules/antd/es/space/Item.js");
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./context */ "./node_modules/antd/es/space/context.js");
-/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./style */ "./node_modules/antd/es/space/style/index.js");
-var __rest = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-
-
-
-
-
-
-
-
-const spaceSize = {
-  small: 8,
-  middle: 16,
-  large: 24
-};
-function getNumberSize(size) {
-  return typeof size === 'string' ? spaceSize[size] : size || 0;
-}
-const Space = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.forwardRef((props, ref) => {
-  var _a, _b;
-  const {
-    getPrefixCls,
-    space,
-    direction: directionConfig
-  } = react__WEBPACK_IMPORTED_MODULE_2__.useContext(_config_provider__WEBPACK_IMPORTED_MODULE_3__.ConfigContext);
-  const {
-      size = (space === null || space === void 0 ? void 0 : space.size) || 'small',
-      align,
-      className,
-      rootClassName,
-      children,
-      direction = 'horizontal',
-      prefixCls: customizePrefixCls,
-      split,
-      style,
-      wrap = false,
-      classNames: customClassNames,
-      styles
-    } = props,
-    otherProps = __rest(props, ["size", "align", "className", "rootClassName", "children", "direction", "prefixCls", "split", "style", "wrap", "classNames", "styles"]);
-  const supportFlexGap = (0,_util_hooks_useFlexGapSupport__WEBPACK_IMPORTED_MODULE_4__["default"])();
-  const [horizontalSize, verticalSize] = react__WEBPACK_IMPORTED_MODULE_2__.useMemo(() => (Array.isArray(size) ? size : [size, size]).map(item => getNumberSize(item)), [size]);
-  const childNodes = (0,rc_util_es_Children_toArray__WEBPACK_IMPORTED_MODULE_1__["default"])(children, {
-    keepEmpty: true
-  });
-  const mergedAlign = align === undefined && direction === 'horizontal' ? 'center' : align;
-  const prefixCls = getPrefixCls('space', customizePrefixCls);
-  const [wrapSSR, hashId] = (0,_style__WEBPACK_IMPORTED_MODULE_5__["default"])(prefixCls);
-  const cn = classnames__WEBPACK_IMPORTED_MODULE_0___default()(prefixCls, hashId, `${prefixCls}-${direction}`, {
-    [`${prefixCls}-rtl`]: directionConfig === 'rtl',
-    [`${prefixCls}-align-${mergedAlign}`]: mergedAlign
-  }, className !== null && className !== void 0 ? className : space === null || space === void 0 ? void 0 : space.className, rootClassName);
-  const itemClassName = classnames__WEBPACK_IMPORTED_MODULE_0___default()(`${prefixCls}-item`, (_a = customClassNames === null || customClassNames === void 0 ? void 0 : customClassNames.item) !== null && _a !== void 0 ? _a : (_b = space === null || space === void 0 ? void 0 : space.classNames) === null || _b === void 0 ? void 0 : _b.item);
-  const marginDirection = directionConfig === 'rtl' ? 'marginLeft' : 'marginRight';
-  // Calculate latest one
-  let latestIndex = 0;
-  const nodes = childNodes.map((child, i) => {
-    var _a, _b;
-    if (child !== null && child !== undefined) {
-      latestIndex = i;
-    }
-    const key = child && child.key || `${itemClassName}-${i}`;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_Item__WEBPACK_IMPORTED_MODULE_6__["default"], {
-      className: itemClassName,
-      key: key,
-      direction: direction,
-      index: i,
-      marginDirection: marginDirection,
-      split: split,
-      wrap: wrap,
-      style: (_a = styles === null || styles === void 0 ? void 0 : styles.item) !== null && _a !== void 0 ? _a : (_b = space === null || space === void 0 ? void 0 : space.styles) === null || _b === void 0 ? void 0 : _b.item
-    }, child);
-  });
-  const spaceContext = react__WEBPACK_IMPORTED_MODULE_2__.useMemo(() => ({
-    horizontalSize,
-    verticalSize,
-    latestIndex,
-    supportFlexGap
-  }), [horizontalSize, verticalSize, latestIndex, supportFlexGap]);
-  // =========================== Render ===========================
-  if (childNodes.length === 0) {
-    return null;
-  }
-  const gapStyle = {};
-  if (wrap) {
-    gapStyle.flexWrap = 'wrap';
-    // Patch for gap not support
-    if (!supportFlexGap) {
-      gapStyle.marginBottom = -verticalSize;
-    }
-  }
-  if (supportFlexGap) {
-    gapStyle.columnGap = horizontalSize;
-    gapStyle.rowGap = verticalSize;
-  }
-  return wrapSSR( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement("div", Object.assign({
-    ref: ref,
-    className: cn,
-    style: Object.assign(Object.assign(Object.assign({}, gapStyle), space === null || space === void 0 ? void 0 : space.style), style)
-  }, otherProps), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_context__WEBPACK_IMPORTED_MODULE_7__.SpaceContextProvider, {
-    value: spaceContext
-  }, nodes)));
-});
-if (true) {
-  Space.displayName = 'Space';
-}
-const CompoundedSpace = Space;
-CompoundedSpace.Compact = _Compact__WEBPACK_IMPORTED_MODULE_8__["default"];
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CompoundedSpace);
-
-/***/ }),
-
 /***/ "./node_modules/antd/es/space/style/compact.js":
 /*!*****************************************************!*\
   !*** ./node_modules/antd/es/space/style/compact.js ***!
@@ -10837,6 +10538,389 @@ const roundedArrow = (width, innerRadius, outerRadius, bgColor, boxShadow) => {
     }
   };
 };
+
+/***/ }),
+
+/***/ "./node_modules/antd/es/switch/index.js":
+/*!**********************************************!*\
+  !*** ./node_modules/antd/es/switch/index.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ant_design_icons_es_icons_LoadingOutlined__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ant-design/icons/es/icons/LoadingOutlined */ "./node_modules/@ant-design/icons/es/icons/LoadingOutlined.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var rc_switch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rc-switch */ "./node_modules/rc-switch/es/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _util_warning__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_util/warning */ "./node_modules/antd/es/_util/warning.js");
+/* harmony import */ var _util_wave__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../_util/wave */ "./node_modules/antd/es/_util/wave/index.js");
+/* harmony import */ var _config_provider__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../config-provider */ "./node_modules/antd/es/config-provider/context.js");
+/* harmony import */ var _config_provider_DisabledContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../config-provider/DisabledContext */ "./node_modules/antd/es/config-provider/DisabledContext.js");
+/* harmony import */ var _config_provider_hooks_useSize__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../config-provider/hooks/useSize */ "./node_modules/antd/es/config-provider/hooks/useSize.js");
+/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./style */ "./node_modules/antd/es/switch/style/index.js");
+var __rest = undefined && undefined.__rest || function (s, e) {
+  var t = {};
+  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
+};
+
+
+
+
+
+
+
+
+
+
+const Switch = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.forwardRef((_a, ref) => {
+  var {
+      prefixCls: customizePrefixCls,
+      size: customizeSize,
+      disabled: customDisabled,
+      loading,
+      className,
+      rootClassName
+    } = _a,
+    props = __rest(_a, ["prefixCls", "size", "disabled", "loading", "className", "rootClassName"]);
+   true ? (0,_util_warning__WEBPACK_IMPORTED_MODULE_3__["default"])('checked' in props || !('value' in props), 'Switch', '`value` is not a valid prop, do you mean `checked`?') : 0;
+  const {
+    getPrefixCls,
+    direction
+  } = react__WEBPACK_IMPORTED_MODULE_2__.useContext(_config_provider__WEBPACK_IMPORTED_MODULE_4__.ConfigContext);
+  // ===================== Disabled =====================
+  const disabled = react__WEBPACK_IMPORTED_MODULE_2__.useContext(_config_provider_DisabledContext__WEBPACK_IMPORTED_MODULE_5__["default"]);
+  const mergedDisabled = (customDisabled !== null && customDisabled !== void 0 ? customDisabled : disabled) || loading;
+  const prefixCls = getPrefixCls('switch', customizePrefixCls);
+  const loadingIcon = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement("div", {
+    className: `${prefixCls}-handle`
+  }, loading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_ant_design_icons_es_icons_LoadingOutlined__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    className: `${prefixCls}-loading-icon`
+  }));
+  // Style
+  const [wrapSSR, hashId] = (0,_style__WEBPACK_IMPORTED_MODULE_7__["default"])(prefixCls);
+  const mergedSize = (0,_config_provider_hooks_useSize__WEBPACK_IMPORTED_MODULE_8__["default"])(customizeSize);
+  const classes = classnames__WEBPACK_IMPORTED_MODULE_0___default()({
+    [`${prefixCls}-small`]: mergedSize === 'small',
+    [`${prefixCls}-loading`]: loading,
+    [`${prefixCls}-rtl`]: direction === 'rtl'
+  }, className, rootClassName, hashId);
+  return wrapSSR( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(_util_wave__WEBPACK_IMPORTED_MODULE_9__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(rc_switch__WEBPACK_IMPORTED_MODULE_1__["default"], Object.assign({}, props, {
+    prefixCls: prefixCls,
+    className: classes,
+    disabled: mergedDisabled,
+    ref: ref,
+    loadingIcon: loadingIcon
+  }))));
+});
+Switch.__ANT_SWITCH = true;
+if (true) {
+  Switch.displayName = 'Switch';
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Switch);
+
+/***/ }),
+
+/***/ "./node_modules/antd/es/switch/style/index.js":
+/*!****************************************************!*\
+  !*** ./node_modules/antd/es/switch/style/index.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ctrl_tinycolor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ctrl/tinycolor */ "./node_modules/@ctrl/tinycolor/dist/module/index.js");
+/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../style */ "./node_modules/antd/es/style/index.js");
+/* harmony import */ var _theme_internal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../theme/internal */ "./node_modules/antd/es/theme/util/genComponentStyleHook.js");
+/* harmony import */ var _theme_internal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../theme/internal */ "./node_modules/antd/es/theme/util/statistic.js");
+
+
+
+const genSwitchSmallStyle = token => {
+  const {
+    componentCls
+  } = token;
+  const switchInnerCls = `${componentCls}-inner`;
+  return {
+    [componentCls]: {
+      [`&${componentCls}-small`]: {
+        minWidth: token.switchMinWidthSM,
+        height: token.switchHeightSM,
+        lineHeight: `${token.switchHeightSM}px`,
+        [`${componentCls}-inner`]: {
+          paddingInlineStart: token.switchInnerMarginMaxSM,
+          paddingInlineEnd: token.switchInnerMarginMinSM,
+          [`${switchInnerCls}-checked`]: {
+            marginInlineStart: `calc(-100% + ${token.switchPinSizeSM + token.switchPadding * 2}px - ${token.switchInnerMarginMaxSM * 2}px)`,
+            marginInlineEnd: `calc(100% - ${token.switchPinSizeSM + token.switchPadding * 2}px + ${token.switchInnerMarginMaxSM * 2}px)`
+          },
+          [`${switchInnerCls}-unchecked`]: {
+            marginTop: -token.switchHeightSM,
+            marginInlineStart: 0,
+            marginInlineEnd: 0
+          }
+        },
+        [`${componentCls}-handle`]: {
+          width: token.switchPinSizeSM,
+          height: token.switchPinSizeSM
+        },
+        [`${componentCls}-loading-icon`]: {
+          top: (token.switchPinSizeSM - token.switchLoadingIconSize) / 2,
+          fontSize: token.switchLoadingIconSize
+        },
+        [`&${componentCls}-checked`]: {
+          [`${componentCls}-inner`]: {
+            paddingInlineStart: token.switchInnerMarginMinSM,
+            paddingInlineEnd: token.switchInnerMarginMaxSM,
+            [`${switchInnerCls}-checked`]: {
+              marginInlineStart: 0,
+              marginInlineEnd: 0
+            },
+            [`${switchInnerCls}-unchecked`]: {
+              marginInlineStart: `calc(100% - ${token.switchPinSizeSM + token.switchPadding * 2}px + ${token.switchInnerMarginMaxSM * 2}px)`,
+              marginInlineEnd: `calc(-100% + ${token.switchPinSizeSM + token.switchPadding * 2}px - ${token.switchInnerMarginMaxSM * 2}px)`
+            }
+          },
+          [`${componentCls}-handle`]: {
+            insetInlineStart: `calc(100% - ${token.switchPinSizeSM + token.switchPadding}px)`
+          }
+        },
+        [`&:not(${componentCls}-disabled):active`]: {
+          [`&:not(${componentCls}-checked) ${switchInnerCls}`]: {
+            [`${switchInnerCls}-unchecked`]: {
+              marginInlineStart: token.marginXXS / 2,
+              marginInlineEnd: -token.marginXXS / 2
+            }
+          },
+          [`&${componentCls}-checked ${switchInnerCls}`]: {
+            [`${switchInnerCls}-checked`]: {
+              marginInlineStart: -token.marginXXS / 2,
+              marginInlineEnd: token.marginXXS / 2
+            }
+          }
+        }
+      }
+    }
+  };
+};
+const genSwitchLoadingStyle = token => {
+  const {
+    componentCls
+  } = token;
+  return {
+    [componentCls]: {
+      [`${componentCls}-loading-icon${token.iconCls}`]: {
+        position: 'relative',
+        top: (token.switchPinSize - token.fontSize) / 2,
+        color: token.switchLoadingIconColor,
+        verticalAlign: 'top'
+      },
+      [`&${componentCls}-checked ${componentCls}-loading-icon`]: {
+        color: token.switchColor
+      }
+    }
+  };
+};
+const genSwitchHandleStyle = token => {
+  const {
+    componentCls,
+    motion
+  } = token;
+  const switchHandleCls = `${componentCls}-handle`;
+  return {
+    [componentCls]: {
+      [switchHandleCls]: {
+        position: 'absolute',
+        top: token.switchPadding,
+        insetInlineStart: token.switchPadding,
+        width: token.switchPinSize,
+        height: token.switchPinSize,
+        transition: `all ${token.switchDuration} ease-in-out`,
+        '&::before': {
+          position: 'absolute',
+          top: 0,
+          insetInlineEnd: 0,
+          bottom: 0,
+          insetInlineStart: 0,
+          backgroundColor: token.colorWhite,
+          borderRadius: token.switchPinSize / 2,
+          boxShadow: token.switchHandleShadow,
+          transition: `all ${token.switchDuration} ease-in-out`,
+          content: '""'
+        }
+      },
+      [`&${componentCls}-checked ${switchHandleCls}`]: {
+        insetInlineStart: `calc(100% - ${token.switchPinSize + token.switchPadding}px)`
+      },
+      [`&:not(${componentCls}-disabled):active`]: motion ? {
+        [`${switchHandleCls}::before`]: {
+          insetInlineEnd: token.switchHandleActiveInset,
+          insetInlineStart: 0
+        },
+        [`&${componentCls}-checked ${switchHandleCls}::before`]: {
+          insetInlineEnd: 0,
+          insetInlineStart: token.switchHandleActiveInset
+        }
+      } : /* istanbul ignore next */
+      {}
+    }
+  };
+};
+const genSwitchInnerStyle = token => {
+  const {
+    componentCls
+  } = token;
+  const switchInnerCls = `${componentCls}-inner`;
+  return {
+    [componentCls]: {
+      [switchInnerCls]: {
+        display: 'block',
+        overflow: 'hidden',
+        borderRadius: 100,
+        height: '100%',
+        paddingInlineStart: token.switchInnerMarginMax,
+        paddingInlineEnd: token.switchInnerMarginMin,
+        transition: `padding-inline-start ${token.switchDuration} ease-in-out, padding-inline-end ${token.switchDuration} ease-in-out`,
+        [`${switchInnerCls}-checked, ${switchInnerCls}-unchecked`]: {
+          display: 'block',
+          color: token.colorTextLightSolid,
+          fontSize: token.fontSizeSM,
+          transition: `margin-inline-start ${token.switchDuration} ease-in-out, margin-inline-end ${token.switchDuration} ease-in-out`,
+          pointerEvents: 'none'
+        },
+        [`${switchInnerCls}-checked`]: {
+          marginInlineStart: `calc(-100% + ${token.switchPinSize + token.switchPadding * 2}px - ${token.switchInnerMarginMax * 2}px)`,
+          marginInlineEnd: `calc(100% - ${token.switchPinSize + token.switchPadding * 2}px + ${token.switchInnerMarginMax * 2}px)`
+        },
+        [`${switchInnerCls}-unchecked`]: {
+          marginTop: -token.switchHeight,
+          marginInlineStart: 0,
+          marginInlineEnd: 0
+        }
+      },
+      [`&${componentCls}-checked ${switchInnerCls}`]: {
+        paddingInlineStart: token.switchInnerMarginMin,
+        paddingInlineEnd: token.switchInnerMarginMax,
+        [`${switchInnerCls}-checked`]: {
+          marginInlineStart: 0,
+          marginInlineEnd: 0
+        },
+        [`${switchInnerCls}-unchecked`]: {
+          marginInlineStart: `calc(100% - ${token.switchPinSize + token.switchPadding * 2}px + ${token.switchInnerMarginMax * 2}px)`,
+          marginInlineEnd: `calc(-100% + ${token.switchPinSize + token.switchPadding * 2}px - ${token.switchInnerMarginMax * 2}px)`
+        }
+      },
+      [`&:not(${componentCls}-disabled):active`]: {
+        [`&:not(${componentCls}-checked) ${switchInnerCls}`]: {
+          [`${switchInnerCls}-unchecked`]: {
+            marginInlineStart: token.switchPadding * 2,
+            marginInlineEnd: -token.switchPadding * 2
+          }
+        },
+        [`&${componentCls}-checked ${switchInnerCls}`]: {
+          [`${switchInnerCls}-checked`]: {
+            marginInlineStart: -token.switchPadding * 2,
+            marginInlineEnd: token.switchPadding * 2
+          }
+        }
+      }
+    }
+  };
+};
+const genSwitchStyle = token => {
+  const {
+    componentCls
+  } = token;
+  return {
+    [componentCls]: Object.assign(Object.assign(Object.assign(Object.assign({}, (0,_style__WEBPACK_IMPORTED_MODULE_0__.resetComponent)(token)), {
+      position: 'relative',
+      display: 'inline-block',
+      boxSizing: 'border-box',
+      minWidth: token.switchMinWidth,
+      height: token.switchHeight,
+      lineHeight: `${token.switchHeight}px`,
+      verticalAlign: 'middle',
+      background: token.colorTextQuaternary,
+      border: '0',
+      borderRadius: 100,
+      cursor: 'pointer',
+      transition: `all ${token.motionDurationMid}`,
+      userSelect: 'none',
+      [`&:hover:not(${componentCls}-disabled)`]: {
+        background: token.colorTextTertiary
+      }
+    }), (0,_style__WEBPACK_IMPORTED_MODULE_0__.genFocusStyle)(token)), {
+      [`&${componentCls}-checked`]: {
+        background: token.switchColor,
+        [`&:hover:not(${componentCls}-disabled)`]: {
+          background: token.colorPrimaryHover
+        }
+      },
+      [`&${componentCls}-loading, &${componentCls}-disabled`]: {
+        cursor: 'not-allowed',
+        opacity: token.switchDisabledOpacity,
+        '*': {
+          boxShadow: 'none',
+          cursor: 'not-allowed'
+        }
+      },
+      // rtl style
+      [`&${componentCls}-rtl`]: {
+        direction: 'rtl'
+      }
+    })
+  };
+};
+// ============================== Export ==============================
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_theme_internal__WEBPACK_IMPORTED_MODULE_1__["default"])('Switch', token => {
+  const switchHeight = token.fontSize * token.lineHeight;
+  const switchHeightSM = token.controlHeight / 2;
+  const switchPadding = 2; // This is magic
+  const switchPinSize = switchHeight - switchPadding * 2;
+  const switchPinSizeSM = switchHeightSM - switchPadding * 2;
+  const switchToken = (0,_theme_internal__WEBPACK_IMPORTED_MODULE_2__.merge)(token, {
+    switchMinWidth: switchPinSize * 2 + switchPadding * 4,
+    switchHeight,
+    switchDuration: token.motionDurationMid,
+    switchColor: token.colorPrimary,
+    switchDisabledOpacity: token.opacityLoading,
+    switchInnerMarginMin: switchPinSize / 2,
+    switchInnerMarginMax: switchPinSize + switchPadding + switchPadding * 2,
+    switchPadding,
+    switchPinSize,
+    switchBg: token.colorBgContainer,
+    switchMinWidthSM: switchPinSizeSM * 2 + switchPadding * 2,
+    switchHeightSM,
+    switchInnerMarginMinSM: switchPinSizeSM / 2,
+    switchInnerMarginMaxSM: switchPinSizeSM + switchPadding + switchPadding * 2,
+    switchPinSizeSM,
+    switchHandleShadow: `0 2px 4px 0 ${new _ctrl_tinycolor__WEBPACK_IMPORTED_MODULE_3__.TinyColor('#00230b').setAlpha(0.2).toRgbString()}`,
+    switchLoadingIconSize: token.fontSizeIcon * 0.75,
+    switchLoadingIconColor: `rgba(0, 0, 0, ${token.opacityLoading})`,
+    switchHandleActiveInset: '-30%'
+  });
+  return [genSwitchStyle(switchToken),
+  // inner style
+  genSwitchInnerStyle(switchToken),
+  // handle style
+  genSwitchHandleStyle(switchToken),
+  // loading style
+  genSwitchLoadingStyle(switchToken),
+  // small style
+  genSwitchSmallStyle(switchToken)];
+}));
 
 /***/ }),
 
@@ -51319,6 +51403,103 @@ function unobserve(element, callback) {
 
 /***/ }),
 
+/***/ "./node_modules/rc-switch/es/index.js":
+/*!********************************************!*\
+  !*** ./node_modules/rc-switch/es/index.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
+/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var rc_util_es_hooks_useMergedState__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rc-util/es/hooks/useMergedState */ "./node_modules/rc-util/es/hooks/useMergedState.js");
+/* harmony import */ var rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rc-util/es/KeyCode */ "./node_modules/rc-util/es/KeyCode.js");
+
+
+
+
+var _excluded = ["prefixCls", "className", "checked", "defaultChecked", "disabled", "loadingIcon", "checkedChildren", "unCheckedChildren", "onClick", "onChange", "onKeyDown"];
+
+
+
+
+var Switch = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.forwardRef(function (_ref, ref) {
+  var _classNames;
+  var _ref$prefixCls = _ref.prefixCls,
+    prefixCls = _ref$prefixCls === void 0 ? 'rc-switch' : _ref$prefixCls,
+    className = _ref.className,
+    checked = _ref.checked,
+    defaultChecked = _ref.defaultChecked,
+    disabled = _ref.disabled,
+    loadingIcon = _ref.loadingIcon,
+    checkedChildren = _ref.checkedChildren,
+    unCheckedChildren = _ref.unCheckedChildren,
+    onClick = _ref.onClick,
+    onChange = _ref.onChange,
+    onKeyDown = _ref.onKeyDown,
+    restProps = (0,_babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_3__["default"])(_ref, _excluded);
+  var _useMergedState = (0,rc_util_es_hooks_useMergedState__WEBPACK_IMPORTED_MODULE_6__["default"])(false, {
+      value: checked,
+      defaultValue: defaultChecked
+    }),
+    _useMergedState2 = (0,_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useMergedState, 2),
+    innerChecked = _useMergedState2[0],
+    setInnerChecked = _useMergedState2[1];
+  function triggerChange(newChecked, event) {
+    var mergedChecked = innerChecked;
+    if (!disabled) {
+      mergedChecked = newChecked;
+      setInnerChecked(mergedChecked);
+      onChange === null || onChange === void 0 ? void 0 : onChange(mergedChecked, event);
+    }
+    return mergedChecked;
+  }
+  function onInternalKeyDown(e) {
+    if (e.which === rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_7__["default"].LEFT) {
+      triggerChange(false, e);
+    } else if (e.which === rc_util_es_KeyCode__WEBPACK_IMPORTED_MODULE_7__["default"].RIGHT) {
+      triggerChange(true, e);
+    }
+    onKeyDown === null || onKeyDown === void 0 ? void 0 : onKeyDown(e);
+  }
+  function onInternalClick(e) {
+    var ret = triggerChange(!innerChecked, e);
+    // [Legacy] trigger onClick with value
+    onClick === null || onClick === void 0 ? void 0 : onClick(ret, e);
+  }
+  var switchClassName = classnames__WEBPACK_IMPORTED_MODULE_5___default()(prefixCls, className, (_classNames = {}, (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(_classNames, "".concat(prefixCls, "-checked"), innerChecked), (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(_classNames, "".concat(prefixCls, "-disabled"), disabled), _classNames));
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement("button", (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, restProps, {
+    type: "button",
+    role: "switch",
+    "aria-checked": innerChecked,
+    disabled: disabled,
+    className: switchClassName,
+    ref: ref,
+    onKeyDown: onInternalKeyDown,
+    onClick: onInternalClick
+  }), loadingIcon, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement("span", {
+    className: "".concat(prefixCls, "-inner")
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement("span", {
+    className: "".concat(prefixCls, "-inner-checked")
+  }, checkedChildren), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement("span", {
+    className: "".concat(prefixCls, "-inner-unchecked")
+  }, unCheckedChildren)));
+});
+Switch.displayName = 'Switch';
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Switch);
+
+/***/ }),
+
 /***/ "./node_modules/rc-textarea/es/ResizableTextArea.js":
 /*!**********************************************************!*\
   !*** ./node_modules/rc-textarea/es/ResizableTextArea.js ***!
@@ -52267,47 +52448,6 @@ function inShadow(ele) {
  */
 function getShadowRoot(ele) {
   return inShadow(ele) ? getRoot(ele) : null;
-}
-
-/***/ }),
-
-/***/ "./node_modules/rc-util/es/Dom/styleChecker.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/rc-util/es/Dom/styleChecker.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "isStyleSupport": () => (/* binding */ isStyleSupport)
-/* harmony export */ });
-/* harmony import */ var _canUseDom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./canUseDom */ "./node_modules/rc-util/es/Dom/canUseDom.js");
-
-var isStyleNameSupport = function isStyleNameSupport(styleName) {
-  if ((0,_canUseDom__WEBPACK_IMPORTED_MODULE_0__["default"])() && window.document.documentElement) {
-    var styleNameList = Array.isArray(styleName) ? styleName : [styleName];
-    var documentElement = window.document.documentElement;
-    return styleNameList.some(function (name) {
-      return name in documentElement.style;
-    });
-  }
-  return false;
-};
-var isStyleValueSupport = function isStyleValueSupport(styleName, value) {
-  if (!isStyleNameSupport(styleName)) {
-    return false;
-  }
-  var ele = document.createElement('div');
-  var origin = ele.style[styleName];
-  ele.style[styleName] = value;
-  return ele.style[styleName] !== origin;
-};
-function isStyleSupport(styleName, styleValue) {
-  if (!Array.isArray(styleName) && styleValue !== undefined) {
-    return isStyleValueSupport(styleName, styleValue);
-  }
-  return isStyleNameSupport(styleName);
 }
 
 /***/ }),
@@ -88694,6 +88834,55 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
+/***/ "./src/shared/components/Otp/Otp.tsx":
+/*!*******************************************!*\
+  !*** ./src/shared/components/Otp/Otp.tsx ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Otp": () => (/* binding */ Otp)
+/* harmony export */ });
+/* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/switch/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+const Otp = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(() => {
+    const { website: { swaggerTool }, } = (0,_shared_models__WEBPACK_IMPORTED_MODULE_0__.useStores)();
+    const { otpCode, loginWithOtp, setProp } = swaggerTool;
+    const onChange = (e) => {
+        setProp("otpCode", `${e.target.value}`);
+    };
+    return (react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", { style: {
+            backgroundColor: "gray",
+            padding: "3px",
+            borderRadius: "3px",
+            marginLeft: "1rem",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+        } },
+        react__WEBPACK_IMPORTED_MODULE_2___default().createElement(antd__WEBPACK_IMPORTED_MODULE_3__["default"]
+        // checkedChildren="on"
+        // unCheckedChildren="off"
+        , { 
+            // checkedChildren="on"
+            // unCheckedChildren="off"
+            defaultChecked: false, checked: loginWithOtp, onChange: () => setProp("loginWithOtp", !loginWithOtp) }),
+        react__WEBPACK_IMPORTED_MODULE_2___default().createElement(antd__WEBPACK_IMPORTED_MODULE_4__["default"], { style: { marginLeft: "3px", width: "4rem" }, placeholder: "Otp", min: 1, max: 10, defaultValue: 3, value: otpCode, onChange: onChange })));
+});
+
+
+/***/ }),
+
 /***/ "./src/shared/components/ReCaptcha/ReCaptcha.tsx":
 /*!*******************************************************!*\
   !*** ./src/shared/components/ReCaptcha/ReCaptcha.tsx ***!
@@ -88934,9 +89123,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared/config */ "./src/shared/config/index.ts");
 /* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
 /* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/space/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
 /* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
@@ -88959,12 +89147,12 @@ const SwaggerHeaderComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__.o
         setEmail(inputValue);
     };
     return (react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", null,
-        react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"].Compact, { size: "small" },
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { placeholder: "Email", value: email, onChange: onChange }),
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { placeholder: "Password", value: pass, onChange: (e) => {
+        react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", { className: "flex items-center" },
+            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"], { placeholder: "Email", value: email, onChange: onChange }),
+            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"], { placeholder: "Password", value: pass, onChange: (e) => {
                     setPass(e.target.value);
                 } }),
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_7__["default"], { type: "primary", onClick: onLogin }, "Login"))));
+            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { type: "primary", onClick: onLogin }, "Login"))));
 });
 SwaggerHeaderComponent.defaultProps = {};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_2__["default"])(SwaggerHeaderComponent));
@@ -89414,6 +89602,7 @@ const RootStoreModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.model(
     startAt: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.string, new Date().toISOString()),
     website: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_WebsiteStore__WEBPACK_IMPORTED_MODULE_2__.WebsiteStoreModel, {}),
     nextEvent: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.optional(_EventModel__WEBPACK_IMPORTED_MODULE_3__.EventModel, { id: "", type: "" }),
+    chromeRuntimeId: mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.maybe(mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.types.string),
 })
     .actions(_helpers_withSetPropAction__WEBPACK_IMPORTED_MODULE_0__.withSetPropAction)
     .actions((self) => ({
@@ -89575,6 +89764,7 @@ async function setupRootStore(rootStore, opts) {
     }
     // track changes & save to AsyncStorage
     _disposer = (0,mobx_state_tree__WEBPACK_IMPORTED_MODULE_1__.onSnapshot)(rootStore, (snapshot) => {
+        console.log("snapshot from web", snapshot);
         storage.set(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot));
     });
     const unsubscribe = () => {
@@ -89658,6 +89848,7 @@ const useInitialRootStore = (callback, opts) => {
     const [rehydrated, setRehydrated] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
     // Kick off initial async loading actions, like loading fonts and rehydrating RootStore
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+        const storageType = opts?.storageType ?? "chromeStorage";
         const needTrackingStorageLocal = opts?.needTrackingStorageLocal ?? true;
         const needTrackingStorageChrome = opts?.needTrackingStorageChrome ?? true;
         let listener;
@@ -89665,7 +89856,10 @@ const useInitialRootStore = (callback, opts) => {
         let timeout;
         (async () => {
             // set up the RootStore (returns the state restored from AsyncStorage)
-            const { restoredState, unsubscribe } = await (0,_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.setupRootStore)(rootStore, opts);
+            const { restoredState, unsubscribe } = await (0,_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.setupRootStore)(rootStore, {
+                ...(opts ?? {}),
+                storageType,
+            });
             _unsubscribe = unsubscribe;
             // For DEBUG: reactotron integration with the MST root store (DEV only)
             // makeInspectable(rootStore)
@@ -89680,15 +89874,15 @@ const useInitialRootStore = (callback, opts) => {
             if (callback) {
                 callback();
             }
-            if (needTrackingStorageLocal) {
-                _shared__WEBPACK_IMPORTED_MODULE_3__.storageLocal.onChange((changes) => {
-                    if (changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue) {
-                        const newRootStore = changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue;
-                        (0,mobx_state_tree__WEBPACK_IMPORTED_MODULE_4__.applySnapshot)(rootStore, JSON.parse(newRootStore));
-                    }
-                });
+            if (needTrackingStorageLocal && storageType === "localStorage") {
+                // storageLocal.onChange((changes) => {
+                //   if (changes?.[ROOT_STATE_STORAGE_KEY]?.newValue) {
+                //     const newRootStore = changes?.[ROOT_STATE_STORAGE_KEY]?.newValue
+                //     applySnapshot(rootStore, JSON.parse(newRootStore))
+                //   }
+                // })
             }
-            if (needTrackingStorageChrome) {
+            if (needTrackingStorageChrome && storageType === "chromeStorage") {
                 listener = (changes, namespace) => {
                     if (changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue && namespace === "local") {
                         const newRootStore = changes?.[_setupRootStore__WEBPACK_IMPORTED_MODULE_2__.ROOT_STATE_STORAGE_KEY]?.newValue;
@@ -89899,10 +90093,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const SwaggerModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.compose(_ToolModel__WEBPACK_IMPORTED_MODULE_1__.ToolModel, mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.model({
-    autoInitUI: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.boolean, false),
+    autoInitUI: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.boolean, _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.autoInitUI),
     email: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.username),
     password: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.password),
     recaptchaSiteKey: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.recaptchaSiteKey),
+    loginWithOtp: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.boolean, _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.loginWithOtp),
+    otpCode: mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.optional(mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.string, ""),
 }))
     .named("SwaggerModel")
     .views((self) => ({}))
@@ -89916,11 +90112,13 @@ const SwaggerModel = mobx_state_tree__WEBPACK_IMPORTED_MODULE_3__.types.compose(
     },
 }));
 const SWAGGER_MODEL_DEFAULT = {
-    autoInitUI: false,
+    autoInitUI: _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.autoInitUI,
     matchRegexUrls: _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.matchRegexUrls,
     email: _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.username,
     password: _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.password,
     recaptchaSiteKey: _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.recaptchaSiteKey,
+    loginWithOtp: _shared_config__WEBPACK_IMPORTED_MODULE_2__["default"].cr.loginWithOtp,
+    otpCode: "",
 };
 
 
@@ -90137,6 +90335,8 @@ __webpack_require__.r(__webpack_exports__);
 class NotificationManager {
     static success = antd__WEBPACK_IMPORTED_MODULE_0__["default"].success;
     static error = antd__WEBPACK_IMPORTED_MODULE_0__["default"].error;
+    static warning = antd__WEBPACK_IMPORTED_MODULE_0__["default"].warning;
+    static info = antd__WEBPACK_IMPORTED_MODULE_0__["default"].info;
 }
 
 
@@ -90280,6 +90480,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/shared/services/notification */ "./src/shared/services/notification.ts");
 /* harmony import */ var _shared_components_ReCaptcha_ReCaptcha__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/shared/components/ReCaptcha/ReCaptcha */ "./src/shared/components/ReCaptcha/ReCaptcha.tsx");
 /* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
+/* harmony import */ var _shared_components_Otp_Otp__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @/shared/components/Otp/Otp */ "./src/shared/components/Otp/Otp.tsx");
+
 
 
 
@@ -90307,6 +90509,7 @@ const ID_SIDE_BAR = "side-bar";
 const ID_EXTRA_RIGHT = "extra-right";
 const ID_HEADER = "ql-sw-header";
 const ID_RECAPTCHA_SITE_KEY = "reCAPTCHA_SITE_KEY";
+const ID_OTP = "__otp-input";
 function querySelectorIncludesText(selector, text, parent = document) {
     try {
         return Array.from(parent?.querySelectorAll?.(selector))?.find((el) => el?.textContent?.includes(text));
@@ -90582,6 +90785,9 @@ class SwaggerUIX {
             console.info("[SWAGGER] [INFO]", ...args);
         },
     };
+    get storage() {
+        return _shared_models__WEBPACK_IMPORTED_MODULE_12__._rootStore;
+    }
     mouseEvent = null;
     groupApiList = [];
     swaggerUIBundle;
@@ -90589,6 +90795,7 @@ class SwaggerUIX {
     $extraRight = createElementFromHTML(`<div id="${ID_EXTRA_RIGHT}" class="${ID_EXTRA_RIGHT}"></div>`);
     $headerWrapper = createElementFromHTML(`<div id="${ID_HEADER}"></div>`);
     $recaptchaInput = createElementFromHTML(`<div id="${ID_RECAPTCHA_SITE_KEY}"></div>`);
+    $otp = createElementFromHTML(`<div id="${ID_OTP}"></div>`);
     get reCaptchaSiteKey() {
         return _shared_models__WEBPACK_IMPORTED_MODULE_12__._rootStore.website.swaggerTool.recaptchaSiteKey;
     }
@@ -90630,10 +90837,8 @@ class SwaggerUIX {
         this.trackMouse();
         this.handleResponseInterceptor();
     }
-    initUI() {
-        setTimeout(() => {
-            this.onPageLoaded();
-        }, 500);
+    async initUI() {
+        await this.onPageLoaded();
     }
     handleResponseInterceptor() {
         this.onResponse((response) => {
@@ -90682,7 +90887,8 @@ class SwaggerUIX {
             };
         }
     }
-    onPageLoaded() {
+    async onPageLoaded() {
+        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => !!this.$sectionWrapper, 1000, 10);
         this.hideUINotNeeded();
         const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes);
         els?.forEach(($el) => {
@@ -90699,6 +90905,7 @@ class SwaggerUIX {
     }
     changeLayout() {
         this.$schemesWrapper.prepend(this.$recaptchaInput);
+        this.$schemesWrapper.prepend(this.$otp);
         this.$schemesWrapper.prepend(this.$headerWrapper);
         this.$mainWrapper.prepend(this.$sideBar);
         this.$mainWrapper.append(this.$extraRight);
@@ -90726,6 +90933,7 @@ class SwaggerUIX {
             storageType: this.storageType,
         });
         const ReCaptchaCom = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_4__["default"])(_shared_components_ReCaptcha_ReCaptcha__WEBPACK_IMPORTED_MODULE_11__.ReCaptcha, { storageType: this.storageType });
+        const OtpCom = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_4__["default"])(_shared_components_Otp_Otp__WEBPACK_IMPORTED_MODULE_13__.Otp, { storageType: this.storageType });
         _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SwaggerSideBar, { swaggerUI: this }), id: ID_SIDE_BAR });
         _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SwaggerHeader, { swaggerUI: this }), id: ID_HEADER });
         _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({
@@ -90733,6 +90941,7 @@ class SwaggerUIX {
             id: ID_EXTRA_RIGHT,
         });
         _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ReCaptchaCom, null), id: ID_RECAPTCHA_SITE_KEY });
+        _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(OtpCom, null), id: ID_OTP });
         this.injectCss();
     }
     injectCss() {
@@ -90774,13 +90983,70 @@ class SwaggerUIX {
         document.addEventListener("mousemove", onMouseUpdate, false);
         document.addEventListener("mouseenter", onMouseUpdate, false);
     }
-    async login(_email, _password) {
+    setTokenToSwagger(jwtToken) {
+        function clickAuthBtn() {
+            const authButton = document.querySelector(".auth-btn-wrapper .modal-btn.auth");
+            if (authButton) {
+                authButton?.click();
+            }
+        }
+        setTimeout(function () {
+            const openAuthFormLockButton = document.querySelector(".auth-wrapper .authorize.locked");
+            if (openAuthFormLockButton) {
+                openAuthFormLockButton?.click();
+                clickAuthBtn();
+            }
+            else {
+                const openAuthFormUnlockButton = document.querySelector(".auth-wrapper .authorize.unlocked");
+                openAuthFormUnlockButton?.click();
+            }
+            const tokenInput = document.querySelector(".auth-container input");
+            const closeButton = document.querySelector("button.btn-done");
+            const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window?.HTMLInputElement?.prototype, "value").set;
+            nativeInputValueSetter.call(tokenInput, jwtToken);
+            const inputEvent = new Event("input", { bubbles: true });
+            tokenInput.dispatchEvent(inputEvent);
+            clickAuthBtn();
+            closeButton.click();
+        }, 400);
+    }
+    async callLoginMfa(data, token, email) {
+        const recaptcha = ""; // (await this.getRecaptchaToken("LOGIN")) || ""
+        return new Promise((resolve) => {
+            fetch(`${location.origin}/api/v1/auth/mfa/login`, {
+                headers: {
+                    accept: "application/json, text/plain, */*",
+                    "content-type": "application/json",
+                    recaptcha,
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(data),
+                method: "POST",
+                mode: "cors",
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                if (data?.data?.accessToken?.token) {
+                    _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.success({ message: `[OTP] Login successful [${email}]` });
+                }
+                else {
+                    _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.error({ message: `[OTP] Login fail [${JSON.stringify(data)}]` });
+                }
+                resolve(data);
+            })
+                .catch((err) => {
+                _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.error({ message: `[OTP] Login fail [${email}]` });
+                this.logger.error(err);
+            });
+        });
+    }
+    async login(_email, _password, isFirst) {
+        const loginWithOtp = isFirst ? false : this.storage?.website?.swaggerTool?.loginWithOtp ?? false;
         const email = _email ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.username;
         const password = _password ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.password;
         const callLogin = async (data) => {
-            const recaptcha = (await this.getRecaptchaToken("LOGIN")) || "";
-            console.log("recaptchaxx", recaptcha);
-            return new Promise((resolve) => {
+            const recaptcha = ""; // (await this.getRecaptchaToken("LOGIN")) || ""
+            return new Promise((resolve, reject) => {
                 fetch(`${location.origin}/api/v1/auth/login`, {
                     headers: {
                         accept: "application/json, text/plain, */*",
@@ -90793,6 +91059,11 @@ class SwaggerUIX {
                 })
                     .then((res) => res.json())
                     .then((data) => {
+                    if (data?.data?.profile?.mfaEnforced && !loginWithOtp) {
+                        _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.warning({ message: `Need Login via OTP` });
+                        reject(new Error());
+                        return;
+                    }
                     if (data?.data?.accessToken?.token) {
                         _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.success({ message: `Login successful [${email}]` });
                     }
@@ -90807,13 +91078,6 @@ class SwaggerUIX {
                 });
             });
         };
-        function clickAuthBtn() {
-            const authButton = document.querySelector(".auth-btn-wrapper .modal-btn.auth");
-            if (authButton) {
-                authButton?.click();
-            }
-        }
-        ;
         (async () => {
             const payload = {
                 provider: "email",
@@ -90821,27 +91085,16 @@ class SwaggerUIX {
                 password,
             };
             const res = (await callLogin(payload));
+            let jwtToken = res?.data?.accessToken?.token;
+            if (!jwtToken?.length) {
+                return;
+            }
             this.logger.info(`${res?.data?.accessToken?.token}`);
-            const jwtToken = res.data.accessToken.token;
-            setTimeout(function () {
-                const openAuthFormLockButton = document.querySelector(".auth-wrapper .authorize.locked");
-                if (openAuthFormLockButton) {
-                    openAuthFormLockButton?.click();
-                    clickAuthBtn();
-                }
-                else {
-                    const openAuthFormUnlockButton = document.querySelector(".auth-wrapper .authorize.unlocked");
-                    openAuthFormUnlockButton?.click();
-                }
-                const tokenInput = document.querySelector(".auth-container input");
-                const closeButton = document.querySelector("button.btn-done");
-                const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window?.HTMLInputElement?.prototype, "value").set;
-                nativeInputValueSetter.call(tokenInput, jwtToken);
-                const inputEvent = new Event("input", { bubbles: true });
-                tokenInput.dispatchEvent(inputEvent);
-                clickAuthBtn();
-                closeButton.click();
-            }, 400);
+            if (loginWithOtp) {
+                const code = this.storage?.website?.swaggerTool?.otpCode ?? "";
+                jwtToken = (await this.callLoginMfa({ code, provider: "mfa_code" }, jwtToken, email))?.data?.accessToken?.token;
+            }
+            this.setTokenToSwagger(jwtToken);
         })();
     }
 }

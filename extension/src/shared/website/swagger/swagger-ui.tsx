@@ -18,6 +18,7 @@ import { notification } from "antd"
 import { NotificationManager } from "@/shared/services/notification"
 import { ReCaptcha, reCaptchaRef } from "@/shared/components/ReCaptcha/ReCaptcha"
 import { _rootStore } from "@/shared/models"
+import { Otp } from "@/shared/components/Otp/Otp"
 
 // function whenAvailable(name: any, callback: any) {
 //     const interval = 10; // ms
@@ -34,6 +35,7 @@ const ID_SIDE_BAR = "side-bar"
 const ID_EXTRA_RIGHT = "extra-right"
 const ID_HEADER = "ql-sw-header"
 const ID_RECAPTCHA_SITE_KEY = "reCAPTCHA_SITE_KEY"
+const ID_OTP = "__otp-input"
 
 export function querySelectorIncludesText(selector: string, text: string, parent = document) {
   try {
@@ -349,6 +351,10 @@ export class SwaggerUIX {
     },
   }
 
+  get storage() {
+    return _rootStore
+  }
+
   mouseEvent: MouseEvent | null = null
   groupApiList: GroupApi[] = []
   swaggerUIBundle: any
@@ -368,7 +374,9 @@ export class SwaggerUIX {
     `<div id="${ID_RECAPTCHA_SITE_KEY}"></div>`,
   ) as HTMLDivElement
 
-  get reCaptchaSiteKey() {
+  $otp: HTMLDivElement = createElementFromHTML(`<div id="${ID_OTP}"></div>`) as HTMLDivElement
+
+  get reCaptchaSiteKey(): string {
     return _rootStore.website.swaggerTool.recaptchaSiteKey
   }
 
@@ -424,10 +432,8 @@ export class SwaggerUIX {
     this.handleResponseInterceptor()
   }
 
-  initUI() {
-    setTimeout(() => {
-      this.onPageLoaded()
-    }, 500)
+  async initUI() {
+    await this.onPageLoaded()
   }
 
   handleResponseInterceptor() {
@@ -481,7 +487,8 @@ export class SwaggerUIX {
     }
   }
 
-  onPageLoaded() {
+  async onPageLoaded() {
+    await waitUntil(() => !!this.$sectionWrapper, 1000, 10)
     this.hideUINotNeeded()
     const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes as any)
     els?.forEach(($el: any) => {
@@ -500,6 +507,7 @@ export class SwaggerUIX {
 
   changeLayout() {
     this.$schemesWrapper.prepend(this.$recaptchaInput)
+    this.$schemesWrapper.prepend(this.$otp)
     this.$schemesWrapper.prepend(this.$headerWrapper)
     this.$mainWrapper.prepend(this.$sideBar)
     this.$mainWrapper.append(this.$extraRight)
@@ -531,6 +539,7 @@ export class SwaggerUIX {
       storageType: this.storageType,
     })
     const ReCaptchaCom = withStorage(ReCaptcha, { storageType: this.storageType })
+    const OtpCom = withStorage(Otp, { storageType: this.storageType })
 
     UIManager.render({ Component: <SwaggerSideBar swaggerUI={this} />, id: ID_SIDE_BAR })
     UIManager.render({ Component: <SwaggerHeader swaggerUI={this} />, id: ID_HEADER })
@@ -539,6 +548,8 @@ export class SwaggerUIX {
       id: ID_EXTRA_RIGHT,
     })
     UIManager.render({ Component: <ReCaptchaCom />, id: ID_RECAPTCHA_SITE_KEY })
+    UIManager.render({ Component: <OtpCom />, id: ID_OTP })
+
     this.injectCss()
   }
 
@@ -586,14 +597,87 @@ export class SwaggerUIX {
     document.addEventListener("mouseenter", onMouseUpdate, false)
   }
 
-  async login(_email?: string, _password?: string) {
+  setTokenToSwagger(jwtToken: string) {
+    function clickAuthBtn() {
+      const authButton = document.querySelector(
+        ".auth-btn-wrapper .modal-btn.auth",
+      ) as HTMLButtonElement
+      if (authButton) {
+        authButton?.click()
+      }
+    }
+
+    setTimeout(function () {
+      const openAuthFormLockButton = document.querySelector(
+        ".auth-wrapper .authorize.locked",
+      ) as HTMLButtonElement
+      if (openAuthFormLockButton) {
+        openAuthFormLockButton?.click()
+        clickAuthBtn()
+      } else {
+        const openAuthFormUnlockButton = document.querySelector(
+          ".auth-wrapper .authorize.unlocked",
+        ) as HTMLButtonElement
+        openAuthFormUnlockButton?.click()
+      }
+
+      const tokenInput = document.querySelector(".auth-container input") as HTMLInputElement
+
+      const closeButton = document.querySelector("button.btn-done") as HTMLButtonElement
+
+      const nativeInputValueSetter = (Object as any).getOwnPropertyDescriptor(
+        window?.HTMLInputElement?.prototype,
+        "value",
+      ).set as any
+      nativeInputValueSetter.call(tokenInput, jwtToken)
+
+      const inputEvent = new Event("input", { bubbles: true })
+      tokenInput.dispatchEvent(inputEvent)
+      clickAuthBtn()
+      closeButton.click()
+    }, 400)
+  }
+
+  async callLoginMfa(data: any, token: string, email: string) {
+    const recaptcha = "" // (await this.getRecaptchaToken("LOGIN")) || ""
+
+    return new Promise((resolve) => {
+      fetch(`${location.origin}/api/v1/auth/mfa/login`, {
+        headers: {
+          accept: "application/json, text/plain, */*",
+          "content-type": "application/json",
+          recaptcha,
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+        method: "POST",
+        mode: "cors",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data?.data?.accessToken?.token) {
+            NotificationManager.success({ message: `[OTP] Login successful [${email}]` })
+          } else {
+            NotificationManager.error({ message: `[OTP] Login fail [${JSON.stringify(data)}]` })
+          }
+          resolve(data)
+        })
+        .catch((err) => {
+          NotificationManager.error({ message: `[OTP] Login fail [${email}]` })
+          this.logger.error(err)
+        })
+    })
+  }
+
+  async login(_email?: string, _password?: string, isFirst?: boolean) {
+    const loginWithOtp = isFirst ? false : this.storage?.website?.swaggerTool?.loginWithOtp ?? false
+
     const email = _email ?? config.cr.username
     const password = _password ?? config.cr.password
     const callLogin = async (data: any) => {
-      const recaptcha = (await this.getRecaptchaToken("LOGIN")) || ""
-      console.log("recaptchaxx", recaptcha)
+      const recaptcha = "" // (await this.getRecaptchaToken("LOGIN")) || ""
 
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
         fetch(`${location.origin}/api/v1/auth/login`, {
           headers: {
             accept: "application/json, text/plain, */*",
@@ -606,6 +690,11 @@ export class SwaggerUIX {
         })
           .then((res) => res.json())
           .then((data) => {
+            if (data?.data?.profile?.mfaEnforced && !loginWithOtp) {
+              NotificationManager.warning({ message: `Need Login via OTP` })
+              reject(new Error())
+              return
+            }
             if (data?.data?.accessToken?.token) {
               NotificationManager.success({ message: `Login successful [${email}]` })
             } else {
@@ -620,15 +709,6 @@ export class SwaggerUIX {
       })
     }
 
-    function clickAuthBtn() {
-      const authButton = document.querySelector(
-        ".auth-btn-wrapper .modal-btn.auth",
-      ) as HTMLButtonElement
-      if (authButton) {
-        authButton?.click()
-      }
-    }
-
     ;(async () => {
       const payload = {
         provider: "email",
@@ -637,38 +717,19 @@ export class SwaggerUIX {
       }
 
       const res = (await callLogin(payload)) as any
+      let jwtToken = res?.data?.accessToken?.token
+      if (!jwtToken?.length) {
+        return
+      }
       this.logger.info(`${res?.data?.accessToken?.token}`)
-      const jwtToken = res.data.accessToken.token
 
-      setTimeout(function () {
-        const openAuthFormLockButton = document.querySelector(
-          ".auth-wrapper .authorize.locked",
-        ) as HTMLButtonElement
-        if (openAuthFormLockButton) {
-          openAuthFormLockButton?.click()
-          clickAuthBtn()
-        } else {
-          const openAuthFormUnlockButton = document.querySelector(
-            ".auth-wrapper .authorize.unlocked",
-          ) as HTMLButtonElement
-          openAuthFormUnlockButton?.click()
-        }
-
-        const tokenInput = document.querySelector(".auth-container input") as HTMLInputElement
-
-        const closeButton = document.querySelector("button.btn-done") as HTMLButtonElement
-
-        const nativeInputValueSetter = (Object as any).getOwnPropertyDescriptor(
-          window?.HTMLInputElement?.prototype,
-          "value",
-        ).set as any
-        nativeInputValueSetter.call(tokenInput, jwtToken)
-
-        const inputEvent = new Event("input", { bubbles: true })
-        tokenInput.dispatchEvent(inputEvent)
-        clickAuthBtn()
-        closeButton.click()
-      }, 400)
+      if (loginWithOtp) {
+        const code = this.storage?.website?.swaggerTool?.otpCode ?? ""
+        jwtToken = (
+          (await this.callLoginMfa({ code, provider: "mfa_code" }, jwtToken, email)) as any
+        )?.data?.accessToken?.token
+      }
+      this.setTokenToSwagger(jwtToken)
     })()
   }
 }
