@@ -13,6 +13,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "antd": "^5.6.4",
     "axios": "^0.25.0",
     "css-to-tailwindcss": "^1.0.4",

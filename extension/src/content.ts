@@ -1,6 +1,7 @@
 import { IMessage, storageChrome, storageLocal } from "@/shared"
 import { ROOT_STATE_STORAGE_KEY, _rootStore } from "./shared/models"
 import { contentScript } from "./tools/content.executor"
+import { QUANLH_CHROME_RUNTIME_ID } from "./constants"
 // import "./assets/scss/content.scss"
 
 console.log("Content script running...")
@@ -79,7 +80,7 @@ const trackingStorage = async () => {
   })
 }
 
-storageLocal.set("chromeRuntimeId", chrome.runtime.id)
+storageLocal.set(QUANLH_CHROME_RUNTIME_ID, chrome.runtime.id)
 
 // trackingStorage()
 

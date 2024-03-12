@@ -88,18 +88,18 @@ import { imageViewerManager } from "./tools/imageViewer"
 // })
 
 
-storageLocal.onChange(async (c) => {
-  const newValue = parseJson(c?.[ROOT_STATE_STORAGE_KEY]?.newValue)
+// storageLocal.onChange(async (c) => {
+//   const newValue = parseJson(c?.[ROOT_STATE_STORAGE_KEY]?.newValue)
 
-  const { nextEvent } = newValue
-  if (nextEvent?.type) {
-    const res = await contentScript.executeCommand({
-      commandId: nextEvent.type,
-      params: nextEvent.params,
-    })
-    console.log("[TOKEN]", res)
-  }
-})
+//   const { nextEvent } = newValue
+//   if (nextEvent?.type) {
+//     const res = await contentScript.executeCommand({
+//       commandId: nextEvent.type,
+//       params: nextEvent.params,
+//     })
+//     console.log("[TOKEN]", res)
+//   }
+// })
 
 const Q = {
   imageViewerManager,

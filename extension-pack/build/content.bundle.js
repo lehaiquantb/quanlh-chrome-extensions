@@ -21167,6 +21167,40 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./src/constants.ts":
+/*!**************************!*\
+  !*** ./src/constants.ts ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "QUANLH_CHROME_RUNTIME_ID": () => (/* binding */ QUANLH_CHROME_RUNTIME_ID),
+/* harmony export */   "disableHostClipboardFeature": () => (/* binding */ disableHostClipboardFeature),
+/* harmony export */   "enableHostClipboardFeature": () => (/* binding */ enableHostClipboardFeature)
+/* harmony export */ });
+const enableHostClipboardFeature = [
+    /^[\S]+$/gm,
+    // /stackoverflow.com/,
+    // /stackexchange.com/,
+    // /superuser.com/,
+    // /serverfault.com/,
+    // /askubuntu.com/,
+    // /mathoverflow.net/,
+    // /math.stackexchange.com/,
+    // /codereview.stackexchange.com/,
+    // /programmers.stackexchange.com/,
+    // /stackapps.com/,
+    // /viblo.asia/,
+    // /www.npmjs.com/,
+];
+const disableHostClipboardFeature = [/w3schools.com/];
+const QUANLH_CHROME_RUNTIME_ID = "QUANLH_CHROME_RUNTIME_ID";
+
+
+/***/ }),
+
 /***/ "./src/shared/config/index.ts":
 /*!************************************!*\
   !*** ./src/shared/config/index.ts ***!
@@ -22668,6 +22702,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared */ "./src/shared/index.ts");
 /* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./shared/models */ "./src/shared/models/index.ts");
 /* harmony import */ var _tools_content_executor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tools/content.executor */ "./src/tools/content.executor.ts");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./src/constants.ts");
+
 
 
 
@@ -22737,7 +22773,7 @@ const trackingStorage = async () => {
         }
     });
 };
-_shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.set("chromeRuntimeId", chrome.runtime.id);
+_shared__WEBPACK_IMPORTED_MODULE_0__.storageLocal.set(_constants__WEBPACK_IMPORTED_MODULE_3__.QUANLH_CHROME_RUNTIME_ID, chrome.runtime.id);
 // trackingStorage()
 chrome.runtime.onConnect.addListener(() => {
     console.log("on connect");
