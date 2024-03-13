@@ -90888,9 +90888,9 @@ class SwaggerUIX {
         }
     }
     async onPageLoaded() {
-        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => !!this.$sectionWrapper, 1000, 10);
+        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => !!this.$sectionWrapper?.firstChild?.childNodes, 1500, 20);
         this.hideUINotNeeded();
-        const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes);
+        const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes ?? []);
         els?.forEach(($el) => {
             this.groupApiList.push(new GroupApi({ $el, swaggerUI: this }));
         });
