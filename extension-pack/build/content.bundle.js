@@ -22820,7 +22820,7 @@ chrome.runtime.onConnect.addListener(() => {
 //   //   )
 //   // }
 // })
-console.log(chrome.runtime.getURL("assets/images/images/donate.png"));
+// console.log(chrome.runtime.getURL("assets/images/images/donate.png"))
 
 })();
 
