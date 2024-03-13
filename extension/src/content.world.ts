@@ -100,11 +100,11 @@ import { imageViewerManager } from "./tools/ImageViewerManager"
 //   }
 // })
 
-const Q = {
+const Q__ = {
   imageViewerManager,
 }
 
-;(window as any).Q = Q
+;(window as any).Q__ = Q__
 
 try {
   // imageViewerManager.execute()
