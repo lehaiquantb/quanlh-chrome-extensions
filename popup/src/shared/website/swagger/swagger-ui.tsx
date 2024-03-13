@@ -488,9 +488,9 @@ export class SwaggerUIX {
   }
 
   async onPageLoaded() {
-    await waitUntil(() => !!this.$sectionWrapper, 1000, 10)
+    await waitUntil(() => !!this.$sectionWrapper?.firstChild?.childNodes, 1500, 20)
     this.hideUINotNeeded()
-    const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes as any)
+    const els = Array.from((this.$sectionWrapper?.firstChild?.childNodes as any) ?? [])
     els?.forEach(($el: any) => {
       this.groupApiList.push(new GroupApi({ $el, swaggerUI: this }))
     })
