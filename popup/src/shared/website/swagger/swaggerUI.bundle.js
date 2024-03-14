@@ -83750,52 +83750,6 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./node_modules/react-google-recaptcha-v3/dist/react-google-recaptcha-v3.esm.js":
-/*!**************************************************************************************!*\
-  !*** ./node_modules/react-google-recaptcha-v3/dist/react-google-recaptcha-v3.esm.js ***!
-  \**************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GoogleReCaptcha": () => (/* binding */ S),
-/* harmony export */   "GoogleReCaptchaConsumer": () => (/* binding */ b),
-/* harmony export */   "GoogleReCaptchaContext": () => (/* binding */ v),
-/* harmony export */   "GoogleReCaptchaProvider": () => (/* binding */ h),
-/* harmony export */   "useGoogleReCaptcha": () => (/* binding */ g),
-/* harmony export */   "withGoogleReCaptcha": () => (/* binding */ ne)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */var s=function(){return s=Object.assign||function(e){for(var t,r=1,o=arguments.length;r<o;r++)for(var n in t=arguments[r])Object.prototype.hasOwnProperty.call(t,n)&&(e[n]=t[n]);return e},s.apply(this,arguments)};function u(e,t,r,o){return new(r||(r=Promise))((function(n,a){function c(e){try{s(o.next(e))}catch(e){a(e)}}function i(e){try{s(o.throw(e))}catch(e){a(e)}}function s(e){var t;e.done?n(e.value):(t=e.value,t instanceof r?t:new r((function(e){e(t)}))).then(c,i)}s((o=o.apply(e,t||[])).next())}))}function l(e,t){var r,o,n,a,c={label:0,sent:function(){if(1&n[0])throw n[1];return n[1]},trys:[],ops:[]};return a={next:i(0),throw:i(1),return:i(2)},"function"==typeof Symbol&&(a[Symbol.iterator]=function(){return this}),a;function i(a){return function(i){return function(a){if(r)throw new TypeError("Generator is already executing.");for(;c;)try{if(r=1,o&&(n=2&a[0]?o.return:a[0]?o.throw||((n=o.return)&&n.call(o),0):o.next)&&!(n=n.call(o,a[1])).done)return n;switch(o=0,n&&(a=[2&a[0],n.value]),a[0]){case 0:case 1:n=a;break;case 4:return c.label++,{value:a[1],done:!1};case 5:c.label++,o=a[1],a=[0];continue;case 7:a=c.ops.pop(),c.trys.pop();continue;default:if(!(n=c.trys,(n=n.length>0&&n[n.length-1])||6!==a[0]&&2!==a[0])){c=0;continue}if(3===a[0]&&(!n||a[1]>n[0]&&a[1]<n[3])){c.label=a[1];break}if(6===a[0]&&c.label<n[1]){c.label=n[1],n=a;break}if(n&&c.label<n[2]){c.label=n[2],c.ops.push(a);break}n[2]&&c.ops.pop(),c.trys.pop();continue}a=t.call(e,c)}catch(e){a=[6,e],o=0}finally{r=n=0}if(5&a[0])throw a[1];return{value:a[0]?a[1]:void 0,done:!0}}([a,i])}}}var f,p=function(e){var t;e?function(e){if(e)for(;e.lastChild;)e.lastChild.remove()}("string"==typeof e?document.getElementById(e):e):(t=document.querySelector(".grecaptcha-badge"))&&t.parentNode&&document.body.removeChild(t.parentNode)},d=function(e,t){p(t),window.___grecaptcha_cfg=void 0;var r=document.querySelector("#"+e);r&&r.remove(),function(){var e=document.querySelector('script[src^="https://www.gstatic.com/recaptcha/releases"]');e&&e.remove()}()},y=function(e){var t=e.render,r=e.onLoadCallbackName,o=e.language,n=e.onLoad,a=e.useRecaptchaNet,c=e.useEnterprise,i=e.scriptProps,s=void 0===i?{}:i,u=s.nonce,l=void 0===u?"":u,f=s.defer,p=void 0!==f&&f,d=s.async,y=void 0!==d&&d,m=s.id,v=void 0===m?"":m,b=s.appendTo,h=v||"google-recaptcha-v3";if(function(e){return!!document.querySelector("#"+e)}(h))n();else{var g=function(e){return"https://www."+(e.useRecaptchaNet?"recaptcha.net":"google.com")+"/recaptcha/"+(e.useEnterprise?"enterprise.js":"api.js")}({useEnterprise:c,useRecaptchaNet:a}),S=document.createElement("script");S.id=h,S.src=g+"?render="+t+("explicit"===t?"&onload="+r:"")+(o?"&hl="+o:""),l&&(S.nonce=l),S.defer=!!p,S.async=!!y,S.onload=n,("body"===b?document.body:document.getElementsByTagName("head")[0]).appendChild(S)}},m=function(e){"undefined"!=typeof process&&!!process.env&&"production"!=="development"||console.warn(e)};!function(e){e.SCRIPT_NOT_AVAILABLE="Recaptcha script is not available"}(f||(f={}));var v=(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)({executeRecaptcha:function(){throw Error("GoogleReCaptcha Context has not yet been implemented, if you are using useGoogleReCaptcha hook, make sure the hook is called inside component wrapped by GoogleRecaptchaProvider")}}),b=v.Consumer;function h(t){var i=t.reCaptchaKey,u=t.useEnterprise,l=void 0!==u&&u,p=t.useRecaptchaNet,b=void 0!==p&&p,h=t.scriptProps,g=t.language,S=t.container,w=t.children,$=(0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),C=$[0],P=$[1],x=(0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(i),E=JSON.stringify(h),R=JSON.stringify(null==S?void 0:S.parameters);(0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)((function(){if(i){var e=(null==h?void 0:h.id)||"google-recaptcha-v3",t=(null==h?void 0:h.onLoadCallbackName)||"onRecaptchaLoadCallback";window[t]=function(){var e=l?window.grecaptcha.enterprise:window.grecaptcha,t=s({badge:"inline",size:"invisible",sitekey:i},(null==S?void 0:S.parameters)||{});x.current=e.render(null==S?void 0:S.element,t)};return y({render:(null==S?void 0:S.element)?"explicit":i,onLoadCallbackName:t,useEnterprise:l,useRecaptchaNet:b,scriptProps:h,language:g,onLoad:function(){if(window&&window.grecaptcha){var e=l?window.grecaptcha.enterprise:window.grecaptcha;e.ready((function(){P(e)}))}else m("<GoogleRecaptchaProvider /> "+f.SCRIPT_NOT_AVAILABLE)},onError:function(){m("Error loading google recaptcha script")}}),function(){d(e,null==S?void 0:S.element)}}m("<GoogleReCaptchaProvider /> recaptcha key not provided")}),[l,b,E,R,g,i,null==S?void 0:S.element]);var M=(0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((function(e){if(!C||!C.execute)throw new Error("<GoogleReCaptchaProvider /> Google Recaptcha has not been loaded");return C.execute(x.current,{action:e})}),[C,x]),N=(0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)((function(){return{executeRecaptcha:C?M:void 0,container:null==S?void 0:S.element}}),[M,C,null==S?void 0:S.element]);return react__WEBPACK_IMPORTED_MODULE_0___default().createElement(v.Provider,{value:N},w)}var g=function(){return (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(v)};function S(t){var r=this,o=t.action,a=t.onVerify,c=t.refreshReCaptcha,i=g();(0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)((function(){var e=i.executeRecaptcha;if(e){u(r,void 0,void 0,(function(){var t;return l(this,(function(r){switch(r.label){case 0:return[4,e(o)];case 1:return t=r.sent(),a?(a(t),[2]):(m("Please define an onVerify function"),[2])}}))}))}}),[o,a,c,i]);var s=i.container;return"string"==typeof s?react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div",{id:s}):null}function w(e,t){return e(t={exports:{}},t.exports),t.exports
-/** @license React v16.13.1
- * react-is.production.min.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */}var $="function"==typeof Symbol&&Symbol.for,C=$?Symbol.for("react.element"):60103,P=$?Symbol.for("react.portal"):60106,x=$?Symbol.for("react.fragment"):60107,E=$?Symbol.for("react.strict_mode"):60108,R=$?Symbol.for("react.profiler"):60114,M=$?Symbol.for("react.provider"):60109,N=$?Symbol.for("react.context"):60110,O=$?Symbol.for("react.async_mode"):60111,_=$?Symbol.for("react.concurrent_mode"):60111,T=$?Symbol.for("react.forward_ref"):60112,j=$?Symbol.for("react.suspense"):60113,L=$?Symbol.for("react.suspense_list"):60120,k=$?Symbol.for("react.memo"):60115,F=$?Symbol.for("react.lazy"):60116,A=$?Symbol.for("react.block"):60121,V=$?Symbol.for("react.fundamental"):60117,z=$?Symbol.for("react.responder"):60118,G=$?Symbol.for("react.scope"):60119;function I(e){if("object"==typeof e&&null!==e){var t=e.$$typeof;switch(t){case C:switch(e=e.type){case O:case _:case x:case R:case E:case j:return e;default:switch(e=e&&e.$$typeof){case N:case T:case F:case k:case M:return e;default:return t}}case P:return t}}}function D(e){return I(e)===_}var q={AsyncMode:O,ConcurrentMode:_,ContextConsumer:N,ContextProvider:M,Element:C,ForwardRef:T,Fragment:x,Lazy:F,Memo:k,Portal:P,Profiler:R,StrictMode:E,Suspense:j,isAsyncMode:function(e){return D(e)||I(e)===O},isConcurrentMode:D,isContextConsumer:function(e){return I(e)===N},isContextProvider:function(e){return I(e)===M},isElement:function(e){return"object"==typeof e&&null!==e&&e.$$typeof===C},isForwardRef:function(e){return I(e)===T},isFragment:function(e){return I(e)===x},isLazy:function(e){return I(e)===F},isMemo:function(e){return I(e)===k},isPortal:function(e){return I(e)===P},isProfiler:function(e){return I(e)===R},isStrictMode:function(e){return I(e)===E},isSuspense:function(e){return I(e)===j},isValidElementType:function(e){return"string"==typeof e||"function"==typeof e||e===x||e===_||e===R||e===E||e===j||e===L||"object"==typeof e&&null!==e&&(e.$$typeof===F||e.$$typeof===k||e.$$typeof===M||e.$$typeof===N||e.$$typeof===T||e.$$typeof===V||e.$$typeof===z||e.$$typeof===G||e.$$typeof===A)},typeOf:I},B=w((function(e,t){ true&&function(){var e="function"==typeof Symbol&&Symbol.for,r=e?Symbol.for("react.element"):60103,o=e?Symbol.for("react.portal"):60106,n=e?Symbol.for("react.fragment"):60107,a=e?Symbol.for("react.strict_mode"):60108,c=e?Symbol.for("react.profiler"):60114,i=e?Symbol.for("react.provider"):60109,s=e?Symbol.for("react.context"):60110,u=e?Symbol.for("react.async_mode"):60111,l=e?Symbol.for("react.concurrent_mode"):60111,f=e?Symbol.for("react.forward_ref"):60112,p=e?Symbol.for("react.suspense"):60113,d=e?Symbol.for("react.suspense_list"):60120,y=e?Symbol.for("react.memo"):60115,m=e?Symbol.for("react.lazy"):60116,v=e?Symbol.for("react.block"):60121,b=e?Symbol.for("react.fundamental"):60117,h=e?Symbol.for("react.responder"):60118,g=e?Symbol.for("react.scope"):60119;function S(e){if("object"==typeof e&&null!==e){var t=e.$$typeof;switch(t){case r:var d=e.type;switch(d){case u:case l:case n:case c:case a:case p:return d;default:var v=d&&d.$$typeof;switch(v){case s:case f:case m:case y:case i:return v;default:return t}}case o:return t}}}var w=u,$=l,C=s,P=i,x=r,E=f,R=n,M=m,N=y,O=o,_=c,T=a,j=p,L=!1;function k(e){return S(e)===l}t.AsyncMode=w,t.ConcurrentMode=$,t.ContextConsumer=C,t.ContextProvider=P,t.Element=x,t.ForwardRef=E,t.Fragment=R,t.Lazy=M,t.Memo=N,t.Portal=O,t.Profiler=_,t.StrictMode=T,t.Suspense=j,t.isAsyncMode=function(e){return L||(L=!0,console.warn("The ReactIs.isAsyncMode() alias has been deprecated, and will be removed in React 17+. Update your code to use ReactIs.isConcurrentMode() instead. It has the exact same API.")),k(e)||S(e)===u},t.isConcurrentMode=k,t.isContextConsumer=function(e){return S(e)===s},t.isContextProvider=function(e){return S(e)===i},t.isElement=function(e){return"object"==typeof e&&null!==e&&e.$$typeof===r},t.isForwardRef=function(e){return S(e)===f},t.isFragment=function(e){return S(e)===n},t.isLazy=function(e){return S(e)===m},t.isMemo=function(e){return S(e)===y},t.isPortal=function(e){return S(e)===o},t.isProfiler=function(e){return S(e)===c},t.isStrictMode=function(e){return S(e)===a},t.isSuspense=function(e){return S(e)===p},t.isValidElementType=function(e){return"string"==typeof e||"function"==typeof e||e===n||e===l||e===c||e===a||e===p||e===d||"object"==typeof e&&null!==e&&(e.$$typeof===m||e.$$typeof===y||e.$$typeof===i||e.$$typeof===s||e.$$typeof===f||e.$$typeof===b||e.$$typeof===h||e.$$typeof===g||e.$$typeof===v)},t.typeOf=S}()})),J=(B.AsyncMode,B.ConcurrentMode,B.ContextConsumer,B.ContextProvider,B.Element,B.ForwardRef,B.Fragment,B.Lazy,B.Memo,B.Portal,B.Profiler,B.StrictMode,B.Suspense,B.isAsyncMode,B.isConcurrentMode,B.isContextConsumer,B.isContextProvider,B.isElement,B.isForwardRef,B.isFragment,B.isLazy,B.isMemo,B.isPortal,B.isProfiler,B.isStrictMode,B.isSuspense,B.isValidElementType,B.typeOf,w((function(e){ false?0:e.exports=B}))),K={childContextTypes:!0,contextType:!0,contextTypes:!0,defaultProps:!0,displayName:!0,getDefaultProps:!0,getDerivedStateFromError:!0,getDerivedStateFromProps:!0,mixins:!0,propTypes:!0,type:!0},U={name:!0,length:!0,prototype:!0,caller:!0,callee:!0,arguments:!0,arity:!0},H={$$typeof:!0,compare:!0,defaultProps:!0,displayName:!0,propTypes:!0,type:!0},Q={};function W(e){return J.isMemo(e)?H:Q[e.$$typeof]||K}Q[J.ForwardRef]={$$typeof:!0,render:!0,defaultProps:!0,displayName:!0,propTypes:!0},Q[J.Memo]=H;var X=Object.defineProperty,Y=Object.getOwnPropertyNames,Z=Object.getOwnPropertySymbols,ee=Object.getOwnPropertyDescriptor,te=Object.getPrototypeOf,re=Object.prototype;var oe=function e(t,r,o){if("string"!=typeof r){if(re){var n=te(r);n&&n!==re&&e(t,n,o)}var a=Y(r);Z&&(a=a.concat(Z(r)));for(var c=W(t),i=W(r),s=0;s<a.length;++s){var u=a[s];if(!(U[u]||o&&o[u]||i&&i[u]||c&&c[u])){var l=ee(r,u);try{X(t,u,l)}catch(e){}}}}return t},ne=function(t){var r=function(r){return react__WEBPACK_IMPORTED_MODULE_0___default().createElement(b,null,(function(o){return react__WEBPACK_IMPORTED_MODULE_0___default().createElement(t,s({},r,{googleReCaptchaProps:o}))}))};return r.displayName="withGoogleReCaptcha("+(t.displayName||t.name||"Component")+")",oe(r,t),r};
-//# sourceMappingURL=react-google-recaptcha-v3.esm.js.map
-
-
-/***/ }),
-
 /***/ "./node_modules/react-is/cjs/react-is.development.js":
 /*!***********************************************************!*\
   !*** ./node_modules/react-is/cjs/react-is.development.js ***!
@@ -88801,116 +88755,6 @@ const Otp = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_1__.observer)(() => {
 
 /***/ }),
 
-/***/ "./src/shared/components/ReCaptcha/ReCaptcha.tsx":
-/*!*******************************************************!*\
-  !*** ./src/shared/components/ReCaptcha/ReCaptcha.tsx ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ReCaptcha": () => (/* binding */ ReCaptcha),
-/* harmony export */   "reCaptchaRef": () => (/* binding */ reCaptchaRef)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_google_recaptcha_v3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-google-recaptcha-v3 */ "./node_modules/react-google-recaptcha-v3/dist/react-google-recaptcha-v3.esm.js");
-/* harmony import */ var _useReCaptcha__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./useReCaptcha */ "./src/shared/components/ReCaptcha/useReCaptcha.ts");
-/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
-/* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
-
-
-
-
-
-
-const reCaptchaRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.createRef)();
-const ReCaptchaChild = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__.observer)(() => {
-    const { getReCaptchaToken } = (0,_useReCaptcha__WEBPACK_IMPORTED_MODULE_2__.useReCaptcha)();
-    //   useEffect(() => {
-    //     ;(async () => {
-    //       const t = await getReCaptchaToken("homepage")
-    //       console.log(t)
-    //     })()
-    //   }, [getReCaptchaToken])
-    const { website: { swaggerTool }, } = (0,_shared_models__WEBPACK_IMPORTED_MODULE_4__.useStores)();
-    const { setProp, recaptchaSiteKey } = swaggerTool;
-    (0,react__WEBPACK_IMPORTED_MODULE_0__.useImperativeHandle)(reCaptchaRef, () => {
-        return {
-            getReCaptchaToken,
-        };
-    }, [getReCaptchaToken]);
-    const onSetSiteKey = (e) => {
-        setProp("recaptchaSiteKey", e?.target?.value);
-    };
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", { style: { marginLeft: "5rem" } },
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"], { placeholder: "ReCaptcha Site Key", width: "30rem", style: { width: "30rem" }, defaultValue: "xxx", onChange: onSetSiteKey, value: recaptchaSiteKey })));
-});
-const ReCaptcha = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__.observer)(() => {
-    const { website: { swaggerTool }, } = (0,_shared_models__WEBPACK_IMPORTED_MODULE_4__.useStores)();
-    const { recaptchaSiteKey } = swaggerTool;
-    console.log("recaptchaSiteKey", recaptchaSiteKey);
-    return (react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_google_recaptcha_v3__WEBPACK_IMPORTED_MODULE_1__.GoogleReCaptchaProvider, { key: recaptchaSiteKey, reCaptchaKey: recaptchaSiteKey, container: {
-            parameters: {
-                errorCallback: function (e) {
-                    console.log("errorCallback RECAPTCHA", e);
-                },
-            },
-        } },
-        react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ReCaptchaChild, null)));
-});
-
-
-/***/ }),
-
-/***/ "./src/shared/components/ReCaptcha/useReCaptcha.ts":
-/*!*********************************************************!*\
-  !*** ./src/shared/components/ReCaptcha/useReCaptcha.ts ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "useReCaptcha": () => (/* binding */ useReCaptcha)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_google_recaptcha_v3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-google-recaptcha-v3 */ "./node_modules/react-google-recaptcha-v3/dist/react-google-recaptcha-v3.esm.js");
-
-
-const useReCaptcha = (opts) => {
-    const { executeRecaptcha } = (0,react_google_recaptcha_v3__WEBPACK_IMPORTED_MODULE_1__.useGoogleReCaptcha)();
-    const { visible = true } = opts ?? {};
-    const getReCaptchaToken = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(async (action) => {
-        console.log("executeRecaptcha", executeRecaptcha);
-        if (!executeRecaptcha) {
-            return null;
-        }
-        const token = await executeRecaptcha(action);
-        return token;
-    }, [executeRecaptcha]);
-    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-        const grecaptchaBadgeElement = document.querySelector(".grecaptcha-badge");
-        if (grecaptchaBadgeElement?.style && visible) {
-            grecaptchaBadgeElement.style.visibility = "visible";
-        }
-        return () => {
-            if (grecaptchaBadgeElement?.style) {
-                grecaptchaBadgeElement.style.visibility = "hidden";
-            }
-        };
-    }, [executeRecaptcha]);
-    return {
-        getReCaptchaToken,
-    };
-};
-
-
-/***/ }),
-
 /***/ "./src/shared/components/UIManager.tsx":
 /*!*********************************************!*\
   !*** ./src/shared/components/UIManager.tsx ***!
@@ -89041,11 +88885,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared/config */ "./src/shared/config/index.ts");
 /* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
 /* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
 /* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _Otp_Otp__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Otp/Otp */ "./src/shared/components/Otp/Otp.tsx");
+
 
 
 
@@ -89064,13 +88910,14 @@ const SwaggerHeaderComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__.o
         const { value: inputValue } = e.target;
         setEmail(inputValue);
     };
-    return (react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", null,
+    return (react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", { className: "flex items-center" },
         react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", { className: "flex items-center" },
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"], { placeholder: "Email", value: email, onChange: onChange }),
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"], { placeholder: "Password", value: pass, onChange: (e) => {
+            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { placeholder: "Email", value: email, onChange: onChange }),
+            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { placeholder: "Password", value: pass, onChange: (e) => {
                     setPass(e.target.value);
                 } }),
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { type: "primary", onClick: onLogin }, "Login"))));
+            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_7__["default"], { type: "primary", onClick: onLogin }, "Login")),
+        react__WEBPACK_IMPORTED_MODULE_4___default().createElement(_Otp_Otp__WEBPACK_IMPORTED_MODULE_5__.Otp, null)));
 });
 SwaggerHeaderComponent.defaultProps = {};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_2__["default"])(SwaggerHeaderComponent));
@@ -89251,6 +89098,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "copyToClipboard": () => (/* binding */ copyToClipboard),
 /* harmony export */   "createElementByText": () => (/* binding */ createElementByText),
+/* harmony export */   "delay": () => (/* binding */ delay),
 /* harmony export */   "getChrome": () => (/* binding */ getChrome),
 /* harmony export */   "getCurrentTab": () => (/* binding */ getCurrentTab),
 /* harmony export */   "getGlobalVar": () => (/* binding */ getGlobalVar),
@@ -89417,6 +89265,13 @@ const waitUntil = async (conditionCb, interval = 100, maxAttempts = 5000) => {
         }
     });
 };
+const delay = (ts) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(null);
+        }, ts);
+    });
+};
 
 
 /***/ }),
@@ -89435,6 +89290,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "chrome": () => (/* binding */ chrome),
 /* harmony export */   "copyToClipboard": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.copyToClipboard),
 /* harmony export */   "createElementByText": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.createElementByText),
+/* harmony export */   "delay": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.delay),
 /* harmony export */   "getChrome": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getChrome),
 /* harmony export */   "getCurrentTab": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getCurrentTab),
 /* harmony export */   "getGlobalVar": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getGlobalVar),
@@ -92418,11 +92274,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_scripts_injectCopyToClipboard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/shared/scripts/injectCopyToClipboard */ "./src/shared/scripts/injectCopyToClipboard.tsx");
 /* harmony import */ var _shared_components_swagger_SwaggerExtraRightSection__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @/shared/components/swagger/SwaggerExtraRightSection */ "./src/shared/components/swagger/SwaggerExtraRightSection.tsx");
 /* harmony import */ var _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @/shared/services/notification */ "./src/shared/services/notification.ts");
-/* harmony import */ var _shared_components_ReCaptcha_ReCaptcha__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/shared/components/ReCaptcha/ReCaptcha */ "./src/shared/components/ReCaptcha/ReCaptcha.tsx");
-/* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
-/* harmony import */ var _shared_components_Otp_Otp__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @/shared/components/Otp/Otp */ "./src/shared/components/Otp/Otp.tsx");
-
-
+/* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
 
 
 
@@ -92448,8 +92300,6 @@ __webpack_require__.r(__webpack_exports__);
 const ID_SIDE_BAR = "side-bar";
 const ID_EXTRA_RIGHT = "extra-right";
 const ID_HEADER = "ql-sw-header";
-const ID_RECAPTCHA_SITE_KEY = "reCAPTCHA_SITE_KEY";
-const ID_OTP = "__otp-input";
 function querySelectorIncludesText(selector, text, parent = document) {
     try {
         return Array.from(parent?.querySelectorAll?.(selector))?.find((el) => el?.textContent?.includes(text));
@@ -92726,7 +92576,7 @@ class SwaggerUIX {
         },
     };
     get storage() {
-        return _shared_models__WEBPACK_IMPORTED_MODULE_12__._rootStore;
+        return _shared_models__WEBPACK_IMPORTED_MODULE_11__._rootStore;
     }
     mouseEvent = null;
     groupApiList = [];
@@ -92734,10 +92584,8 @@ class SwaggerUIX {
     $sideBar = createElementFromHTML(`<div id="${ID_SIDE_BAR}" class="side-bar"></div>`);
     $extraRight = createElementFromHTML(`<div id="${ID_EXTRA_RIGHT}" class="${ID_EXTRA_RIGHT}"></div>`);
     $headerWrapper = createElementFromHTML(`<div id="${ID_HEADER}"></div>`);
-    $recaptchaInput = createElementFromHTML(`<div id="${ID_RECAPTCHA_SITE_KEY}"></div>`);
-    $otp = createElementFromHTML(`<div id="${ID_OTP}"></div>`);
     get reCaptchaSiteKey() {
-        return _shared_models__WEBPACK_IMPORTED_MODULE_12__._rootStore.website.swaggerTool.recaptchaSiteKey;
+        return _shared_models__WEBPACK_IMPORTED_MODULE_11__._rootStore.website.swaggerTool.recaptchaSiteKey;
     }
     get $swaggerContainer() {
         return document.querySelector("#swagger-ui");
@@ -92828,13 +92676,13 @@ class SwaggerUIX {
         }
     }
     async onPageLoaded() {
-        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => !!this.$sectionWrapper, 1000, 10);
+        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => !!this.$sectionWrapper?.firstChild?.childNodes, 1500, 20);
         this.hideUINotNeeded();
-        const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes);
+        const els = Array.from(this.$sectionWrapper?.firstChild?.childNodes ?? []);
         els?.forEach(($el) => {
             this.groupApiList.push(new GroupApi({ $el, swaggerUI: this }));
         });
-        this.changeLayout();
+        await this.changeLayout();
         document.addEventListener("change", (e) => {
             this.groupApiList.forEach((groupApi) => {
                 groupApi.apiList.forEach((api) => {
@@ -92843,15 +92691,14 @@ class SwaggerUIX {
             });
         });
     }
-    changeLayout() {
-        this.$schemesWrapper.prepend(this.$recaptchaInput);
-        this.$schemesWrapper.prepend(this.$otp);
+    async changeLayout() {
         this.$schemesWrapper.prepend(this.$headerWrapper);
         this.$mainWrapper.prepend(this.$sideBar);
         this.$mainWrapper.append(this.$extraRight);
         this.$extraRight.style.maxWidth = `40rem`;
         this.$extraRight.style.minWidth = `40rem`;
         this.$extraRight.style.overflowY = `auto`;
+        this.$schemesWrapper.style.justifyContent = "space-between";
         this.$mainWrapper.style.display = "flex";
         this.$mainWrapper.style.flexDirection = "row";
         this.$mainWrapper.style.maxWidth = `fit-content`;
@@ -92872,16 +92719,13 @@ class SwaggerUIX {
         const SwaggerExtraRightSection = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_4__["default"])(_shared_components_swagger_SwaggerExtraRightSection__WEBPACK_IMPORTED_MODULE_9__.SwaggerExtraRightSectionComponent, {
             storageType: this.storageType,
         });
-        const ReCaptchaCom = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_4__["default"])(_shared_components_ReCaptcha_ReCaptcha__WEBPACK_IMPORTED_MODULE_11__.ReCaptcha, { storageType: this.storageType });
-        const OtpCom = (0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_4__["default"])(_shared_components_Otp_Otp__WEBPACK_IMPORTED_MODULE_13__.Otp, { storageType: this.storageType });
+        // const ReCaptchaCom = withStorage(ReCaptcha, { storageType: this.storageType })
         _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SwaggerSideBar, { swaggerUI: this }), id: ID_SIDE_BAR });
         _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SwaggerHeader, { swaggerUI: this }), id: ID_HEADER });
         _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({
             Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(SwaggerExtraRightSection, { swaggerUI: this }),
             id: ID_EXTRA_RIGHT,
         });
-        _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ReCaptchaCom, null), id: ID_RECAPTCHA_SITE_KEY });
-        _shared_components_UIManager__WEBPACK_IMPORTED_MODULE_1__.UIManager.render({ Component: react__WEBPACK_IMPORTED_MODULE_0___default().createElement(OtpCom, null), id: ID_OTP });
         this.injectCss();
     }
     injectCss() {
@@ -92923,32 +92767,46 @@ class SwaggerUIX {
         document.addEventListener("mousemove", onMouseUpdate, false);
         document.addEventListener("mouseenter", onMouseUpdate, false);
     }
-    setTokenToSwagger(jwtToken) {
-        function clickAuthBtn() {
-            const authButton = document.querySelector(".auth-btn-wrapper .modal-btn.auth");
-            if (authButton) {
-                authButton?.click();
-            }
+    get ButtonOpenForm() {
+        const openAuthFormUnlockButton = document.querySelector(".auth-wrapper .authorize.unlocked");
+        const openAuthFormLockButton = document.querySelector(".auth-wrapper .authorize.locked");
+        return {
+            openAuthFormUnlockButton,
+            openAuthFormLockButton,
+            isReady: !!openAuthFormUnlockButton || !!openAuthFormLockButton,
+        };
+    }
+    get FormElement() {
+        const closeButton = document.querySelector("button.btn-done");
+        const tokenInput = document.querySelector(".auth-container input");
+        const authButton = document.querySelector(".auth-btn-wrapper .modal-btn.auth");
+        return {
+            closeButton,
+            tokenInput,
+            authButton,
+            isReady: !!closeButton,
+        };
+    }
+    async setTokenToSwagger(jwtToken) {
+        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => this.ButtonOpenForm.isReady, 50, 40);
+        if (this.ButtonOpenForm.openAuthFormLockButton) {
+            this.ButtonOpenForm.openAuthFormLockButton?.click();
         }
-        setTimeout(function () {
-            const openAuthFormLockButton = document.querySelector(".auth-wrapper .authorize.locked");
-            if (openAuthFormLockButton) {
-                openAuthFormLockButton?.click();
-                clickAuthBtn();
-            }
-            else {
-                const openAuthFormUnlockButton = document.querySelector(".auth-wrapper .authorize.unlocked");
-                openAuthFormUnlockButton?.click();
-            }
-            const tokenInput = document.querySelector(".auth-container input");
-            const closeButton = document.querySelector("button.btn-done");
-            const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window?.HTMLInputElement?.prototype, "value").set;
-            nativeInputValueSetter.call(tokenInput, jwtToken);
-            const inputEvent = new Event("input", { bubbles: true });
-            tokenInput.dispatchEvent(inputEvent);
-            clickAuthBtn();
-            closeButton.click();
-        }, 400);
+        else {
+            this.ButtonOpenForm.openAuthFormUnlockButton?.click();
+        }
+        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => this.FormElement.isReady, 50, 40);
+        if (!this.FormElement.tokenInput) {
+            // logout
+            this.FormElement.authButton?.click();
+        }
+        await (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.waitUntil)(() => !!this.FormElement.tokenInput, 50, 40);
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window?.HTMLInputElement?.prototype, "value").set;
+        nativeInputValueSetter?.call(this.FormElement.tokenInput, jwtToken);
+        const inputEvent = new Event("input", { bubbles: true });
+        this.FormElement.tokenInput.dispatchEvent(inputEvent);
+        this.FormElement.authButton.click();
+        this.FormElement.closeButton?.click();
     }
     async callLoginMfa(data, token, email) {
         const recaptcha = ""; // (await this.getRecaptchaToken("LOGIN")) || ""

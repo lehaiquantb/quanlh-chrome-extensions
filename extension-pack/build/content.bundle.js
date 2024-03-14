@@ -21253,6 +21253,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "copyToClipboard": () => (/* binding */ copyToClipboard),
 /* harmony export */   "createElementByText": () => (/* binding */ createElementByText),
+/* harmony export */   "delay": () => (/* binding */ delay),
 /* harmony export */   "getChrome": () => (/* binding */ getChrome),
 /* harmony export */   "getCurrentTab": () => (/* binding */ getCurrentTab),
 /* harmony export */   "getGlobalVar": () => (/* binding */ getGlobalVar),
@@ -21419,6 +21420,13 @@ const waitUntil = async (conditionCb, interval = 100, maxAttempts = 5000) => {
         }
     });
 };
+const delay = (ts) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(null);
+        }, ts);
+    });
+};
 
 
 /***/ }),
@@ -21437,6 +21445,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "chrome": () => (/* binding */ chrome),
 /* harmony export */   "copyToClipboard": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.copyToClipboard),
 /* harmony export */   "createElementByText": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.createElementByText),
+/* harmony export */   "delay": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.delay),
 /* harmony export */   "getChrome": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getChrome),
 /* harmony export */   "getCurrentTab": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getCurrentTab),
 /* harmony export */   "getGlobalVar": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getGlobalVar),

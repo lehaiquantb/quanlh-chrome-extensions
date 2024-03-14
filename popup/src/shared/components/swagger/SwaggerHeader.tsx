@@ -5,6 +5,7 @@ import withStorage from "@/shared/withStorage"
 import { Button, Input, Space } from "antd"
 import { observer } from "mobx-react-lite"
 import React, { FC, useState } from "react"
+import { Otp } from "../Otp/Otp"
 
 type Props = {
   swaggerUI: SwaggerUIX
@@ -31,7 +32,7 @@ export const SwaggerHeaderComponent: FC<Props> = observer((props: Props) => {
   }
 
   return (
-    <div>
+    <div className="flex items-center">
       <div className="flex items-center">
         <Input placeholder="Email" value={email} onChange={onChange} />
         <Input
@@ -45,6 +46,7 @@ export const SwaggerHeaderComponent: FC<Props> = observer((props: Props) => {
           Login
         </Button>
       </div>
+      <Otp />
     </div>
   )
 })
