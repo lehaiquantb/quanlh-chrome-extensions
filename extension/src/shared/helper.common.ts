@@ -172,3 +172,11 @@ export const waitUntil = async (
     }
   })
 }
+
+export const delay = (ts: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(null)
+    }, ts)
+  })
+}

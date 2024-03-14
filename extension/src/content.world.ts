@@ -14,7 +14,15 @@ import "./assets/scss/copy-field.scss"
 //     JSON.parse(changes?.[ROOT_STATE_STORAGE_KEY]?.newValue),
 //   )
 // })
-import { IMessage, getGlobalVar, isMatchWebsite, parseJson, storageLocal } from "./shared"
+import {
+  IMessage,
+  delay,
+  getGlobalVar,
+  isMatchWebsite,
+  parseJson,
+  storageLocal,
+  waitUntil,
+} from "./shared"
 import { contentScript } from "./tools/content.executor"
 import { imageViewerManager } from "./tools/ImageViewerManager"
 ;(async () => {
@@ -28,13 +36,18 @@ import { imageViewerManager } from "./tools/ImageViewerManager"
   ) {
     const SwaggerUIBundle = getGlobalVar("SwaggerUIBundle")
     if (SwaggerUIBundle) {
+      let ready = false
       setTimeout(async () => {
         const swaggerUIBundle = SwaggerUIBundle({
           url: `${location?.href?.split("#")?.[0]}-json`,
           dom_id: "#swagger-ui",
           presets: [SwaggerUIBundle?.presets?.apis, SwaggerUIBundle?.SwaggerUIStandalonePreset],
+          onComplete: () => {
+            ready = true
+          },
         })
 
+        await waitUntil(() => ready, 300, 20)
         ;(window as any).swaggerUIBundle = swaggerUIBundle
 
         const swaggerUI = new SwaggerUIX({ storageType: "localStorage", swaggerUIBundle })

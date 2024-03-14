@@ -1,7 +1,7 @@
 import React from "react"
 import { UIManager } from "@/shared/components/UIManager"
 import { SwaggerSideBarComponent } from "@/shared/components/swagger/SwaggerSideBar"
-import { getGlobalVar, injectReplaceCSS, waitUntil } from "@/shared/helper.common"
+import { delay, getGlobalVar, injectReplaceCSS, waitUntil } from "@/shared/helper.common"
 import { StorageType } from "@/shared/services/storage"
 import withStorage from "@/shared/withStorage"
 import { SwaggerHeaderComponent } from "@/shared/components/swagger/SwaggerHeader"
@@ -34,8 +34,6 @@ import { Otp } from "@/shared/components/Otp/Otp"
 const ID_SIDE_BAR = "side-bar"
 const ID_EXTRA_RIGHT = "extra-right"
 const ID_HEADER = "ql-sw-header"
-const ID_RECAPTCHA_SITE_KEY = "reCAPTCHA_SITE_KEY"
-const ID_OTP = "__otp-input"
 
 export function querySelectorIncludesText(selector: string, text: string, parent = document) {
   try {
@@ -370,12 +368,6 @@ export class SwaggerUIX {
     `<div id="${ID_HEADER}"></div>`,
   ) as HTMLDivElement
 
-  $recaptchaInput: HTMLDivElement = createElementFromHTML(
-    `<div id="${ID_RECAPTCHA_SITE_KEY}"></div>`,
-  ) as HTMLDivElement
-
-  $otp: HTMLDivElement = createElementFromHTML(`<div id="${ID_OTP}"></div>`) as HTMLDivElement
-
   get reCaptchaSiteKey(): string {
     return _rootStore.website.swaggerTool.recaptchaSiteKey
   }
@@ -489,13 +481,15 @@ export class SwaggerUIX {
 
   async onPageLoaded() {
     await waitUntil(() => !!this.$sectionWrapper?.firstChild?.childNodes, 1500, 20)
+
     this.hideUINotNeeded()
     const els = Array.from((this.$sectionWrapper?.firstChild?.childNodes as any) ?? [])
+
     els?.forEach(($el: any) => {
       this.groupApiList.push(new GroupApi({ $el, swaggerUI: this }))
     })
 
-    this.changeLayout()
+    await this.changeLayout()
     document.addEventListener("change", (e) => {
       this.groupApiList.forEach((groupApi) => {
         groupApi.apiList.forEach((api) => {
@@ -505,9 +499,7 @@ export class SwaggerUIX {
     })
   }
 
-  changeLayout() {
-    this.$schemesWrapper.prepend(this.$recaptchaInput)
-    this.$schemesWrapper.prepend(this.$otp)
+  async changeLayout() {
     this.$schemesWrapper.prepend(this.$headerWrapper)
     this.$mainWrapper.prepend(this.$sideBar)
     this.$mainWrapper.append(this.$extraRight)
@@ -515,6 +507,8 @@ export class SwaggerUIX {
     this.$extraRight.style.minWidth = `40rem`
 
     this.$extraRight.style.overflowY = `auto`
+
+    this.$schemesWrapper.style.justifyContent = "space-between"
 
     this.$mainWrapper.style.display = "flex"
     this.$mainWrapper.style.flexDirection = "row"
@@ -538,8 +532,7 @@ export class SwaggerUIX {
     const SwaggerExtraRightSection = withStorage(SwaggerExtraRightSectionComponent, {
       storageType: this.storageType,
     })
-    const ReCaptchaCom = withStorage(ReCaptcha, { storageType: this.storageType })
-    const OtpCom = withStorage(Otp, { storageType: this.storageType })
+    // const ReCaptchaCom = withStorage(ReCaptcha, { storageType: this.storageType })
 
     UIManager.render({ Component: <SwaggerSideBar swaggerUI={this} />, id: ID_SIDE_BAR })
     UIManager.render({ Component: <SwaggerHeader swaggerUI={this} />, id: ID_HEADER })
@@ -547,8 +540,6 @@ export class SwaggerUIX {
       Component: <SwaggerExtraRightSection swaggerUI={this} />,
       id: ID_EXTRA_RIGHT,
     })
-    UIManager.render({ Component: <ReCaptchaCom />, id: ID_RECAPTCHA_SITE_KEY })
-    UIManager.render({ Component: <OtpCom />, id: ID_OTP })
 
     this.injectCss()
   }
@@ -597,45 +588,61 @@ export class SwaggerUIX {
     document.addEventListener("mouseenter", onMouseUpdate, false)
   }
 
-  setTokenToSwagger(jwtToken: string) {
-    function clickAuthBtn() {
-      const authButton = document.querySelector(
-        ".auth-btn-wrapper .modal-btn.auth",
-      ) as HTMLButtonElement
-      if (authButton) {
-        authButton?.click()
-      }
+  get ButtonOpenForm() {
+    const openAuthFormUnlockButton = document.querySelector(
+      ".auth-wrapper .authorize.unlocked",
+    ) as HTMLButtonElement
+    const openAuthFormLockButton = document.querySelector(
+      ".auth-wrapper .authorize.locked",
+    ) as HTMLButtonElement
+    return {
+      openAuthFormUnlockButton,
+      openAuthFormLockButton,
+      isReady: !!openAuthFormUnlockButton || !!openAuthFormLockButton,
     }
+  }
 
-    setTimeout(function () {
-      const openAuthFormLockButton = document.querySelector(
-        ".auth-wrapper .authorize.locked",
-      ) as HTMLButtonElement
-      if (openAuthFormLockButton) {
-        openAuthFormLockButton?.click()
-        clickAuthBtn()
-      } else {
-        const openAuthFormUnlockButton = document.querySelector(
-          ".auth-wrapper .authorize.unlocked",
-        ) as HTMLButtonElement
-        openAuthFormUnlockButton?.click()
-      }
+  get FormElement() {
+    const closeButton = document.querySelector("button.btn-done") as HTMLButtonElement
+    const tokenInput = document.querySelector(".auth-container input") as HTMLInputElement
 
-      const tokenInput = document.querySelector(".auth-container input") as HTMLInputElement
+    const authButton = document.querySelector(
+      ".auth-btn-wrapper .modal-btn.auth",
+    ) as HTMLButtonElement
 
-      const closeButton = document.querySelector("button.btn-done") as HTMLButtonElement
+    return {
+      closeButton,
+      tokenInput,
+      authButton,
+      isReady: !!closeButton,
+    }
+  }
 
-      const nativeInputValueSetter = (Object as any).getOwnPropertyDescriptor(
-        window?.HTMLInputElement?.prototype,
-        "value",
-      ).set as any
-      nativeInputValueSetter.call(tokenInput, jwtToken)
+  async setTokenToSwagger(jwtToken: string) {
+    await waitUntil(() => this.ButtonOpenForm.isReady, 50, 40)
+    if (this.ButtonOpenForm.openAuthFormLockButton) {
+      this.ButtonOpenForm.openAuthFormLockButton?.click()
+    } else {
+      this.ButtonOpenForm.openAuthFormUnlockButton?.click()
+    }
+    await waitUntil(() => this.FormElement.isReady, 50, 40)
+    if (!this.FormElement.tokenInput) {
+      // logout
+      this.FormElement.authButton?.click()
+    }
+    await waitUntil(() => !!this.FormElement.tokenInput, 50, 40)
 
-      const inputEvent = new Event("input", { bubbles: true })
-      tokenInput.dispatchEvent(inputEvent)
-      clickAuthBtn()
-      closeButton.click()
-    }, 400)
+    const nativeInputValueSetter = (Object as any).getOwnPropertyDescriptor(
+      window?.HTMLInputElement?.prototype,
+      "value",
+    ).set as any
+
+    nativeInputValueSetter?.call(this.FormElement.tokenInput, jwtToken)
+
+    const inputEvent = new Event("input", { bubbles: true })
+    this.FormElement.tokenInput.dispatchEvent(inputEvent)
+    this.FormElement.authButton.click()
+    this.FormElement.closeButton?.click()
   }
 
   async callLoginMfa(data: any, token: string, email: string) {
