@@ -89096,8 +89096,10 @@ var ERegexUrl;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "addScript": () => (/* binding */ addScript),
 /* harmony export */   "copyToClipboard": () => (/* binding */ copyToClipboard),
 /* harmony export */   "createElementByText": () => (/* binding */ createElementByText),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "delay": () => (/* binding */ delay),
 /* harmony export */   "getChrome": () => (/* binding */ getChrome),
 /* harmony export */   "getCurrentTab": () => (/* binding */ getCurrentTab),
@@ -89272,6 +89274,29 @@ const delay = (ts) => {
         }, ts);
     });
 };
+function addScript(src) {
+    const s = document.createElement("script");
+    s.setAttribute("src", src);
+    document.body.appendChild(s);
+}
+const HELPER = {
+    createElementByText,
+    copyToClipboard,
+    isEmptyString,
+    globalVarIsExist,
+    getGlobalVar,
+    getChrome,
+    getCurrentTab,
+    tryEval,
+    getRuntimeEnvironment,
+    parseJson,
+    isMatchWebsite,
+    injectReplaceCSS,
+    waitUntil,
+    delay,
+    addScript,
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (HELPER);
 
 
 /***/ }),
@@ -89287,6 +89312,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ECommandId": () => (/* binding */ ECommandId),
 /* harmony export */   "Storage": () => (/* reexport safe */ _services_storage__WEBPACK_IMPORTED_MODULE_1__.Storage),
+/* harmony export */   "addScript": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.addScript),
 /* harmony export */   "chrome": () => (/* binding */ chrome),
 /* harmony export */   "copyToClipboard": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.copyToClipboard),
 /* harmony export */   "createElementByText": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.createElementByText),

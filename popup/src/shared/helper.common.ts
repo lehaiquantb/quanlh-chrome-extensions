@@ -180,3 +180,29 @@ export const delay = (ts: number) => {
     }, ts)
   })
 }
+
+export function addScript(src: string) {
+  const s = document.createElement("script")
+  s.setAttribute("src", src)
+  document.body.appendChild(s)
+}
+
+const HELPER = {
+  createElementByText,
+  copyToClipboard,
+  isEmptyString,
+  globalVarIsExist,
+  getGlobalVar,
+  getChrome,
+  getCurrentTab,
+  tryEval,
+  getRuntimeEnvironment,
+  parseJson,
+  isMatchWebsite,
+  injectReplaceCSS,
+  waitUntil,
+  delay,
+  addScript,
+}
+
+export default HELPER
