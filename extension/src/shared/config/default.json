@@ -1,6 +1,10 @@
 {
   "cr": {
     "username": "admin",
-    "password": "admin"
+    "password": "123456",
+    "autoInitUI": true,
+    "recaptchaSiteKey": "",
+    "loginWithOtp": false,
+    "matchRegexUrls": ["*"]
   }
 }
