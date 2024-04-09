@@ -519,7 +519,10 @@ export class SwaggerUIX {
     this.$mainWrapper.style.flexDirection = "row"
     this.$mainWrapper.style.maxWidth = `fit-content`
     this.$mainWrapper.style.padding = `0px 30px`
-    this.$mainWrapper.style.height = `47rem`
+
+    this.$mainWrapper.style.height = `${
+      window.innerHeight - this.$schemaContainer.offsetHeight - 10
+    }px`
     this.$mainWrapper.style.backgroundColor = `#eaeaea`
 
     this.$sideBar.style.width = `25rem`
@@ -682,7 +685,7 @@ export class SwaggerUIX {
         })
     })
   }
-  
+
   async login(_email?: string, _password?: string, isFirst?: boolean) {
     if (this.loginMethod === "1") {
       await this.login1(_email, _password, isFirst)
