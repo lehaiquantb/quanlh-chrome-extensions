@@ -22434,7 +22434,7 @@ function _typeof(obj) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin","password":"123456","autoInitUI":true,"recaptchaSiteKey":"","loginWithOtp":false,"matchRegexUrls":["*"]}}');
+module.exports = JSON.parse('{"cr":{"username":"admin","password":"123456","autoInitUI":true,"recaptchaSiteKey":"","loginWithOtp":false,"matchRegexUrls":[".*"]}}');
 
 /***/ })
 

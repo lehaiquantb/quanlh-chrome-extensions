@@ -353,6 +353,7 @@ export class SwaggerUIX {
     return _rootStore
   }
 
+  _baseUrl!: string
   mouseEvent: MouseEvent | null = null
   groupApiList: GroupApi[] = []
   swaggerUIBundle: any
@@ -367,6 +368,10 @@ export class SwaggerUIX {
   $headerWrapper: HTMLDivElement = createElementFromHTML(
     `<div id="${ID_HEADER}"></div>`,
   ) as HTMLDivElement
+
+  get baseUrl() {
+    return this.swaggerUIBundle?.getState()?.toJSON()?.spec?.json?.servers?.[0]?.url
+  }
 
   get reCaptchaSiteKey(): string {
     return _rootStore.website.swaggerTool.recaptchaSiteKey
@@ -645,6 +650,8 @@ export class SwaggerUIX {
     this.FormElement.closeButton?.click()
   }
 
+  loginMethod: "1" | "2" = "1"
+
   async callLoginMfa(data: any, token: string, email: string) {
     const recaptcha = "" // (await this.getRecaptchaToken("LOGIN")) || ""
 
@@ -675,17 +682,27 @@ export class SwaggerUIX {
         })
     })
   }
-
+  
   async login(_email?: string, _password?: string, isFirst?: boolean) {
-    const loginWithOtp = isFirst ? false : this.storage?.website?.swaggerTool?.loginWithOtp ?? false
+    if (this.loginMethod === "1") {
+      await this.login1(_email, _password, isFirst)
+    } else {
+      await this.login2(_email, _password, isFirst)
+    }
+  }
 
+  async login1(_email?: string, _password?: string, isFirst?: boolean) {
+    const loginWithOtp = isFirst ? false : this.storage?.website?.swaggerTool?.loginWithOtp ?? false
+    const loginUrl = this._baseUrl
+      ? `${this._baseUrl}/auth/login`
+      : `${location.origin}/api/v1/auth/login`
     const email = _email ?? config.cr.username
     const password = _password ?? config.cr.password
     const callLogin = async (data: any) => {
       const recaptcha = "" // (await this.getRecaptchaToken("LOGIN")) || ""
 
       return new Promise((resolve, reject) => {
-        fetch(`${location.origin}/api/v1/auth/login`, {
+        fetch(loginUrl, {
           headers: {
             accept: "application/json, text/plain, */*",
             "content-type": "application/json",
@@ -720,6 +737,72 @@ export class SwaggerUIX {
       const payload = {
         provider: "email",
         email,
+        password,
+      }
+
+      const res = (await callLogin(payload)) as any
+      let jwtToken = res?.data?.accessToken?.token
+      if (!jwtToken?.length) {
+        return
+      }
+      this.logger.info(`${res?.data?.accessToken?.token}`)
+
+      if (loginWithOtp) {
+        const code = this.storage?.website?.swaggerTool?.otpCode ?? ""
+        jwtToken = (
+          (await this.callLoginMfa({ code, provider: "mfa_code" }, jwtToken, email)) as any
+        )?.data?.accessToken?.token
+      }
+      this.setTokenToSwagger(jwtToken)
+    })()
+  }
+
+  async login2(_email?: string, _password?: string, isFirst?: boolean) {
+    const loginWithOtp = isFirst ? false : this.storage?.website?.swaggerTool?.loginWithOtp ?? false
+    const loginUrl = this._baseUrl
+      ? `${this._baseUrl}/auth/login`
+      : `${location.origin}/api/v1/auth/login`
+    const email = _email ?? config.cr.username
+    const password = _password ?? config.cr.password
+    const callLogin = async (data: any) => {
+      const recaptcha = "" // (await this.getRecaptchaToken("LOGIN")) || ""
+
+      return new Promise((resolve, reject) => {
+        fetch(loginUrl, {
+          headers: {
+            accept: "application/json, text/plain, */*",
+            "content-type": "application/json",
+            recaptcha,
+          },
+          body: JSON.stringify(data),
+          method: "POST",
+          mode: "cors",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data?.data?.profile?.mfaEnforced && !loginWithOtp) {
+              NotificationManager.warning({ message: `Need Login via OTP` })
+              reject(new Error())
+              return
+            }
+            if (data?.data?.accessToken?.token) {
+              NotificationManager.success({ message: `Login successful [${email}]` })
+            } else {
+              NotificationManager.error({ message: `Login fail [${JSON.stringify(data)}]` })
+            }
+            resolve(data)
+          })
+          .catch((err) => {
+            NotificationManager.error({ message: `Login fail [${email}]` })
+            this.logger.error(err)
+          })
+      })
+    }
+
+    ;(async () => {
+      const payload = {
+        provider: "email",
+        username: email,
         password,
       }
 

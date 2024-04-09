@@ -90664,12 +90664,16 @@ class SwaggerUIX {
     get storage() {
         return _shared_models__WEBPACK_IMPORTED_MODULE_11__._rootStore;
     }
+    _baseUrl;
     mouseEvent = null;
     groupApiList = [];
     swaggerUIBundle;
     $sideBar = createElementFromHTML(`<div id="${ID_SIDE_BAR}" class="side-bar"></div>`);
     $extraRight = createElementFromHTML(`<div id="${ID_EXTRA_RIGHT}" class="${ID_EXTRA_RIGHT}"></div>`);
     $headerWrapper = createElementFromHTML(`<div id="${ID_HEADER}"></div>`);
+    get baseUrl() {
+        return this.swaggerUIBundle?.getState()?.toJSON()?.spec?.json?.servers?.[0]?.url;
+    }
     get reCaptchaSiteKey() {
         return _shared_models__WEBPACK_IMPORTED_MODULE_11__._rootStore.website.swaggerTool.recaptchaSiteKey;
     }
@@ -90894,6 +90898,7 @@ class SwaggerUIX {
         this.FormElement.authButton.click();
         this.FormElement.closeButton?.click();
     }
+    loginMethod = "1";
     async callLoginMfa(data, token, email) {
         const recaptcha = ""; // (await this.getRecaptchaToken("LOGIN")) || ""
         return new Promise((resolve) => {
@@ -90925,13 +90930,24 @@ class SwaggerUIX {
         });
     }
     async login(_email, _password, isFirst) {
+        if (this.loginMethod === "1") {
+            await this.login1(_email, _password, isFirst);
+        }
+        else {
+            await this.login2(_email, _password, isFirst);
+        }
+    }
+    async login1(_email, _password, isFirst) {
         const loginWithOtp = isFirst ? false : this.storage?.website?.swaggerTool?.loginWithOtp ?? false;
+        const loginUrl = this._baseUrl
+            ? `${this._baseUrl}/auth/login`
+            : `${location.origin}/api/v1/auth/login`;
         const email = _email ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.username;
         const password = _password ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.password;
         const callLogin = async (data) => {
             const recaptcha = ""; // (await this.getRecaptchaToken("LOGIN")) || ""
             return new Promise((resolve, reject) => {
-                fetch(`${location.origin}/api/v1/auth/login`, {
+                fetch(loginUrl, {
                     headers: {
                         accept: "application/json, text/plain, */*",
                         "content-type": "application/json",
@@ -90966,6 +90982,66 @@ class SwaggerUIX {
             const payload = {
                 provider: "email",
                 email,
+                password,
+            };
+            const res = (await callLogin(payload));
+            let jwtToken = res?.data?.accessToken?.token;
+            if (!jwtToken?.length) {
+                return;
+            }
+            this.logger.info(`${res?.data?.accessToken?.token}`);
+            if (loginWithOtp) {
+                const code = this.storage?.website?.swaggerTool?.otpCode ?? "";
+                jwtToken = (await this.callLoginMfa({ code, provider: "mfa_code" }, jwtToken, email))?.data?.accessToken?.token;
+            }
+            this.setTokenToSwagger(jwtToken);
+        })();
+    }
+    async login2(_email, _password, isFirst) {
+        const loginWithOtp = isFirst ? false : this.storage?.website?.swaggerTool?.loginWithOtp ?? false;
+        const loginUrl = this._baseUrl
+            ? `${this._baseUrl}/auth/login`
+            : `${location.origin}/api/v1/auth/login`;
+        const email = _email ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.username;
+        const password = _password ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.password;
+        const callLogin = async (data) => {
+            const recaptcha = ""; // (await this.getRecaptchaToken("LOGIN")) || ""
+            return new Promise((resolve, reject) => {
+                fetch(loginUrl, {
+                    headers: {
+                        accept: "application/json, text/plain, */*",
+                        "content-type": "application/json",
+                        recaptcha,
+                    },
+                    body: JSON.stringify(data),
+                    method: "POST",
+                    mode: "cors",
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                    if (data?.data?.profile?.mfaEnforced && !loginWithOtp) {
+                        _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.warning({ message: `Need Login via OTP` });
+                        reject(new Error());
+                        return;
+                    }
+                    if (data?.data?.accessToken?.token) {
+                        _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.success({ message: `Login successful [${email}]` });
+                    }
+                    else {
+                        _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.error({ message: `Login fail [${JSON.stringify(data)}]` });
+                    }
+                    resolve(data);
+                })
+                    .catch((err) => {
+                    _shared_services_notification__WEBPACK_IMPORTED_MODULE_10__.NotificationManager.error({ message: `Login fail [${email}]` });
+                    this.logger.error(err);
+                });
+            });
+        };
+        (async () => {
+            const payload = {
+                provider: "email",
+                username: email,
                 password,
             };
             const res = (await callLogin(payload));
@@ -92862,7 +92938,7 @@ function filter (array, pattern) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin","password":"admin","autoInitUI":true,"recaptchaSiteKey":"","loginWithOtp":false,"matchRegexUrls":"*"}}');
+module.exports = JSON.parse('{"cr":{"username":"admin","password":"123456","autoInitUI":true,"recaptchaSiteKey":"","loginWithOtp":false,"matchRegexUrls":[".*"]}}');
 
 /***/ })
 

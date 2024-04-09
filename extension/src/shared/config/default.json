@@ -5,6 +5,6 @@
     "autoInitUI": true,
     "recaptchaSiteKey": "",
     "loginWithOtp": false,
-    "matchRegexUrls": ["*"]
+    "matchRegexUrls": [".*"]
   }
 }

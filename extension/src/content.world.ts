@@ -126,6 +126,8 @@ const setupSwagger = async () => {
         await waitUntil(() => ready, 300, 20)
 
         const swaggerUI = new SwaggerUIX({ storageType: "localStorage", swaggerUIBundle })
+        swaggerUI._baseUrl = baseUrl
+        swaggerUI.loginMethod = "2"
         // console.log("_rootStore.website.swaggerTool", _rootStore.website.swaggerTool)
 
         if (_rootStore.website.swaggerTool.autoInitUI) {
