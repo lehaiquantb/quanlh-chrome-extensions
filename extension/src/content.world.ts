@@ -7,6 +7,10 @@ import { _rootStore } from "./shared/models"
 import { SwaggerUIX } from "./shared/website/swagger/swagger-ui"
 import { ROOT_STATE_STORAGE_KEY, setupRootStore } from "./shared/models/helpers/setupRootStore"
 import "./assets/scss/copy-field.scss"
+
+// import "./assets/css/swagger-ui.min.css"
+// import "./assets/js/swagger-ui-bundle.min.js"
+
 // chrome.storage.onChanged.addListener((changes, namespace) => {
 //   console.log(
 //     `[${namespace}] on change`,
@@ -25,43 +29,7 @@ import {
 } from "./shared"
 import { contentScript } from "./tools/content.executor"
 import { imageViewerManager } from "./tools/ImageViewerManager"
-;(async () => {
-  // set up the RootStore (returns the state restored from AsyncStorage)
-  const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
-    storageType: "localStorage",
-  })
-  if (
-    isMatchWebsite(_rootStore.website.swaggerTool.matchRegexUrls) &&
-    !window.location?.host?.includes("127.0.0.1:5500")
-  ) {
-    const SwaggerUIBundle = getGlobalVar("SwaggerUIBundle")
-    if (SwaggerUIBundle) {
-      let ready = false
-      setTimeout(async () => {
-        const swaggerUIBundle = SwaggerUIBundle({
-          url: `${location?.href?.split("#")?.[0]}-json`,
-          dom_id: "#swagger-ui",
-          presets: [SwaggerUIBundle?.presets?.apis, SwaggerUIBundle?.SwaggerUIStandalonePreset],
-          onComplete: () => {
-            ready = true
-          },
-        })
-
-        await waitUntil(() => ready, 300, 20)
-        ;(window as any).swaggerUIBundle = swaggerUIBundle
-
-        const swaggerUI = new SwaggerUIX({ storageType: "localStorage", swaggerUIBundle })
-        console.log("_rootStore.website.swaggerTool", _rootStore.website.swaggerTool)
-
-        if (_rootStore.website.swaggerTool.autoInitUI) {
-          await swaggerUI.initUI()
-          swaggerUI.login(undefined, undefined, true)
-        }
-        ;(window as any).swaggerUI = swaggerUI
-      }, 3000)
-    }
-  }
-})()
+import HELPER from "./shared/helper.common"
 
 // const injectRecaptcha = (siteKey: string) => {
 //   const recaptcha = document.createElement("script")
@@ -113,14 +81,107 @@ import { imageViewerManager } from "./tools/ImageViewerManager"
 //   }
 // })
 
+const setupSwagger = async () => {
+  // set up the RootStore (returns the state restored from AsyncStorage)
+  const { restoredState, unsubscribe } = await setupRootStore(_rootStore, {
+    storageType: "localStorage",
+  })
+
+  if (window.location?.href?.includes("/v3/api-docs")) {
+    const baseUrl = window.location?.href?.split("/v3/api-docs")?.[0]
+    const SwaggerUIBundle = getGlobalVar("SwaggerUIBundle")
+    const swaggerDiv = document.createElement("div", {})
+    swaggerDiv.id = "swagger-ui"
+    swaggerDiv.style.backgroundColor = "white"
+    document.body.innerHTML = ""
+    document.body.appendChild(swaggerDiv)
+    if (SwaggerUIBundle) {
+      let ready = false
+      setTimeout(async () => {
+        const UrlMutatorPlugin = (system: any) => ({
+          rootInjects: {
+            setServer: (server: string) => {
+              const jsonSpec = system.getState().toJSON().spec.json
+              const servers = [{ url: server }]
+              const newJsonSpec = Object.assign({}, jsonSpec, { servers })
+              return system?.getSystem()?.specActions?.updateJsonSpec(newJsonSpec)
+            },
+          },
+        })
+        const swaggerUIBundle = SwaggerUIBundle({
+          url: `${location?.href}`,
+          dom_id: "#swagger-ui",
+          presets: [
+            SwaggerUIBundle?.presets?.apis,
+            SwaggerUIBundle?.SwaggerUIStandalonePreset,
+            UrlMutatorPlugin,
+          ],
+          onComplete: () => {
+            ready = true
+            ;(window as any)?.swaggerUIBundle?.setServer(baseUrl)
+          },
+        })
+        ;(window as any).swaggerUIBundle = swaggerUIBundle
+
+        await waitUntil(() => ready, 300, 20)
+
+        const swaggerUI = new SwaggerUIX({ storageType: "localStorage", swaggerUIBundle })
+        // console.log("_rootStore.website.swaggerTool", _rootStore.website.swaggerTool)
+
+        if (_rootStore.website.swaggerTool.autoInitUI) {
+          await swaggerUI.initUI()
+          // swaggerUI.login(undefined, undefined, true)
+        }
+        ;(window as any).swaggerUI = swaggerUI
+      }, 3000)
+    }
+  } else if (
+    isMatchWebsite(_rootStore.website.swaggerTool.matchRegexUrls) &&
+    !window.location?.host?.includes("127.0.0.1:5500")
+  ) {
+    const SwaggerUIBundle = getGlobalVar("SwaggerUIBundle")
+    if (SwaggerUIBundle) {
+      let ready = false
+      setTimeout(async () => {
+        const swaggerUIBundle = SwaggerUIBundle({
+          url: `${location?.href?.split("#")?.[0]}-json`,
+          dom_id: "#swagger-ui",
+          presets: [SwaggerUIBundle?.presets?.apis, SwaggerUIBundle?.SwaggerUIStandalonePreset],
+          onComplete: () => {
+            ready = true
+          },
+        })
+
+        await waitUntil(() => ready, 300, 20)
+        ;(window as any).swaggerUIBundle = swaggerUIBundle
+
+        const swaggerUI = new SwaggerUIX({ storageType: "localStorage", swaggerUIBundle })
+        console.log("_rootStore.website.swaggerTool", _rootStore.website.swaggerTool)
+
+        if (_rootStore.website.swaggerTool.autoInitUI) {
+          await swaggerUI.initUI()
+          swaggerUI.login(undefined, undefined, true)
+        }
+        ;(window as any).swaggerUI = swaggerUI
+      }, 3000)
+    }
+  }
+}
+
 const Q__ = {
   imageViewerManager,
+  HELPER,
 }
 
 ;(window as any).Q__ = Q__
 
-try {
-  // imageViewerManager.execute()
-} catch (error) {
-  console.log("error", error)
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+window.addEventListener("DOMContentLoaded", () => {})
+;(async () => {
+  try {
+    // imageViewerManager.execute()
+    await setupSwagger()
+  } catch (error) {
+    console.log("error", error)
+  }
+})()

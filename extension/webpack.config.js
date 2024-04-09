@@ -97,6 +97,14 @@ module.exports = {
           from: path.resolve(__dirname, "./src/assets/images"),
           to: path.resolve(__dirname, "../extension-pack/assets/images/images"),
         },
+        {
+          from: path.resolve(__dirname, "./src/assets/js"),
+          to: path.resolve(__dirname, "../extension-pack/assets/js"),
+        },
+        {
+          from: path.resolve(__dirname, "./src/assets/css"),
+          to: path.resolve(__dirname, "../extension-pack/assets/css"),
+        },
       ],
     }),
   ],

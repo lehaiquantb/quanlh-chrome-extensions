@@ -27,6 +27,18 @@
       "matches": ["<all_urls>"],
       "js": ["build/contentWorld.bundle.js"],
       "run_at": "document_end"
+    },
+    {
+      "world": "MAIN",
+      "matches": ["*://*/*api-docs*"],
+      "js": ["assets/js/swagger-ui-bundle.min.js"],
+      "run_at": "document_start"
+    },
+    {
+      "world": "MAIN",
+      "matches": ["*://*/*api-docs*"],
+      "css": ["assets/css/swagger-ui.min.css"],
+      "run_at": "document_start"
     }
   ],
   "icons": {
