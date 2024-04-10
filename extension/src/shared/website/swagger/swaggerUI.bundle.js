@@ -88882,45 +88882,45 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "SwaggerHeaderComponent": () => (/* binding */ SwaggerHeaderComponent),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _shared_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared/config */ "./src/shared/config/index.ts");
-/* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
-/* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
-/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _Otp_Otp__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Otp/Otp */ "./src/shared/components/Otp/Otp.tsx");
+/* harmony import */ var _shared_models__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/shared/models */ "./src/shared/models/index.ts");
+/* harmony import */ var _shared_withStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/shared/withStorage */ "./src/shared/withStorage.tsx");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
+/* harmony import */ var mobx_react_lite__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mobx-react-lite */ "./node_modules/mobx-react-lite/es/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _Otp_Otp__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Otp/Otp */ "./src/shared/components/Otp/Otp.tsx");
 
 
 
 
 
 
-
-const SwaggerHeaderComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_3__.observer)((props) => {
+const SwaggerHeaderComponent = (0,mobx_react_lite__WEBPACK_IMPORTED_MODULE_2__.observer)((props) => {
     const { swaggerUI } = props;
-    const { website: { swaggerTool: { autoExecute, autoInitUI, email: _email, password: _password }, }, } = (0,_shared_models__WEBPACK_IMPORTED_MODULE_1__.useStores)();
-    const [pass, setPass] = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(_shared_config__WEBPACK_IMPORTED_MODULE_0__["default"].cr.password);
-    const [email, setEmail] = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(_shared_config__WEBPACK_IMPORTED_MODULE_0__["default"].cr.username);
+    const { website: { swaggerTool: { autoExecute, autoInitUI, email: _email, password: _password, setProp }, }, } = (0,_shared_models__WEBPACK_IMPORTED_MODULE_0__.useStores)();
+    const [pass, setPass] = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(_password);
+    const [email, setEmail] = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(_email);
     const onLogin = () => {
         swaggerUI.login(email, pass);
     };
     const onChange = (e) => {
         const { value: inputValue } = e.target;
         setEmail(inputValue);
+        setProp("email", inputValue);
     };
-    return (react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", { className: "flex items-center" },
-        react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", { className: "flex items-center" },
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { placeholder: "Email", value: email, onChange: onChange }),
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { placeholder: "Password", value: pass, onChange: (e) => {
+    return (react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", { className: "flex items-center" },
+        react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", { className: "flex items-center" },
+            react__WEBPACK_IMPORTED_MODULE_3___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"], { placeholder: "Email", value: email, onChange: onChange }),
+            react__WEBPACK_IMPORTED_MODULE_3___default().createElement(antd__WEBPACK_IMPORTED_MODULE_5__["default"], { placeholder: "Password", value: pass, onChange: (e) => {
                     setPass(e.target.value);
+                    setProp("password", e.target.value);
                 } }),
-            react__WEBPACK_IMPORTED_MODULE_4___default().createElement(antd__WEBPACK_IMPORTED_MODULE_7__["default"], { type: "primary", onClick: onLogin }, "Login")),
-        react__WEBPACK_IMPORTED_MODULE_4___default().createElement(_Otp_Otp__WEBPACK_IMPORTED_MODULE_5__.Otp, null)));
+            react__WEBPACK_IMPORTED_MODULE_3___default().createElement(antd__WEBPACK_IMPORTED_MODULE_6__["default"], { type: "primary", onClick: onLogin }, "Login")),
+        react__WEBPACK_IMPORTED_MODULE_3___default().createElement(_Otp_Otp__WEBPACK_IMPORTED_MODULE_4__.Otp, null)));
 });
 SwaggerHeaderComponent.defaultProps = {};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_2__["default"])(SwaggerHeaderComponent));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_shared_withStorage__WEBPACK_IMPORTED_MODULE_1__["default"])(SwaggerHeaderComponent));
 
 
 /***/ }),
@@ -92125,7 +92125,7 @@ function filter (array, pattern) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin","password":"123456","autoInitUI":true,"recaptchaSiteKey":"","loginWithOtp":false,"matchRegexUrls":[".*"]}}');
+module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"],"recaptchaSiteKey":"6LdsWXopAAAAAHuWRtUBmw_3Sw61Ft66-0MjUQcS","loginWithOtp":false,"autoInitUI":true}}');
 
 /***/ })
 
@@ -92733,7 +92733,7 @@ class SwaggerUIX {
         this.$mainWrapper.style.flexDirection = "row";
         this.$mainWrapper.style.maxWidth = `fit-content`;
         this.$mainWrapper.style.padding = `0px 30px`;
-        this.$mainWrapper.style.height = `${window.innerHeight - this.$schemaContainer.offsetHeight - 10}px`;
+        this.$mainWrapper.style.height = `${window.innerHeight - this.$schemaContainer.offsetHeight - 50}px`;
         this.$mainWrapper.style.backgroundColor = `#eaeaea`;
         this.$sideBar.style.width = `25rem`;
         this.$sideBar.style.overflowY = `auto`;
@@ -92882,8 +92882,8 @@ class SwaggerUIX {
         const loginUrl = this._baseUrl
             ? `${this._baseUrl}/auth/login`
             : `${location.origin}/api/v1/auth/login`;
-        const email = _email ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.username;
-        const password = _password ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.password;
+        const email = _email ?? _shared_models__WEBPACK_IMPORTED_MODULE_11__._rootStore.website.swaggerTool.email ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.username;
+        const password = _password ?? _shared_models__WEBPACK_IMPORTED_MODULE_11__._rootStore.website.swaggerTool.password ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.password;
         const callLogin = async (data) => {
             const recaptcha = ""; // (await this.getRecaptchaToken("LOGIN")) || ""
             return new Promise((resolve, reject) => {
@@ -92942,8 +92942,8 @@ class SwaggerUIX {
         const loginUrl = this._baseUrl
             ? `${this._baseUrl}/auth/login`
             : `${location.origin}/api/v1/auth/login`;
-        const email = _email ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.username;
-        const password = _password ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.password;
+        const email = _email ?? _shared_models__WEBPACK_IMPORTED_MODULE_11__._rootStore.website.swaggerTool.email ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.username;
+        const password = _password ?? _shared_models__WEBPACK_IMPORTED_MODULE_11__._rootStore.website.swaggerTool.password ?? _shared_config__WEBPACK_IMPORTED_MODULE_6__["default"].cr.password;
         const callLogin = async (data) => {
             const recaptcha = ""; // (await this.getRecaptchaToken("LOGIN")) || ""
             return new Promise((resolve, reject) => {

@@ -16,11 +16,11 @@ export const SwaggerHeaderComponent: FC<Props> = observer((props: Props) => {
 
   const {
     website: {
-      swaggerTool: { autoExecute, autoInitUI, email: _email, password: _password },
+      swaggerTool: { autoExecute, autoInitUI, email: _email, password: _password, setProp },
     },
   } = useStores()
-  const [pass, setPass] = useState(config.cr.password)
-  const [email, setEmail] = useState(config.cr.username)
+  const [pass, setPass] = useState(_password)
+  const [email, setEmail] = useState(_email)
 
   const onLogin = () => {
     swaggerUI.login(email, pass)
@@ -29,6 +29,7 @@ export const SwaggerHeaderComponent: FC<Props> = observer((props: Props) => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputValue } = e.target
     setEmail(inputValue)
+    setProp("email", inputValue)
   }
 
   return (
@@ -40,6 +41,7 @@ export const SwaggerHeaderComponent: FC<Props> = observer((props: Props) => {
           value={pass}
           onChange={(e) => {
             setPass(e.target.value)
+            setProp("password", e.target.value)
           }}
         />
         <Button type="primary" onClick={onLogin}>

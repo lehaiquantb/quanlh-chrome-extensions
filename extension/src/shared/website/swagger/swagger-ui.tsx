@@ -521,7 +521,7 @@ export class SwaggerUIX {
     this.$mainWrapper.style.padding = `0px 30px`
 
     this.$mainWrapper.style.height = `${
-      window.innerHeight - this.$schemaContainer.offsetHeight - 10
+      window.innerHeight - this.$schemaContainer.offsetHeight - 50
     }px`
     this.$mainWrapper.style.backgroundColor = `#eaeaea`
 
@@ -699,8 +699,8 @@ export class SwaggerUIX {
     const loginUrl = this._baseUrl
       ? `${this._baseUrl}/auth/login`
       : `${location.origin}/api/v1/auth/login`
-    const email = _email ?? config.cr.username
-    const password = _password ?? config.cr.password
+    const email = _email ?? _rootStore.website.swaggerTool.email ?? config.cr.username
+    const password = _password ?? _rootStore.website.swaggerTool.password ?? config.cr.password
     const callLogin = async (data: any) => {
       const recaptcha = "" // (await this.getRecaptchaToken("LOGIN")) || ""
 
@@ -765,8 +765,8 @@ export class SwaggerUIX {
     const loginUrl = this._baseUrl
       ? `${this._baseUrl}/auth/login`
       : `${location.origin}/api/v1/auth/login`
-    const email = _email ?? config.cr.username
-    const password = _password ?? config.cr.password
+    const email = _email ?? _rootStore.website.swaggerTool.email ?? config.cr.username
+    const password = _password ?? _rootStore.website.swaggerTool.password ?? config.cr.password
     const callLogin = async (data: any) => {
       const recaptcha = "" // (await this.getRecaptchaToken("LOGIN")) || ""
 
