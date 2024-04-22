@@ -90821,7 +90821,11 @@ class SwaggerUIX {
     injectCss() {
         const apis = [];
         this.groupApiList?.forEach((g) => apis.push(...(g?.apiList ?? [])));
-        let css = "";
+        let css = `
+      input {
+        color: black;
+      }
+    `;
         apis.forEach((a) => (css += " " + a.generateCss()));
         (0,_shared_helper_common__WEBPACK_IMPORTED_MODULE_3__.injectReplaceCSS)(css);
     }
@@ -92938,7 +92942,7 @@ function filter (array, pattern) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"],"recaptchaSiteKey":"6LdsWXopAAAAAHuWRtUBmw_3Sw61Ft66-0MjUQcS","loginWithOtp":false,"autoInitUI":true}}');
+module.exports = JSON.parse('{"cr":{"username":"admin","password":"123456","autoInitUI":true,"recaptchaSiteKey":"","loginWithOtp":false,"matchRegexUrls":[".*"]}}');
 
 /***/ })
 

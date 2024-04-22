@@ -555,7 +555,11 @@ export class SwaggerUIX {
   injectCss() {
     const apis: Api[] = []
     this.groupApiList?.forEach((g) => apis.push(...(g?.apiList ?? [])))
-    let css = ""
+    let css = `
+      input {
+        color: black;
+      }
+    `
     apis.forEach((a) => (css += " " + a.generateCss()))
     injectReplaceCSS(css)
   }
