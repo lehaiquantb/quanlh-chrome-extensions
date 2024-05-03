@@ -26,7 +26,8 @@
       "world": "MAIN",
       "matches": ["<all_urls>"],
       "js": ["build/contentWorld.bundle.js"],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "exclude_matches": ["http://localhost:2024/*"]
     },
     {
       "world": "MAIN",
