@@ -1,0 +1,65 @@
+{
+  "name": "Q-extension",
+  "description": "An extension with several functions",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "build/background.bundle.js"
+  },
+  "options_page": "option/index.html",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "declarativeNetRequestFeedback"
+  ],
+  "host_permissions": ["*://*/*"],
+  "action": {
+    "default_popup": "popup/index.html",
+    "default_icon": {
+      "16": "assets/icons/favicon16x16.png",
+      "32": "assets/icons/favicon32x32.png",
+      "48": "assets/icons/favicon48x48.png",
+      "128": "assets/icons/favicon128x128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["build/content.bundle.js"]
+    },
+    {
+      "world": "MAIN",
+      "matches": ["<all_urls>"],
+      "js": ["build/contentWorld.bundle.js"],
+      "run_at": "document_end",
+      "exclude_matches": ["http://localhost:2024/*", "http://localhost:5173/*"]
+    },
+    {
+      "world": "MAIN",
+      "matches": ["*://*/*api-docs*"],
+      "js": ["assets/js/swagger-ui-bundle.min.js"],
+      "run_at": "document_start"
+    },
+    {
+      "world": "MAIN",
+      "matches": ["*://*/*api-docs*"],
+      "css": ["assets/css/swagger-ui.min.css"],
+      "run_at": "document_start"
+    }
+  ],
+  "icons": {
+    "16": "assets/icons/favicon16x16.png",
+    "32": "assets/icons/favicon32x32.png",
+    "48": "assets/icons/favicon48x48.png",
+    "128": "assets/icons/favicon128x128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/images/images/*.png"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

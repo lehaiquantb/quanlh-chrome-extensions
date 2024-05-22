@@ -1,4 +1,4 @@
-import { IMessage, storageChrome, storageLocal } from "@/shared"
+import { getManifestVersion, IMessage, storageChrome, storageLocal } from "@/shared"
 import { ROOT_STATE_STORAGE_KEY, _rootStore } from "./shared/models"
 import { contentScript } from "./tools/content.executor"
 import { QUANLH_CHROME_RUNTIME_ID } from "./constants"
@@ -141,3 +141,30 @@ chrome.runtime.onConnect.addListener(() => {
 
 // console.log(chrome.runtime.getURL("assets/images/images/donate.png"))
 
+if (getManifestVersion() === 2) {
+  function injectCss(file: any) {
+    const link = document.createElement("link")
+    link.href = file
+    link.type = "text/css"
+    link.rel = "stylesheet"
+    document.getElementsByTagName("head")[0].appendChild(link)
+  }
+  function injectScript(file: any, node: any) {
+    const th = document.getElementsByTagName(node)[0]
+    const s = document.createElement("script")
+    s.setAttribute("type", "text/javascript")
+    s.setAttribute("src", file)
+    th.appendChild(s)
+  }
+  if (
+    !["http://localhost:2024/*", "http://localhost:5173/*"].some((url) =>
+      new RegExp(url).test(window.location.href),
+    )
+  ) {
+    // With V2 dynamic injecting to the page | V3 inject through world: MAIN in manifest.json
+    console.log("Start injecting content world script...")
+    injectScript(chrome.runtime.getURL("assets/js/swagger-ui-bundle.min.js"), "body")
+    injectCss(chrome.runtime.getURL("assets/css/swagger-ui.min.css"))
+    injectScript(chrome.runtime.getURL("/build/contentWorld.bundle.js"), "body")
+  }
+}

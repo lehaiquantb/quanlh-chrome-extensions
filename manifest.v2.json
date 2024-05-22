@@ -1,0 +1,48 @@
+{
+    "name": "Q-extension",
+    "description": "An extension with several functions",
+    "version": "1.0",
+    "manifest_version": 2,
+    "background": {
+      "scripts": ["build/background.bundle.js"],
+      "persistent": true
+    },
+    "options_page": "option/index.html",
+    "permissions": [
+      "storage",
+      "activeTab",
+      "tabs",
+      "webRequest",
+      "webRequestBlocking",
+      "https://*/*",
+      "http://*/*"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["build/content.bundle.js"]
+      }
+    ],
+    "icons": {
+      "16": "assets/icons/favicon16x16.png",
+      "32": "assets/icons/favicon32x32.png",
+      "48": "assets/icons/favicon48x48.png",
+      "128": "assets/icons/favicon128x128.png"
+    },
+    "web_accessible_resources": [
+      "assets/images/images/*.png",
+      "build/contentWorld.bundle.js",
+      "assets/js/swagger-ui-bundle.min.js",
+      "assets/css/swagger-ui.min.css"
+    ],
+    "browser_action": {
+      "default_popup": "popup/index.html",
+      "default_icon": {
+        "16": "assets/icons/favicon16x16.png",
+        "32": "assets/icons/favicon32x32.png",
+        "48": "assets/icons/favicon48x48.png",
+        "128": "assets/icons/favicon128x128.png"
+      }
+    }
+  }
+  

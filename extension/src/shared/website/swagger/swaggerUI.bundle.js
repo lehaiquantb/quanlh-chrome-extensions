@@ -89104,6 +89104,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getChrome": () => (/* binding */ getChrome),
 /* harmony export */   "getCurrentTab": () => (/* binding */ getCurrentTab),
 /* harmony export */   "getGlobalVar": () => (/* binding */ getGlobalVar),
+/* harmony export */   "getManifestVersion": () => (/* binding */ getManifestVersion),
 /* harmony export */   "getRuntimeEnvironment": () => (/* binding */ getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* binding */ globalVarIsExist),
 /* harmony export */   "injectReplaceCSS": () => (/* binding */ injectReplaceCSS),
@@ -89279,6 +89280,9 @@ function addScript(src) {
     s.setAttribute("src", src);
     document.body.appendChild(s);
 }
+function getManifestVersion() {
+    return chrome.runtime.getManifest().manifest_version;
+}
 const HELPER = {
     createElementByText,
     copyToClipboard,
@@ -89320,6 +89324,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getChrome": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getChrome),
 /* harmony export */   "getCurrentTab": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getCurrentTab),
 /* harmony export */   "getGlobalVar": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getGlobalVar),
+/* harmony export */   "getManifestVersion": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getManifestVersion),
 /* harmony export */   "getRuntimeEnvironment": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.getRuntimeEnvironment),
 /* harmony export */   "globalVarIsExist": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.globalVarIsExist),
 /* harmony export */   "injectReplaceCSS": () => (/* reexport safe */ _helper_common__WEBPACK_IMPORTED_MODULE_0__.injectReplaceCSS),
@@ -92125,7 +92130,7 @@ function filter (array, pattern) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin","password":"123456","autoInitUI":true,"recaptchaSiteKey":"","loginWithOtp":false,"matchRegexUrls":[".*"]}}');
+module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"],"recaptchaSiteKey":"6LdsWXopAAAAAHuWRtUBmw_3Sw61Ft66-0MjUQcS","loginWithOtp":false,"autoInitUI":true}}');
 
 /***/ })
 

@@ -1,5 +1,7 @@
+import { getManifestVersion } from "./shared"
+
 const color = "#3aa757"
-console.log("Background script running...")
+console.log("Background script running...", chrome)
 
 chrome.runtime.onInstalled.addListener(async () => {
   chrome.storage.sync.set({ color })
@@ -41,4 +43,24 @@ chrome.runtime.onInstalled.addListener(async () => {
 //     },
 //   )
 // })
+
+if (getManifestVersion() === 2) {
+  // chrome.webRequest.onBeforeRequest.addListener(
+  //   (request) => {
+  //     console.log(request)
+  //   },
+  //   { urls: ["https://*/*", "http://*/*"] },
+  // )
+} else {
+  // rules for V3 
+}
+
+// chrome.webRequest.onBeforeRequest.addListener(
+//   function (details) {
+//     console.log(details.requestBody)
+//   },
+//   { urls: ["https://api-dev.cr-mdr.aws.tokyotechies.co.jp/swagger"] },
+//   ["requestBody"],
+// )
+
 export {}

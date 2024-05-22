@@ -187,6 +187,10 @@ export function addScript(src: string) {
   document.body.appendChild(s)
 }
 
+export function getManifestVersion() {
+  return chrome.runtime.getManifest().manifest_version
+}
+
 const HELPER = {
   createElementByText,
   copyToClipboard,
