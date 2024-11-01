@@ -394,7 +394,11 @@ export class SwaggerUIX {
   }
 
   get $mainWrapper(): HTMLDivElement {
-    return this.$sectionWrapper.parentElement as HTMLDivElement
+    return (
+      (this.$sectionWrapper?.parentElement as HTMLDivElement) ?? {
+        style: {},
+      }
+    )
   }
 
   get $schemesWrapper() {
@@ -402,7 +406,9 @@ export class SwaggerUIX {
   }
 
   get $sectionWrapper(): HTMLDivElement {
-    return document.querySelector("div.wrapper > section.block.block-desktop") as HTMLDivElement
+    return (
+      (document.querySelector("div.wrapper > section.block.block-desktop") as HTMLDivElement) ?? {}
+    )
   }
 
   get $models() {
@@ -505,15 +511,14 @@ export class SwaggerUIX {
   }
 
   async changeLayout() {
-    this.$schemesWrapper.prepend(this.$headerWrapper)
+    this.$schemesWrapper?.prepend(this.$headerWrapper)
     this.$mainWrapper.prepend(this.$sideBar)
     this.$mainWrapper.append(this.$extraRight)
     this.$extraRight.style.maxWidth = `40rem`
     this.$extraRight.style.minWidth = `40rem`
 
     this.$extraRight.style.overflowY = `auto`
-
-    this.$schemesWrapper.style.justifyContent = "space-between"
+    if (this.$schemesWrapper) this.$schemesWrapper.style.justifyContent = "space-between"
 
     this.$mainWrapper.style.display = "flex"
     this.$mainWrapper.style.flexDirection = "row"
@@ -521,7 +526,7 @@ export class SwaggerUIX {
     this.$mainWrapper.style.padding = `0px 30px`
 
     this.$mainWrapper.style.height = `${
-      window.innerHeight - this.$schemaContainer.offsetHeight - 50
+      window.innerHeight - (this.$schemaContainer?.offsetHeight ?? 0) - 50
     }px`
     this.$mainWrapper.style.backgroundColor = `#eaeaea`
 

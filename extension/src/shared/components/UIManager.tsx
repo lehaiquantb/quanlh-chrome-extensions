@@ -9,8 +9,14 @@ type RenderOption = {
 
 export class UIManager {
   static render(opts: RenderOption) {
-    const { id, Component, htmlElement } = opts
-    const root = ReactDOM.createRoot(htmlElement ?? (document.getElementById(id || 'body') as HTMLElement))
-    root.render(<React.StrictMode>{Component}</React.StrictMode>)
+    try {
+      const { id, Component, htmlElement } = opts
+      const root = ReactDOM.createRoot(
+        htmlElement ?? (document.getElementById(id || "body") as HTMLElement),
+      )
+      root.render(<React.StrictMode>{Component}</React.StrictMode>)
+    } catch (error) {
+      console.log("🚀 ~ UIManager ~ render ~ error:", error)
+    }
   }
 }

@@ -80,6 +80,42 @@ import HELPER from "./shared/helper.common"
 //     console.log("[TOKEN]", res)
 //   }
 // })
+const isValidSwaggerJsonLink = async (url: string) => {
+  console.log("🚀 ~ isValidSwaggerJsonLink ~ url:", url)
+  try {
+    const res = await fetch(url)
+    return res.ok
+  } catch (error) {
+    return false
+  }
+}
+const extractSwaggerJsonLink = async (testLink: string) => {
+  const validTestLink = await isValidSwaggerJsonLink(testLink)
+  if (validTestLink) {
+    return testLink
+  }
+
+  // Select the div with the specific class
+  const container = document.querySelector(".information-container")
+  if (!container) return null
+
+  // Find the <a> tag within the container
+  const linkElement = container.querySelector("a")
+  if (!linkElement) return null
+
+  // Get the href attribute
+  let href = linkElement.getAttribute("href")
+
+  // Check the format and construct the full link if needed
+  if (href?.startsWith("/")) {
+    href = window.location.origin + href
+  }
+  const validHref = await isValidSwaggerJsonLink(href as string)
+  if (validHref) {
+    return href
+  }
+  return null
+}
 
 const setupSwagger = async () => {
   // set up the RootStore (returns the state restored from AsyncStorage)
@@ -145,8 +181,12 @@ const setupSwagger = async () => {
     if (SwaggerUIBundle) {
       let ready = false
       setTimeout(async () => {
+        const swaggerLink = await extractSwaggerJsonLink(`${location?.href?.split("#")?.[0]}-json`)
+        if (!swaggerLink) {
+          return
+        }
         const swaggerUIBundle = SwaggerUIBundle({
-          url: `${location?.href?.split("#")?.[0]}-json`,
+          url: swaggerLink,
           dom_id: "#swagger-ui",
           presets: [SwaggerUIBundle?.presets?.apis, SwaggerUIBundle?.SwaggerUIStandalonePreset],
           onComplete: () => {

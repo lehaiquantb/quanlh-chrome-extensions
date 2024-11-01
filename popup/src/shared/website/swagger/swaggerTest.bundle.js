@@ -88855,9 +88855,14 @@ __webpack_require__.r(__webpack_exports__);
 
 class UIManager {
     static render(opts) {
-        const { id, Component, htmlElement } = opts;
-        const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot(htmlElement ?? document.getElementById(id || 'body'));
-        root.render(react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().StrictMode), null, Component));
+        try {
+            const { id, Component, htmlElement } = opts;
+            const root = react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot(htmlElement ?? document.getElementById(id || "body"));
+            root.render(react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().StrictMode), null, Component));
+        }
+        catch (error) {
+            console.log("🚀 ~ UIManager ~ render ~ error:", error);
+        }
     }
 }
 
@@ -90695,13 +90700,15 @@ class SwaggerUIX {
         return document.querySelector(".information-container.wrapper");
     }
     get $mainWrapper() {
-        return this.$sectionWrapper.parentElement;
+        return (this.$sectionWrapper?.parentElement ?? {
+            style: {},
+        });
     }
     get $schemesWrapper() {
         return document.querySelector("section.schemes.wrapper");
     }
     get $sectionWrapper() {
-        return document.querySelector("div.wrapper > section.block.block-desktop");
+        return (document.querySelector("div.wrapper > section.block.block-desktop") ?? {});
     }
     get $models() {
         return document.querySelector("section.models");
@@ -90787,18 +90794,19 @@ class SwaggerUIX {
         });
     }
     async changeLayout() {
-        this.$schemesWrapper.prepend(this.$headerWrapper);
+        this.$schemesWrapper?.prepend(this.$headerWrapper);
         this.$mainWrapper.prepend(this.$sideBar);
         this.$mainWrapper.append(this.$extraRight);
         this.$extraRight.style.maxWidth = `40rem`;
         this.$extraRight.style.minWidth = `40rem`;
         this.$extraRight.style.overflowY = `auto`;
-        this.$schemesWrapper.style.justifyContent = "space-between";
+        if (this.$schemesWrapper)
+            this.$schemesWrapper.style.justifyContent = "space-between";
         this.$mainWrapper.style.display = "flex";
         this.$mainWrapper.style.flexDirection = "row";
         this.$mainWrapper.style.maxWidth = `fit-content`;
         this.$mainWrapper.style.padding = `0px 30px`;
-        this.$mainWrapper.style.height = `${window.innerHeight - this.$schemaContainer.offsetHeight - 50}px`;
+        this.$mainWrapper.style.height = `${window.innerHeight - (this.$schemaContainer?.offsetHeight ?? 0) - 50}px`;
         this.$mainWrapper.style.backgroundColor = `#eaeaea`;
         this.$sideBar.style.width = `25rem`;
         this.$sideBar.style.overflowY = `auto`;
@@ -92947,7 +92955,7 @@ function filter (array, pattern) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"cr":{"username":"admin@cybereason.com","password":"Ab@12345678","matchRegexUrls":[".*swagger.*"],"recaptchaSiteKey":"6LdsWXopAAAAAHuWRtUBmw_3Sw61Ft66-0MjUQcS","loginWithOtp":false,"autoInitUI":true}}');
+module.exports = JSON.parse('{"cr":{"username":"admin","password":"123456","autoInitUI":true,"recaptchaSiteKey":"","loginWithOtp":false,"matchRegexUrls":[".*"]}}');
 
 /***/ })
 
